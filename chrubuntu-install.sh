@@ -7,28 +7,32 @@
 # here would be nice to have some license - BSD one maybe
 #
 
+# User related defaults
+user_name="user"
+auto_login="[ -f /usr/lib/lightdm/lightdm-set-defaults ] && /usr/lib/lightdm/lightdm-set-defaults --autologin user"
+
+# hwid lets us know if this is a Mario (Cr-48), Alex (Samsung Series 5), ZGB (Acer), etc
+hwid="`crossystem hwid`"
+
+# Target specifications
+chromebook_arch="`uname -m`"
+ubuntu_metapackage="default"
+ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+
 setterm -blank 0
 
-# make sure that we have root permissions
+# Basic sanity checks
+
+# Make sure that we have root permissions
 if [[ $EUID -ne 0 ]]; then
 	echo "This script must be run as root" 1>&2
 	exit 1
 fi
 
+# Make sure we run as bash
 if [ ! $BASH_VERSION ]; then
 	echo "This script must be run in bash"
 	exit 1
-fi
-
-if [ -z "$1" ]; then
-	user_name="user"
-	auto_login="[ -f /usr/lib/lightdm/lightdm-set-defaults ] && /usr/lib/lightdm/lightdm-set-defaults --autologin user"
-	echo "Username not specified."
-	echo "There will be autologin user named \"$user_name\"."
-else
-	user_name="$1"
-	echo "Username specified [$user_name]."
-	echo "There will be non-autologin user named \"$user_name\"."
 fi
 
 # fw_type will always be developer for Mario.
@@ -42,14 +46,38 @@ if [ ! "$fw_type" = "developer" ]; then
 	exit
 fi
 
+# Gather options from command line and set flags
+while getopts m:np:rt:u:v: opt; do
+	case "$opt" in
+		m)	ubuntu_metapackage=${OPTARG}	;;
+		n)	unset auto_login		;;
+		p)	ppas=${OPTARG}			;;
+		r)	repart="yes"			;;
+		t)	target_disk=${OPTARG}		;;
+		u)	user_name=${OPTARG}		;;
+		v)	ubuntu_version=${OPTARG}	;;
+		*)	cat <<EOB
+Usage: $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
+	-m : Ubuntu meta package (Desktop environment)
+	-n : Disable user auto logon
+	-p : Specify additional PPA, might be multiple in quotes
+	-r : Repartition disk
+	-t : Specify target disk
+	-u : Specify user name
+	-v : Specify ubuntu version (lts/latest/...)
+Example: $0  -d "raring" -n -p "ppa:user/ppa ppa:user/ppa" -r -t "/dev/sdc" -u "myname".
+EOB
+			exit 1				;;
+	esac
+done
+
 powerd_status="`initctl status powerd`"
 if [ ! "$powerd_status" = "powerd stop/waiting" ]; then
 	echo -e "Stopping powerd to keep display from timing out..."
 	initctl stop powerd
 fi
 
-if [ "$3" != "" ]; then
-	target_disk=$3
+if [ -n "$target_disk" ]; then
 	echo -e "Got ${target_disk} as target drive\n"
 	echo -e "WARNING! All data on this device will be wiped out! Continue at your own risk!\n"
 	read -p "Press [Enter] to install ChrUbuntu on ${target_disk} or CTRL+C to quit"
@@ -76,7 +104,7 @@ else
 	max_ubuntu_size=$((($broot_start-$stateful_start)/1024/1024/2))
 	rec_ubuntu_size=$(($max_ubuntu_size - 1))
 	# If KERN-C and ROOT-C are one, we partition, otherwise assume they're what they need to be...
-	if [ "$ckern_size" =  "1" -o "$croot_size" = "1" -o "$1" = "repart" ]; then
+	if [ "$ckern_size" =  "1" -o "$croot_size" = "1" -o "$repart" = "yes" ]; then
 		while :; do
 			echo -e "\nEnter the size in gigabytes you want to reserve for Ubuntu."
 			echo -e "(Acceptable range is 5 to $max_ubuntu_size, but $rec_ubuntu_size is the recommended maximum)"
@@ -143,15 +171,6 @@ else
 	fi
 fi
 
-# hwid lets us know if this is a Mario (Cr-48), Alex (Samsung Series 5), ZGB (Acer), etc
-hwid="`crossystem hwid`"
-
-chromebook_arch="`uname -m`"
-
-ubuntu_metapackage=${1:-default}
-
-latest_ubuntu=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
-ubuntu_version=${2:-$latest_ubuntu}
 
 if [ "$ubuntu_version" = "lts" ]; then
 	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version:" | grep "LTS" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
@@ -161,19 +180,13 @@ fi
 
 if [ "$chromebook_arch" = "x86_64" ]; then
 	ubuntu_arch="amd64"
-	if [ "$ubuntu_metapackage" = "default" ]; then
-		ubuntu_metapackage="ubuntu-desktop"
-	fi
+	[ "$ubuntu_metapackage" = "default" ] && ubuntu_metapackage="ubuntu-desktop"
 elif [ "$chromebook_arch" = "i686" ]; then
 	ubuntu_arch="i386"
-	if [ "$ubuntu_metapackage" = "default" ]; then
-		ubuntu_metapackage="ubuntu-desktop"
-	fi
+	[ "$ubuntu_metapackage" = "default" ] && ubuntu_metapackage="ubuntu-desktop"
 elif [ "$chromebook_arch" = "armv7l" ]; then
 	ubuntu_arch="armhf"
-	if [ "$ubuntu_metapackage" = "default" ]; then
-		ubuntu_metapackage="xubuntu-desktop"
-	fi
+	[ "$ubuntu_metapackage" = "default" ] && ubuntu_metapackage="xubuntu-desktop"
 else
 	echo -e "Error: This script doesn't know how to install ChrUbuntu on $chromebook_arch"
 	exit
@@ -181,7 +194,7 @@ fi
 
 echo -e "\nChrome device model is: $hwid\n"
 
-echo -e "Installing Ubuntu ${ubuntu_version} with metapackage ${ubuntu_metapackage}\n"
+echo -e "Installing Ubuntu $ubuntu_version with metapackage $ubuntu_metapackage\n"
 
 echo -e "Kernel Arch is: $chromebook_arch  Installing Ubuntu Arch: $ubuntu_arch\n"
 
