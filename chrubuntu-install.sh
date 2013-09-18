@@ -18,6 +18,8 @@ hwid="`crossystem hwid`"
 chromebook_arch="`uname -m`"
 ubuntu_metapackage="default"
 ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+pkgs="wget"
+ppas="ppa:eugenesan/ppa"
 
 setterm -blank 0
 
@@ -49,23 +51,28 @@ fi
 # Gather options from command line and set flags
 while getopts m:np:rt:u:v: opt; do
 	case "$opt" in
+		e)	encrypt_home="--encrypt-home"
+			pkgs="$pkgs ecryptfs-utils"	;;
 		m)	ubuntu_metapackage=${OPTARG}	;;
 		n)	unset auto_login		;;
-		p)	ppas=${OPTARG}			;;
+		p)	pkgs="$pkgs ${OPTARG}"		;;
+		P)	ppas="$ppas ${OPTARG}"		;;
 		r)	repart="yes"			;;
 		t)	target_disk=${OPTARG}		;;
 		u)	user_name=${OPTARG}		;;
 		v)	ubuntu_version=${OPTARG}	;;
 		*)	cat <<EOB
 Usage: $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
+	-e : Enable user home folder encryption
 	-m : Ubuntu meta package (Desktop environment)
 	-n : Disable user auto logon
-	-p : Specify additional PPA, might be multiple in quotes
+	-p : Specify additional packages, might be called multiple times (space separated)
+	-P : Specify additional PPAs, might be called multiple times (coma separated)
 	-r : Repartition disk
 	-t : Specify target disk
 	-u : Specify user name
 	-v : Specify ubuntu version (lts/latest/...)
-Example: $0  -d "raring" -n -p "ppa:user/ppa ppa:user/ppa" -r -t "/dev/sdc" -u "myname".
+Example: $0  -e -m "lubunut-desktop" -n -p "ssh, mc, p7zip" -P "ppa:user1/ppa1, ppa:user2/ppa2" -r -t "/dev/sdc" -u "myname" -v "lts".
 EOB
 			exit 1				;;
 	esac
@@ -245,12 +252,10 @@ cp /etc/resolv.conf /tmp/urfs/etc/
 echo chrubuntu > /tmp/urfs/etc/hostname
 
 if [ ! $ubuntu_arch = 'armhf' ]; then
-	cr_install="wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-add-apt-repository \"deb http://dl.google.com/linux/chrome/deb/ stable main\"
-apt-get update
-apt-get -y install google-chrome-stable"
+	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /tmp/urfs/etc/apt/sources.list.d/google-chrome.list
+	pkgs="$pkgs google-chrome-stable"
 else
-	cr_install='apt-get -y install chromium-browser'
+	pkgs="$pkgs chromium-browser"
 fi
 
 if [ $ubuntu_version -lt 1210 ]; then
@@ -259,24 +264,29 @@ else
 	add_apt_repository_package='software-properties-common'
 fi
 
-echo -e "useradd -m $user_name
+# Creating 2nd stage installation script
+echo -e "
+useradd -m $user_name $encrypt_home
 echo $user_name | echo $user_name:$user_name | chpasswd
 adduser $user_name adm
 adduser $user_name sudo
-apt-get -y update
-apt-get -y dist-upgrade
-apt-get -y install ubuntu-minimal
-apt-get -y install wget
-apt-get -y install $add_apt_repository_package
-add-apt-repository main
-add-apt-repository universe
-add-apt-repository restricted
-add-apt-repository multiverse
-apt-get update
-apt-get -y install libnss-myhostname $ubuntu_metapackage
-$cr_install
 $auto_login
+apt-get -y update
+apt-get -y install aptitude
+aptitude -y dist-upgrade
+aptitude -y install ubuntu-minimal libnss-myhostname $add_apt_repository_package
 " > /tmp/urfs/install-ubuntu.sh
+
+# Add repositories addition to 2nd stage installation script
+for ppa in main universe restricted multiverse $ppas; do
+echo "add-apt-repository $ppa" >> /tmp/urfs/install-ubuntu.sh
+
+# Finalize 2nd stage installation script
+echo -e "
+aptitude -y update
+aptitude -y dist-upgrade
+aptitude -y install $pkgs $ubuntu_metapackage
+" >> /tmp/urfs/install-ubuntu.sh
 
 chmod a+x /tmp/urfs/install-ubuntu.sh
 chroot /tmp/urfs /bin/bash -c /install-ubuntu.sh
@@ -298,7 +308,7 @@ if [ $ubuntu_version -lt 1304 ]; then
 	fi
 else
 	# post-raring
-	echo "apt-get -y --force-yes install cgpt vboot-kernel-utils" >/tmp/urfs/install-ubuntu.sh
+	echo "aptitude -y install cgpt vboot-kernel-utils" >/tmp/urfs/install-ubuntu.sh
 
 	if [ $ubuntu_arch = "armhf" ]; then
 		cat > /tmp/urfs/usr/share/X11/xorg.conf.d/exynos5.conf <<EOZ
