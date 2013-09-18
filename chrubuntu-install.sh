@@ -279,10 +279,9 @@ ubuntu_version=`echo $ubuntu_version | sed -e 's/\.//g'`
 
 wget -O - $tar_file | tar xzp -C $target_mnt/
 
-mount -o bind /dev $target_mnt/dev
-mount -o bind /dev/pts $target_mnt/dev/pts
-mount -o bind /sys $target_mnt/sys
-mount -o bind /proc $target_mnt/proc
+for mnt in dev dev/pts sys proc; do
+	mount -o bind /$mnt $target_mnt/$mnt
+done
 
 cp /etc/resolv.conf $target_mnt/etc/
 echo chrubuntu > $target_mnt/etc/hostname
@@ -295,9 +294,9 @@ else
 fi
 
 if [ $ubuntu_version -lt 1210 ]; then
-	add_apt_repository_package='python-software-properties'
-else
 	add_apt_repository_package='software-properties-common'
+else
+	add_apt_repository_package='python-software-properties'
 fi
 
 # Create 2nd stage installation script
