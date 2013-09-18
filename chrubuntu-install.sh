@@ -297,7 +297,7 @@ if [ $ubuntu_version -lt 1210 ]; then
 	add_apt_repository_package='software-properties-common'
 else
 	add_apt_repository_package='python-software-properties'
-	base_pkgs="libnss-myhostname"
+	base_pkgs="$base_pkgs libnss-myhostname"
 fi
 
 # Create 2nd stage installation script
