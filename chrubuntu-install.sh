@@ -255,14 +255,15 @@ fi
 
 echo "Target Kernel Partition: $target_kern  Target Root FS: ${target_rootfs}"
 
-if mount|grep ${target_rootfs}; then
-	echo "Refusing to continue since ${target_rootfs} is formatted and mounted. Try rebooting"
-	exit
+if mount | grep ${target_rootfs}; then
+	echo "Found formatted and mounted ${target_rootfs}."
+	echo "Continue at your own risk!"
+	read -p "Press [Enter] to continue or CTRL+C to quit"
+	umount ${target_rootfs}/{dev/pts,dev,sys,proc,}
 fi
 
 mkfs.ext4 ${target_rootfs}
-
-[ ! -d /tmp/urfs ] && mkdir /tmp/urfs
+mkdir -p /tmp/urfs
 mount -t ext4 ${target_rootfs} /tmp/urfs
 
 tar_file="http://cdimage.ubuntu.com/ubuntu-core/releases/$ubuntu_version/release/ubuntu-core-$ubuntu_version-core-$ubuntu_arch.tar.gz"
