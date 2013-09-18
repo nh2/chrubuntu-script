@@ -299,7 +299,7 @@ else
 fi
 
 # Creating 2nd stage installation script
-echo -e "
+echo "
 useradd -m $user_name $encrypt_home
 echo $user_name | echo $user_name:$user_name | chpasswd
 adduser $user_name adm
@@ -308,15 +308,19 @@ $auto_login
 apt-get -y update
 apt-get -y install aptitude
 aptitude -y dist-upgrade
-aptitude -y install ubuntu-minimal libnss-myhostname $add_apt_repository_package
+aptitude -y install ubuntu-minimal libnss-myhostname locales tzdata $add_apt_repository_package
+locale-gen en_US.UTF-8
+update-locale LANG=en_US.UTF-8
+dpkg-reconfigure tzdata
 " > /tmp/urfs/install-ubuntu.sh
 
 # Add repositories addition to 2nd stage installation script
 for ppa in main universe restricted multiverse $ppas; do
-echo "add-apt-repository $ppa" >> /tmp/urfs/install-ubuntu.sh
+	echo "add-apt-repository $ppa" >> /tmp/urfs/install-ubuntu.sh
+done
 
 # Finalize 2nd stage installation script
-echo -e "
+echo "
 aptitude -y update
 aptitude -y dist-upgrade
 aptitude -y install $pkgs $ubuntu_metapackage
@@ -328,10 +332,11 @@ rm /tmp/urfs/install-ubuntu.sh
 
 # Keep CrOS partitions from showing/mounting in Ubuntu
 udev_target=${target_disk:5}
-echo -e "KERNEL==\"$udev_target1\" ENV{UDISKS_IGNORE}=\"1\"
+echo "KERNEL==\"$udev_target1\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target3\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target5\" ENV{UDISKS_IGNORE}=\"1\"
-KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"" > /tmp/urfs/etc/udev/rules.d/99-hide-disks.rules
+KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
+" > /tmp/urfs/etc/udev/rules.d/99-hide-disks.rules
 
 if [ $ubuntu_version -lt 1304 ]; then
 	# pre-raring
@@ -390,12 +395,8 @@ if [ $ubuntu_arch != "armhf" -o $ubuntu_version -lt 1304 ]; then
 	KERN_VER=`uname -r`
 	mkdir -p /tmp/urfs/lib/modules/$KERN_VER/
 	cp -ar /lib/modules/$KERN_VER/* /tmp/urfs/lib/modules/$KERN_VER/
-	if [ ! -d /tmp/urfs/lib/firmware/ ]
-	then
-	  mkdir /tmp/urfs/lib/firmware/
-	fi
+	[ ! -d /tmp/urfs/lib/firmware/ ] && mkdir /tmp/urfs/lib/firmware/
 	cp -ar /lib/firmware/* /tmp/urfs/lib/firmware/
-
 	kernel=/boot/vmlinuz-`uname -r`
 fi
 
