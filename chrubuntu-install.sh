@@ -299,13 +299,8 @@ else
 	add_apt_repository_package='software-properties-common'
 fi
 
-# Creating 2nd stage installation script
+# Create 2nd stage installation script
 echo "
-adduser $user_name $encrypt_home
-echo $user_name | echo $user_name:$user_name | chpasswd
-adduser $user_name adm
-adduser $user_name sudo
-$auto_login
 apt-get -y update
 apt-get -y install aptitude
 aptitude -y dist-upgrade
@@ -313,6 +308,11 @@ aptitude -y install $base_pkgs $add_apt_repository_package
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 dpkg-reconfigure tzdata
+adduser $user_name $encrypt_home
+echo $user_name | echo $user_name:$user_name | chpasswd
+adduser $user_name adm
+adduser $user_name sudo
+$auto_login
 " > /tmp/urfs/install-ubuntu.sh
 
 # Add repositories addition to 2nd stage installation script
