@@ -141,7 +141,7 @@ else
 			echo -e "(Acceptable range is 5 to $max_ubuntu_size, but $rec_ubuntu_size is the recommended maximum)"
 			read -p "Ubuntu Size: " ubuntu_size
 
-			if [ ! $ubuntu_size -ne -1 2>/dev/null ]; then
+			if [ ! $ubuntu_size -ne -1 2 > /dev/null ]; then
 				echo -e "\n\nNumbers only please...\n\n"
 				continue
 			fi
@@ -355,7 +355,7 @@ if [ $ubuntu_version -lt 1304 ]; then
 	fi
 else
 	# post-raring
-	echo "aptitude -y install cgpt vboot-kernel-utils" >$target_mnt/install-ubuntu.sh
+	echo "aptitude -y install cgpt vboot-kernel-utils" > $target_mnt/install-ubuntu.sh
 
 	if [ $ubuntu_arch = "armhf" ]; then
 		cat > $target_mnt/usr/share/X11/xorg.conf.d/exynos5.conf <<EOZ
@@ -386,7 +386,7 @@ Section "InputClass"
         Option "FingerLow" "5"
 EndSection
 EOZ
-		echo "apt-get -y install --no-install-recommends linux-image-chromebook xserver-xorg-video-armsoc" >>$target_mnt/install-ubuntu.sh
+		echo "apt-get -y install --no-install-recommends linux-image-chromebook xserver-xorg-video-armsoc" >> $target_mnt/install-ubuntu.sh
 
 		# Valid for raring, so far also for saucy but will change
 		kernel=$target_mnt/boot/vmlinuz-3.4.0-5-chromebook
