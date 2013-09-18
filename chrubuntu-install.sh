@@ -292,13 +292,6 @@ done
 cp /etc/resolv.conf $target_mnt/etc/
 echo chrubuntu > $target_mnt/etc/hostname
 
-if [ ! $ubuntu_arch = 'armhf' ]; then
-	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > $target_mnt/etc/apt/sources.list.d/google-chrome.list
-	pkgs="$pkgs google-chrome-stable"
-else
-	pkgs="$pkgs chromium-browser"
-fi
-
 if [ $ubuntu_version -lt 1210 ]; then
 	add_apt_repository_package='python-software-properties'
 else
@@ -335,6 +328,13 @@ fi
 for ppa in $ppas; do
 	echo "add-apt-repository $ubuntu_components $ppa" >> $target_mnt/install-ubuntu.sh
 done
+
+if [ ! $ubuntu_arch = 'armhf' ]; then
+	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > $target_mnt/etc/apt/sources.list.d/google-chrome.list
+	pkgs="$pkgs google-chrome-stable"
+else
+	pkgs="$pkgs chromium-browser"
+fi
 
 # Finalize 2nd stage installation script
 echo "
