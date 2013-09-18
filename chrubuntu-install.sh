@@ -18,7 +18,7 @@ hwid="`crossystem hwid`"
 chromebook_arch="`uname -m`"
 ubuntu_metapackage="default"
 ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
-base_pkgs="ubuntu-minimal locales tzdata wget"
+base_pkgs="ubuntu-minimal locales tzdata dialog wget"
 ppas="ppa:eugenesan/ppa"
 
 setterm -blank 0
