@@ -18,7 +18,7 @@ hwid="`crossystem hwid`"
 chromebook_arch="`uname -m`"
 ubuntu_metapackage="default"
 ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
-base_pkgs="wget ubuntu-minimal libnss-myhostname locales tzdata"
+base_pkgs="ubuntu-minimal locales tzdata wget"
 ppas="ppa:eugenesan/ppa"
 
 setterm -blank 0
@@ -274,8 +274,8 @@ if [ $ubuntu_version = "dev" ]; then
 	tar_file="http://cdimage.ubuntu.com/ubuntu-core/daily/current/$ubuntu_codename-core-$ubuntu_arch.tar.gz"
 fi
 
-# convert $ubuntu_version from 13.04 to 1304
-ubuntu_version=`echo $ubuntu_version | sed -e 's/\.//g'`
+# convert $ubuntu_version from 12.04.3 to 1204
+ubuntu_version=`echo $ubuntu_version | cut -f1,2 -d. | sed -e 's/\.//g'`
 
 wget -O - $tar_file | tar xzp -C $target_mnt/
 
@@ -297,6 +297,7 @@ if [ $ubuntu_version -lt 1210 ]; then
 	add_apt_repository_package='software-properties-common'
 else
 	add_apt_repository_package='python-software-properties'
+	base_pkgs="libnss-myhostname"
 fi
 
 # Create 2nd stage installation script
@@ -308,11 +309,6 @@ aptitude -y install $base_pkgs $add_apt_repository_package
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 dpkg-reconfigure tzdata
-adduser $user_name $encrypt_home
-echo $user_name | echo $user_name:$user_name | chpasswd
-adduser $user_name adm
-adduser $user_name sudo
-$auto_login
 " > $target_mnt/install-ubuntu.sh
 
 # Add repositories addition to 2nd stage installation script
@@ -324,12 +320,23 @@ done
 echo "
 aptitude -y update
 aptitude -y dist-upgrade
-aptitude -y install $pkgs $ubuntu_metapackage
+aptitude -y --allow-untrusted install $pkgs $ubuntu_metapackage
 " >> $target_mnt/install-ubuntu.sh
 
 chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 rm $target_mnt/install-ubuntu.sh
+
+# Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
+mv $target_mnt/etc/rc.local $target_mnt/etc/rc.local.orig
+echo"
+adduser $user_name $encrypt_home
+echo $user_name | echo $user_name:$user_name | chpasswd
+adduser $user_name adm
+adduser $user_name sudo
+$auto_login
+mv /etc/rc.local.orig /etc/rc.local
+" >> $target_mnt/etc/rc.local
 
 # Keep CrOS partitions from showing/mounting in Ubuntu
 udev_target=${target_disk:5}
