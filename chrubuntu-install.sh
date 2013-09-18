@@ -252,19 +252,20 @@ else
 	target_rootfs="${target_disk}7"
 	target_kern="${target_disk}6"
 fi
+target_mnt="/tmp/urfs"
 
-echo "Target Kernel Partition: $target_kern  Target Root FS: ${target_rootfs}"
+echo "Target Kernel Partition: $target_kern, Target Root FS: ${target_rootfs}, Target Mount Point: ${target_mnt}"
 
 if mount | grep ${target_rootfs}; then
 	echo "Found formatted and mounted ${target_rootfs}."
 	echo "Continue at your own risk!"
 	read -p "Press [Enter] to continue or CTRL+C to quit"
-	umount ${target_rootfs}/{dev/pts,dev,sys,proc,}
+	umount ${target_mnt}/{dev/pts,dev,sys,proc,}
 fi
 
 mkfs.ext4 ${target_rootfs}
-mkdir -p /tmp/urfs
-mount -t ext4 ${target_rootfs} /tmp/urfs
+mkdir -p $target_mnt
+mount -t ext4 ${target_rootfs} $target_mnt
 
 tar_file="http://cdimage.ubuntu.com/ubuntu-core/releases/$ubuntu_version/release/ubuntu-core-$ubuntu_version-core-$ubuntu_arch.tar.gz"
 if [ $ubuntu_version = "dev" ]; then
@@ -276,18 +277,18 @@ fi
 # convert $ubuntu_version from 13.04 to 1304
 ubuntu_version=`echo $ubuntu_version | sed -e 's/\.//g'`
 
-wget -O - $tar_file | tar xzp -C /tmp/urfs/
+wget -O - $tar_file | tar xzp -C $target_mnt/
 
-mount -o bind /proc /tmp/urfs/proc
-mount -o bind /dev /tmp/urfs/dev
-mount -o bind /dev/pts /tmp/urfs/dev/pts
-mount -o bind /sys /tmp/urfs/sys
+mount -o bind /dev $target_mnt/dev
+mount -o bind /dev/pts $target_mnt/dev/pts
+mount -o bind /sys $target_mnt/sys
+mount -o bind /proc $target_mnt/proc
 
-cp /etc/resolv.conf /tmp/urfs/etc/
-echo chrubuntu > /tmp/urfs/etc/hostname
+cp /etc/resolv.conf $target_mnt/etc/
+echo chrubuntu > $target_mnt/etc/hostname
 
 if [ ! $ubuntu_arch = 'armhf' ]; then
-	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > /tmp/urfs/etc/apt/sources.list.d/google-chrome.list
+	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > $target_mnt/etc/apt/sources.list.d/google-chrome.list
 	pkgs="$pkgs google-chrome-stable"
 else
 	pkgs="$pkgs chromium-browser"
@@ -313,11 +314,11 @@ echo $user_name | echo $user_name:$user_name | chpasswd
 adduser $user_name adm
 adduser $user_name sudo
 $auto_login
-" > /tmp/urfs/install-ubuntu.sh
+" > $target_mnt/install-ubuntu.sh
 
 # Add repositories addition to 2nd stage installation script
 for ppa in main universe restricted multiverse $ppas; do
-	echo "add-apt-repository $ppa" >> /tmp/urfs/install-ubuntu.sh
+	echo "add-apt-repository $ppa" >> $target_mnt/install-ubuntu.sh
 done
 
 # Finalize 2nd stage installation script
@@ -325,11 +326,11 @@ echo "
 aptitude -y update
 aptitude -y dist-upgrade
 aptitude -y install $pkgs $ubuntu_metapackage
-" >> /tmp/urfs/install-ubuntu.sh
+" >> $target_mnt/install-ubuntu.sh
 
-chmod a+x /tmp/urfs/install-ubuntu.sh
-chroot /tmp/urfs /bin/bash -c /install-ubuntu.sh
-rm /tmp/urfs/install-ubuntu.sh
+chmod a+x $target_mnt/install-ubuntu.sh
+chroot $target_mnt /bin/bash -c /install-ubuntu.sh
+rm $target_mnt/install-ubuntu.sh
 
 # Keep CrOS partitions from showing/mounting in Ubuntu
 udev_target=${target_disk:5}
@@ -337,21 +338,21 @@ echo "KERNEL==\"$udev_target1\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target3\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target5\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
-" > /tmp/urfs/etc/udev/rules.d/99-hide-disks.rules
+" > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
 
 if [ $ubuntu_version -lt 1304 ]; then
 	# pre-raring
 	if [ -f /usr/bin/old_bins/cgpt ]; then
-		cp -p /usr/bin/old_bins/cgpt /tmp/urfs/usr/bin/
+		cp -p /usr/bin/old_bins/cgpt $target_mnt/usr/bin/
 	else
-		cp -p /usr/bin/cgpt /tmp/urfs/usr/bin/
+		cp -p /usr/bin/cgpt $target_mnt/usr/bin/
 	fi
 else
 	# post-raring
-	echo "aptitude -y install cgpt vboot-kernel-utils" >/tmp/urfs/install-ubuntu.sh
+	echo "aptitude -y install cgpt vboot-kernel-utils" >$target_mnt/install-ubuntu.sh
 
 	if [ $ubuntu_arch = "armhf" ]; then
-		cat > /tmp/urfs/usr/share/X11/xorg.conf.d/exynos5.conf <<EOZ
+		cat > $target_mnt/usr/share/X11/xorg.conf.d/exynos5.conf <<EOZ
 Section "Device"
         Identifier      "Mali FBDEV"
         Driver          "armsoc"
@@ -371,7 +372,7 @@ Section "Screen"
         DefaultDepth    24
 EndSection
 EOZ
-                cat > /tmp/urfs/usr/share/X11/xorg.conf.d/touchpad.conf <<EOZ
+                cat > $target_mnt/usr/share/X11/xorg.conf.d/touchpad.conf <<EOZ
 Section "InputClass"
         Identifier "touchpad"
         MatchIsTouchpad "on"
@@ -379,25 +380,25 @@ Section "InputClass"
         Option "FingerLow" "5"
 EndSection
 EOZ
-		echo "apt-get -y install --no-install-recommends linux-image-chromebook xserver-xorg-video-armsoc" >>/tmp/urfs/install-ubuntu.sh
+		echo "apt-get -y install --no-install-recommends linux-image-chromebook xserver-xorg-video-armsoc" >>$target_mnt/install-ubuntu.sh
 
 		# Valid for raring, so far also for saucy but will change
-		kernel=/tmp/urfs/boot/vmlinuz-3.4.0-5-chromebook
+		kernel=$target_mnt/boot/vmlinuz-3.4.0-5-chromebook
 	fi
 
-	chmod a+x /tmp/urfs/install-ubuntu.sh
-	chroot /tmp/urfs /bin/bash -c /install-ubuntu.sh
-	rm /tmp/urfs/install-ubuntu.sh
+	chmod a+x $target_mnt/install-ubuntu.sh
+	chroot $target_mnt /bin/bash -c /install-ubuntu.sh
+	rm $target_mnt/install-ubuntu.sh
 fi
 
 # We do not have kernel for x86 chromebooks in archive at all
 # and ARM one only in 13.04 and later
 if [ $ubuntu_arch != "armhf" -o $ubuntu_version -lt 1304 ]; then
 	KERN_VER=`uname -r`
-	mkdir -p /tmp/urfs/lib/modules/$KERN_VER/
-	cp -ar /lib/modules/$KERN_VER/* /tmp/urfs/lib/modules/$KERN_VER/
-	[ ! -d /tmp/urfs/lib/firmware/ ] && mkdir /tmp/urfs/lib/firmware/
-	cp -ar /lib/firmware/* /tmp/urfs/lib/firmware/
+	mkdir -p $target_mnt/lib/modules/$KERN_VER/
+	cp -ar /lib/modules/$KERN_VER/* $target_mnt/lib/modules/$KERN_VER/
+	[ ! -d $target_mnt/lib/firmware/ ] && mkdir $target_mnt/lib/firmware/
+	cp -ar /lib/firmware/* $target_mnt/lib/firmware/
 	kernel=/boot/vmlinuz-`uname -r`
 fi
 
@@ -418,6 +419,8 @@ vbutil_kernel --pack newkern \
 	--arch $vbutil_arch
 
 dd if=newkern of=${target_kern} bs=4M
+
+umount ${target_mnt}/{dev/pts,dev,sys,proc,}
 
 # Set Ubuntu kernel partition as top priority for next boot (and next boot only)
 cgpt add -i 6 -P 5 -T 1 ${target_disk}
