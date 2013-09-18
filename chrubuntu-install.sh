@@ -19,7 +19,7 @@ chromebook_arch="`uname -m`"
 ubuntu_metapackage="default"
 ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
 base_pkgs="ubuntu-minimal locales tzdata dialog wget"
-ppas="ppa:eugenesan/ppa"
+ppas=""
 
 setterm -blank 0
 
@@ -326,7 +326,7 @@ fi
 
 # Add repositories addition to 2nd stage installation script
 for ppa in $ppas; do
-	echo "add-apt-repository $ubuntu_components $ppa" >> $target_mnt/install-ubuntu.sh
+	echo "add-apt-repository -y $ubuntu_components $ppa" >> $target_mnt/install-ubuntu.sh
 done
 
 if echo "$ubuntu_metapackage" | grep desktop; then
@@ -343,7 +343,7 @@ echo "
 aptitude -y update
 aptitude -y dist-upgrade
 aptitude -y --allow-untrusted install $pkgs $ubuntu_metapackage
-" > $target_mnt/install-ubuntu.sh
+" >> $target_mnt/install-ubuntu.sh
 
 chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
