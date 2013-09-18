@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -e
 #
 # Script to install Ubuntu on Chromebooks
 #
@@ -62,7 +62,7 @@ while getopts em:np:P:rt:u:v: opt; do
 		u)	user_name=${OPTARG}		;;
 		v)	ubuntu_version=${OPTARG}	;;
 		*)	cat <<EOB
-Usage: $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
+Usage: [DEBUG="echo"] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
 	-e : Enable user home folder encryption
 	-m : Ubuntu meta package (Desktop environment)
 	-n : Disable user auto logon
@@ -100,15 +100,34 @@ if [ -n "$target_disk" ]; then
 	partprobe ${target_disk}
 	crossystem dev_boot_usb=1
 else
+	# Get default root device
 	target_disk="`rootdev -d -s`"
-	# Do partitioning (if we haven't already)
+
+	# Read all required partitions parameters (ROOT-C and KERN-C starts are for optional restore later)
+	ckern_start="`cgpt show -i 6 -n -b -q ${target_disk}`"
 	ckern_size="`cgpt show -i 6 -n -s -q ${target_disk}`"
+	croot_start="`cgpt show -i 7 -n -b -q ${target_disk}`"
 	croot_size="`cgpt show -i 7 -n -s -q ${target_disk}`"
 	state_size="`cgpt show -i 1 -n -s -q ${target_disk}`"
-	stateful_start="`cgpt show -i 1 -n -b -q ${target_disk}`"
+	state_start="`cgpt show -i 1 -n -b -q ${target_disk}`"
 	broot_start="`cgpt show -i 5 -n -b -q ${target_disk}`"
 
-	max_ubuntu_size=$((($broot_start-$stateful_start)/1024/1024/2))
+	# Do partitioning (if we haven't already)
+	max_ubuntu_size=$((($broot_start-$state_start)/1024/1024/2))
+
+	# Try reverse order if calculations goes wrong.
+	# Observed on recent Parrot machines with 320GB HDD
+	if [ $max_ubuntu_size -lt 0 ]; then
+		echo -e "WARNING! Looks like your system has weird partitions layout!"
+		echo -e "ROOT-A/ROOT-B/STATEFUL resides in reverse order."
+		echo -e "Continue at your own risk!"
+		read -p "Press [Enter] to continue or CTRL+C to quit"
+		max_ubuntu_size=$(($state_size/1024/1024/2))
+		stateful_size=$state_size
+	else
+		stateful_size=$(($broot_start-$state_start))
+	fi
+
 	rec_ubuntu_size=$(($max_ubuntu_size - 1))
 	# If KERN-C and ROOT-C are one, we partition, otherwise assume they're what they need to be...
 	if [ "$ckern_size" =  "1" -o "$croot_size" = "1" -o "$repart" = "yes" ]; then
@@ -131,8 +150,9 @@ else
 		done
 
 		# We've got our size in GB for ROOT-C so do the math...
-
 		if [ "$ubuntu_size" = "0" ]; then
+			# If zero size specified we revert to original layout
+			# TODO: Store ckern_start and croot_start somewhere on device and use them for reconstruction
 			rootc_size=1
 			kernc_size=1
 		else
@@ -143,11 +163,14 @@ else
 			kernc_size=32768
 		fi
 
+		# New stateful start is the same as original one
+		stateful_start=$state_start
+
 		# New stateful size with rootc and kernc subtracted from original
-		stateful_size=$((($broot_start - $stateful_start) - $rootc_size - $kernc_size))
+		stateful_size=$((stateful_size - $rootc_size - $kernc_size))
 
 		# Start kernc at stateful start plus stateful size
-		kernc_start=$(($stateful_start + $stateful_size))
+		kernc_start=$(($state_start + $stateful_size))
 
 		# Start rootc at kernc start plus kernc size
 		rootc_start=$(($kernc_start + $kernc_size))
@@ -157,21 +180,28 @@ else
 		echo -e "\n\nModifying partition table to make room for Ubuntu."
 		echo -e "Your Chromebook will reboot, wipe your data and then"
 		echo -e "you should re-run this script..."
-		umount -f /mnt/stateful_partition
+		read -p "Press [Enter] to continue or CTRL+C to quit"
+		$DEBUG umount -f /mnt/stateful_partition
 
-		# Kill old parts
-		cgpt add -i 1 -t unused ${target_disk}
-		cgpt add -i 6 -t unused ${target_disk}
-		cgpt add -i 7 -t unused ${target_disk}
+		if [ "$repart" = "yes" ]; then
+			# Kill old parts
+			$DEBUG cgpt add -i 1 -t unused ${target_disk}
+			$DEBUG cgpt add -i 6 -t unused ${target_disk}
+			$DEBUG cgpt add -i 7 -t unused ${target_disk}
+		fi
 
 		# Make stateful first
-		cgpt add -i 1 -b $stateful_start -s $stateful_size -t data -l STATE ${target_disk}
+		$DEBUG cgpt add -i 1 -b $stateful_start -s $stateful_size -t data -l STATE ${target_disk}
 
 		# Now kernc
-		cgpt add -i 6 -b $kernc_start -s $kernc_size -t kernel -l KERN-C ${target_disk}
+		$DEBUG cgpt add -i 6 -b $kernc_start -s $kernc_size -t kernel -l KERN-C ${target_disk}
 
 		# Finally rootc
-		cgpt add -i 7 -b $rootc_start -s $rootc_size -t rootfs -l ROOT-C ${target_disk}
+		$DEBUG cgpt add -i 7 -b $rootc_start -s $rootc_size -t rootfs -l ROOT-C ${target_disk}
+
+		echo -e "Finished partitioning. Reboot is required to continue installation."
+		echo -e "After reboot re-run the installation."
+		read -p "Press [Enter] to reboot or CTRL+C to quit"
 
 		reboot
 		exit
