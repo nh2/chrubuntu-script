@@ -318,9 +318,22 @@ update-locale LANG=en_US.UTF-8
 dpkg-reconfigure tzdata
 " > $target_mnt/install-ubuntu.sh
 
+chmod a+x $target_mnt/install-ubuntu.sh
+chroot $target_mnt /bin/bash -c /install-ubuntu.sh
+rm $target_mnt/install-ubuntu.sh
+
+# Enable all ubuntu components
+if [ $ubuntu_version -lt 1210 ]; then
+	for component in main universe restricted multiverse partner; do
+		sed -i "/^# deb.*$component/ s/^# //" $target_mnt/etc/apt/sources.list
+	done
+else
+	ubuntu_components="main universe restricted multiverse partner"
+fi
+
 # Add repositories addition to 2nd stage installation script
-for ppa in main universe restricted multiverse $ppas; do
-	echo "add-apt-repository $ppa" >> $target_mnt/install-ubuntu.sh
+for ppa in $ppas; do
+	echo "add-apt-repository $ubuntu_components $ppa" >> $target_mnt/install-ubuntu.sh
 done
 
 # Finalize 2nd stage installation script
@@ -328,7 +341,7 @@ echo "
 aptitude -y update
 aptitude -y dist-upgrade
 aptitude -y --allow-untrusted install $pkgs $ubuntu_metapackage
-" >> $target_mnt/install-ubuntu.sh
+" > $target_mnt/install-ubuntu.sh
 
 chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
