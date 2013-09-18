@@ -49,7 +49,7 @@ if [ ! "$fw_type" = "developer" ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts m:np:rt:u:v: opt; do
+while getopts em:np:rt:u:v: opt; do
 	case "$opt" in
 		e)	encrypt_home="--encrypt-home"
 			pkgs="$pkgs ecryptfs-utils"	;;
@@ -67,12 +67,12 @@ Usage: $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] 
 	-m : Ubuntu meta package (Desktop environment)
 	-n : Disable user auto logon
 	-p : Specify additional packages, might be called multiple times (space separated)
-	-P : Specify additional PPAs, might be called multiple times (coma separated)
+	-P : Specify additional PPAs, might be called multiple times (space separated)
 	-r : Repartition disk
 	-t : Specify target disk
 	-u : Specify user name
 	-v : Specify ubuntu version (lts/latest/...)
-Example: $0  -e -m "lubunut-desktop" -n -p "ssh, mc, p7zip" -P "ppa:user1/ppa1, ppa:user2/ppa2" -r -t "/dev/sdc" -u "myname" -v "lts".
+Example: $0  -e -m "lubunut-desktop" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
 EOB
 			exit 1				;;
 	esac
