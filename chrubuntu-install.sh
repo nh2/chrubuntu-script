@@ -300,9 +300,9 @@ else
 fi
 
 if [ $ubuntu_version -lt 1210 ]; then
-	add_apt_repository_package='software-properties-common'
-else
 	add_apt_repository_package='python-software-properties'
+else
+	add_apt_repository_package='software-properties-common'
 	base_pkgs="$base_pkgs libnss-myhostname"
 fi
 
