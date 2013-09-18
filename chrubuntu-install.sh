@@ -49,7 +49,7 @@ if [ ! "$fw_type" = "developer" ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts em:np:rt:u:v: opt; do
+while getopts em:np:P:rt:u:v: opt; do
 	case "$opt" in
 		e)	encrypt_home="--encrypt-home"
 			pkgs="$pkgs ecryptfs-utils"	;;
