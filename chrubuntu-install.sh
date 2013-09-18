@@ -329,11 +329,13 @@ for ppa in $ppas; do
 	echo "add-apt-repository $ubuntu_components $ppa" >> $target_mnt/install-ubuntu.sh
 done
 
-if [ ! $ubuntu_arch = 'armhf' ]; then
-	echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > $target_mnt/etc/apt/sources.list.d/google-chrome.list
-	pkgs="$pkgs google-chrome-stable"
-else
-	pkgs="$pkgs chromium-browser"
+if echo "$ubuntu_metapackage" | grep desktop; then
+	if [ ! $ubuntu_arch = 'armhf' ] ; then
+		echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > $target_mnt/etc/apt/sources.list.d/google-chrome.list
+		pkgs="$pkgs google-chrome-stable"
+	else
+		pkgs="$pkgs chromium-browser"
+	fi
 fi
 
 # Finalize 2nd stage installation script
