@@ -102,35 +102,40 @@ if [ -n "$target_disk" ]; then
 else
 	# Get default root device
 	target_disk="`rootdev -d -s`"
+	echo -e "Using ${target_disk} as target drive\n"
 
-	# Read all required partitions parameters (ROOT-C and KERN-C starts are for optional restore later)
-	ckern_start="`cgpt show -i 6 -n -b -q ${target_disk}`"
-	ckern_size="`cgpt show -i 6 -n -s -q ${target_disk}`"
-	croot_start="`cgpt show -i 7 -n -b -q ${target_disk}`"
-	croot_size="`cgpt show -i 7 -n -s -q ${target_disk}`"
-	state_size="`cgpt show -i 1 -n -s -q ${target_disk}`"
-	state_start="`cgpt show -i 1 -n -b -q ${target_disk}`"
-	broot_start="`cgpt show -i 5 -n -b -q ${target_disk}`"
-
-	# Do partitioning (if we haven't already)
-	max_ubuntu_size=$((($broot_start-$state_start)/1024/1024/2))
-
-	# Try reverse order if calculations goes wrong.
-	# Observed on recent Parrot machines with 320GB HDD
-	if [ $max_ubuntu_size -lt 0 ]; then
-		echo -e "WARNING! Looks like your system has weird partitions layout!"
-		echo -e "ROOT-A/ROOT-B/STATEFUL resides in reverse order."
-		echo -e "Continue at your own risk!"
-		read -p "Press [Enter] to continue or CTRL+C to quit"
-		max_ubuntu_size=$(($state_size/1024/1024/2))
-		stateful_size=$state_size
-	else
-		stateful_size=$(($broot_start-$state_start))
-	fi
-
-	rec_ubuntu_size=$(($max_ubuntu_size - 1))
 	# If KERN-C and ROOT-C are one, we partition, otherwise assume they're what they need to be...
 	if [ "$ckern_size" =  "1" -o "$croot_size" = "1" -o "$repart" = "yes" ]; then
+		echo -e "WARNING! All data on this device will be wiped out! Continue at your own risk!\n"
+		read -p "Press [Enter] to install ChrUbuntu on ${target_disk} or CTRL+C to quit"
+
+		# Read all required partitions parameters (ROOT-C and KERN-C starts are for optional restore later)
+		ckern_start="`cgpt show -i 6 -n -b -q ${target_disk}`"
+		ckern_size="`cgpt show -i 6 -n -s -q ${target_disk}`"
+		croot_start="`cgpt show -i 7 -n -b -q ${target_disk}`"
+		croot_size="`cgpt show -i 7 -n -s -q ${target_disk}`"
+		state_size="`cgpt show -i 1 -n -s -q ${target_disk}`"
+		state_start="`cgpt show -i 1 -n -b -q ${target_disk}`"
+		broot_start="`cgpt show -i 5 -n -b -q ${target_disk}`"
+
+		# Do partitioning (if we haven't already)
+		max_ubuntu_size=$((($broot_start-$state_start)/1024/1024/2))
+
+		# Try reverse order if calculations goes wrong.
+		# Observed on recent Parrot machines with 320GB HDD
+		if [ $max_ubuntu_size -lt 0 ]; then
+			echo -e "WARNING! Looks like your system has weird partitions layout!"
+			echo -e "ROOT-A/ROOT-B/STATEFUL resides in reverse order."
+			echo -e "Continue at your own risk!"
+			read -p "Press [Enter] to continue or CTRL+C to quit"
+			max_ubuntu_size=$(($state_size/1024/1024/2))
+			stateful_size=$state_size
+		else
+			stateful_size=$(($broot_start-$state_start))
+		fi
+
+		rec_ubuntu_size=$(($max_ubuntu_size - 1))
+
 		while :; do
 			echo -e "\nEnter the size in gigabytes you want to reserve for Ubuntu."
 			echo -e "(Acceptable range is 5 to $max_ubuntu_size, but $rec_ubuntu_size is the recommended maximum)"
@@ -207,7 +212,6 @@ else
 		exit
 	fi
 fi
-
 
 if [ "$ubuntu_version" = "lts" ]; then
 	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version:" | grep "LTS" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
