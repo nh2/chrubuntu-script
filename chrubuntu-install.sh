@@ -349,17 +349,6 @@ chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 rm $target_mnt/install-ubuntu.sh
 
-# Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
-mv $target_mnt/etc/rc.local $target_mnt/etc/rc.local.orig
-echo"
-adduser $user_name $encrypt_home
-echo $user_name | echo $user_name:$user_name | chpasswd
-adduser $user_name adm
-adduser $user_name sudo
-$auto_login
-mv /etc/rc.local.orig /etc/rc.local
-" >> $target_mnt/etc/rc.local
-
 # Keep CrOS partitions from showing/mounting in Ubuntu
 udev_target=${target_disk:5}
 echo "KERNEL==\"$udev_target1\" ENV{UDISKS_IGNORE}=\"1\"
@@ -421,6 +410,17 @@ EOZ
 	chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 	rm $target_mnt/install-ubuntu.sh
 fi
+
+# Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
+mv $target_mnt/etc/rc.local $target_mnt/etc/rc.local.orig
+echo"
+echo -e "$user_name\n$user_name\n\n\n\n\n\n\n" | adduser $user_name $encrypt_home
+adduser $user_name adm
+adduser $user_name sudo
+$auto_login
+mv /etc/rc.local.orig /etc/rc.local
+" > $target_mnt/etc/rc.local
+chmod +x $target_mnt/etc/rc.local
 
 # We do not have kernel for x86 chromebooks in archive at all
 # and ARM one only in 13.04 and later
