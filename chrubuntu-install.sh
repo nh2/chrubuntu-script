@@ -37,6 +37,12 @@ if [ ! $BASH_VERSION ]; then
 	exit 1
 fi
 
+# Allow debugging
+if [ -n $DEBUG ]; then
+	DEBUG_WRAP="echo"
+	DEBUG_CMD="set -x"
+fi
+
 # fw_type will always be developer for Mario.
 # Alex and ZGB need the developer BIOS installed though.
 fw_type="`crossystem mainfw_type`"
@@ -62,7 +68,7 @@ while getopts em:np:P:rt:u:v: opt; do
 		u)	user_name=${OPTARG}			;;
 		v)	ubuntu_version=${OPTARG}		;;
 		*)	cat <<EOB
-Usage: [DEBUG="echo"] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
+Usage: [DEBUG=yes] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
 	-e : Enable user home folder encryption
 	-m : Ubuntu meta package (Desktop environment)
 	-n : Disable user auto logon
@@ -186,23 +192,23 @@ else
 		echo -e "Your Chromebook will reboot, wipe your data and then"
 		echo -e "you should re-run this script..."
 		read -p "Press [Enter] to continue or CTRL+C to quit"
-		$DEBUG umount -f /mnt/stateful_partition
+		$DEBUG_WRAP umount -f /mnt/stateful_partition
 
 		if [ "$repart" = "yes" ]; then
 			# Kill old parts
-			$DEBUG cgpt add -i 1 -t unused ${target_disk}
-			$DEBUG cgpt add -i 6 -t unused ${target_disk}
-			$DEBUG cgpt add -i 7 -t unused ${target_disk}
+			$DEBUG_WRAP cgpt add -i 1 -t unused ${target_disk}
+			$DEBUG_WRAP cgpt add -i 6 -t unused ${target_disk}
+			$DEBUG_WRAP cgpt add -i 7 -t unused ${target_disk}
 		fi
 
 		# Make stateful first
-		$DEBUG cgpt add -i 1 -b $stateful_start -s $stateful_size -t data -l STATE ${target_disk}
+		$DEBUG_WRAP cgpt add -i 1 -b $stateful_start -s $stateful_size -t data -l STATE ${target_disk}
 
 		# Now kernc
-		$DEBUG cgpt add -i 6 -b $kernc_start -s $kernc_size -t kernel -l KERN-C ${target_disk}
+		$DEBUG_WRAP cgpt add -i 6 -b $kernc_start -s $kernc_size -t kernel -l KERN-C ${target_disk}
 
 		# Finally rootc
-		$DEBUG cgpt add -i 7 -b $rootc_start -s $rootc_size -t rootfs -l ROOT-C ${target_disk}
+		$DEBUG_WRAP cgpt add -i 7 -b $rootc_start -s $rootc_size -t rootfs -l ROOT-C ${target_disk}
 
 		echo -e "Finished partitioning. Reboot is required to continue installation."
 		echo -e "After reboot re-run the installation."
@@ -302,6 +308,7 @@ fi
 
 # Create 2nd stage installation script
 echo "
+$DEBUG_CMD
 apt-get -y update
 apt-get -y install aptitude
 aptitude -y dist-upgrade
@@ -355,7 +362,10 @@ if [ $ubuntu_version -lt 1304 ]; then
 	fi
 else
 	# post-raring
-	echo "aptitude -y install cgpt vboot-kernel-utils" > $target_mnt/install-ubuntu.sh
+	echo "
+$DEBUG_CMD
+aptitude -y install cgpt vboot-kernel-utils
+" > $target_mnt/install-ubuntu.sh
 
 	if [ $ubuntu_arch = "armhf" ]; then
 		cat > $target_mnt/usr/share/X11/xorg.conf.d/exynos5.conf <<EOZ
