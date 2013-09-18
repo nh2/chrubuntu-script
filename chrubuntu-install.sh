@@ -18,7 +18,7 @@ hwid="`crossystem hwid`"
 chromebook_arch="`uname -m`"
 ubuntu_metapackage="default"
 ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
-pkgs="wget"
+base_pkgs="wget ubuntu-minimal libnss-myhostname locales tzdata"
 ppas="ppa:eugenesan/ppa"
 
 setterm -blank 0
@@ -52,15 +52,15 @@ fi
 while getopts em:np:P:rt:u:v: opt; do
 	case "$opt" in
 		e)	encrypt_home="--encrypt-home"
-			pkgs="$pkgs ecryptfs-utils"	;;
-		m)	ubuntu_metapackage=${OPTARG}	;;
-		n)	unset auto_login		;;
-		p)	pkgs="$pkgs ${OPTARG}"		;;
-		P)	ppas="$ppas ${OPTARG}"		;;
-		r)	repart="yes"			;;
-		t)	target_disk=${OPTARG}		;;
-		u)	user_name=${OPTARG}		;;
-		v)	ubuntu_version=${OPTARG}	;;
+			base_pkgs="$base_pkgs ecryptfs-utils"	;;
+		m)	ubuntu_metapackage=${OPTARG}		;;
+		n)	unset auto_login			;;
+		p)	pkgs="$pkgs ${OPTARG}"			;;
+		P)	ppas="$ppas ${OPTARG}"			;;
+		r)	repart="yes"				;;
+		t)	target_disk=${OPTARG}			;;
+		u)	user_name=${OPTARG}			;;
+		v)	ubuntu_version=${OPTARG}		;;
 		*)	cat <<EOB
 Usage: [DEBUG="echo"] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
 	-e : Enable user home folder encryption
@@ -74,7 +74,7 @@ Usage: [DEBUG="echo"] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-
 	-v : Specify ubuntu version (lts/latest/...)
 Example: $0  -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
 EOB
-			exit 1				;;
+			exit 1					;;
 	esac
 done
 
@@ -300,7 +300,7 @@ fi
 
 # Creating 2nd stage installation script
 echo "
-useradd -m $user_name $encrypt_home
+adduser $user_name $encrypt_home
 echo $user_name | echo $user_name:$user_name | chpasswd
 adduser $user_name adm
 adduser $user_name sudo
@@ -308,7 +308,7 @@ $auto_login
 apt-get -y update
 apt-get -y install aptitude
 aptitude -y dist-upgrade
-aptitude -y install ubuntu-minimal libnss-myhostname locales tzdata $add_apt_repository_package
+aptitude -y install $base_pkgs $add_apt_repository_package
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 dpkg-reconfigure tzdata
