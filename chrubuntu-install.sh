@@ -72,7 +72,7 @@ Usage: $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] 
 	-t : Specify target disk
 	-u : Specify user name
 	-v : Specify ubuntu version (lts/latest/...)
-Example: $0  -e -m "lubunut-desktop" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
+Example: $0  -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
 EOB
 			exit 1				;;
 	esac
