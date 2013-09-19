@@ -84,7 +84,7 @@ Usage: [DEBUG=yes] sudo $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] 
 	-r : Repartition disk
 	-t : Specify target disk
 	-u : Specify user name
-	-v : Specify ubuntu version (lts/latest/...)
+	-v : Specify ubuntu version (lts/latest/dev)
 Example: $0  -a -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
 EOB
 			exit 1					;;
