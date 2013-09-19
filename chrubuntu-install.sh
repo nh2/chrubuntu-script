@@ -361,14 +361,6 @@ chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 rm $target_mnt/install-ubuntu.sh
 
-# Keep CrOS partitions from showing/mounting in Ubuntu
-udev_target=${target_disk:5}
-echo "KERNEL==\"$udev_target1\" ENV{UDISKS_IGNORE}=\"1\"
-KERNEL==\"$udev_target3\" ENV{UDISKS_IGNORE}=\"1\"
-KERNEL==\"$udev_target5\" ENV{UDISKS_IGNORE}=\"1\"
-KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
-" > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
-
 # Create and run 3rd 2nd-stage installation script
 echo "$DEBUG_CMD" > $target_mnt/install-ubuntu.sh
 if [ $ubuntu_version -lt 1304 ]; then
@@ -426,9 +418,17 @@ EOZ
 	rm $target_mnt/install-ubuntu.sh
 fi
 
+# Keep CrOS partitions from showing/mounting in Ubuntu
+udev_target=${target_disk:5}
+echo "KERNEL==\"$udev_target1\" ENV{UDISKS_IGNORE}=\"1\"
+KERNEL==\"$udev_target3\" ENV{UDISKS_IGNORE}=\"1\"
+KERNEL==\"$udev_target5\" ENV{UDISKS_IGNORE}=\"1\"
+KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
+" > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
+
 # Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
 mv $target_mnt/etc/rc.local $target_mnt/etc/rc.local.orig
-echo"
+echo "
 echo -e \"$user_name\\n$user_name\\n\" | adduser $user_name $encrypt_home --gecos \"$user_name,,,\"
 adduser $user_name adm
 adduser $user_name sudo
