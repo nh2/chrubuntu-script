@@ -55,8 +55,9 @@ if [ ! "$fw_type" = "developer" ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts em:np:P:rt:u:v: opt; do
+while getopts aem:np:P:rt:u:v: opt; do
 	case "$opt" in
+		a)	always="yes"				;;
 		e)	encrypt_home="--encrypt-home"
 			base_pkgs="$base_pkgs ecryptfs-utils"	;;
 		m)	ubuntu_metapackage=${OPTARG}		;;
@@ -69,6 +70,7 @@ while getopts em:np:P:rt:u:v: opt; do
 		v)	ubuntu_version=${OPTARG}		;;
 		*)	cat <<EOB
 Usage: [DEBUG=yes] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
+	-a : Always boot into ubuntu
 	-e : Enable user home folder encryption
 	-m : Ubuntu meta package (Desktop environment)
 	-n : Disable user auto logon
@@ -78,7 +80,7 @@ Usage: [DEBUG=yes] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <
 	-t : Specify target disk
 	-u : Specify user name
 	-v : Specify ubuntu version (lts/latest/...)
-Example: $0  -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
+Example: $0  -a -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
 EOB
 			exit 1					;;
 	esac
@@ -453,18 +455,28 @@ dd if=newkern of=${target_kern} bs=4M
 
 umount ${target_mnt}/{dev/pts,dev,sys,proc,}
 
-# Set Ubuntu kernel partition as top priority for next boot (and next boot only)
-cgpt add -i 6 -P 5 -T 1 ${target_disk}
-
 echo -e "Installation seems to be complete.\n"
-echo -e "If ChrUbuntu fails when you reboot, power off your Chrome OS device."
-echo -e "When turned on, you'll be back in Chrome OS."
-echo -e "If you're happy with ChrUbuntu when you reboot be sure to run:"
-echo -e "\tsudo cgpt add -i 6 -P 5 -S 1 ${target_disk}\n"
-echo -e "To make it the default boot option.\n"
 echo -e "The ChrUbuntu login is:"
 echo -e "\tUsername: $user_name"
 echo -e "\tPassword: $user_name\n"
+
+if [ "$always" = "yes" ]; then
+	echo "Setting Ubuntu kernel partition as top priority for all following boots."
+	cgpt add -i 6 -P 5 -S 1 ${target_disk}
+	echo -e "If ChrUbuntu fails when you reboot, you will have to perform full ChromeOS recovery "
+	echo -e "After thay you may retry ChrUbuntu install."
+	echo -e "If you're unhappy with ChrUbuntu when you reboot be sure to run:"
+	echo -e "\tsudo cgpt add -i 2 -P 5 -S 1 ${target_disk}\n"
+	echo -e "To make ChromeOS the default boot option.\n"
+else
+	echo "Setting Ubuntu kernel partition as top priority for next boot only."
+	cgpt add -i 6 -P 5 -T 1 ${target_disk}
+	echo -e "If ChrUbuntu fails when you reboot, power off your Chrome OS device."
+	echo -e "When turned on, you'll be back in Chrome OS."
+	echo -e "If you're happy with ChrUbuntu when you reboot be sure to run:"
+	echo -e "\tsudo cgpt add -i 6 -P 5 -S 1 ${target_disk}\n"
+	echo -e "To make ChruBuntu the default boot option.\n"
+fi
 
 read -p "We're now ready to start ChrUbuntu, Press [Enter] to reboot..."
 
