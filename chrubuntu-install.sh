@@ -25,6 +25,7 @@ auto_login="[ -f /usr/lib/lightdm/lightdm-set-defaults ] && /usr/lib/lightdm/lig
 hwid="`crossystem hwid`"
 
 # Target specifications
+target_mnt="/tmp/urfs"
 chromebook_arch="`uname -m`"
 ubuntu_metapackage="default"
 ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
@@ -96,6 +97,7 @@ if [ ! "$powerd_status" = "powerd stop/waiting" ]; then
 	initctl stop powerd
 fi
 
+# Partitioning
 if [ -n "$target_disk" ]; then
 	echo -e "Got ${target_disk} as target drive\n"
 	echo -e "WARNING! All data on this device will be wiped out! Continue at your own risk!\n"
@@ -225,11 +227,23 @@ else
 	fi
 fi
 
+# Ubuntu versioning
 if [ "$ubuntu_version" = "lts" ]; then
 	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version:" | grep "LTS" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
 elif [ "$ubuntu_version" = "latest" ]; then
 	ubuntu_version=$latest_ubuntu
 fi
+
+if [ $ubuntu_version = "dev" ]; then
+	ubuntu_codename=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Dist: " | tail -1 | sed -r 's/^Dist: (.*)$/\1/'`
+	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Version:" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+	tar_file="http://cdimage.ubuntu.com/ubuntu-core/daily/current/$ubuntu_codename-core-$ubuntu_arch.tar.gz"
+else
+	tar_file="http://cdimage.ubuntu.com/ubuntu-core/releases/$ubuntu_version/release/ubuntu-core-$ubuntu_version-core-$ubuntu_arch.tar.gz"
+fi
+
+# Convert $ubuntu_version from 12.04.3 to 1204
+ubuntu_version=`echo $ubuntu_version | cut -f1,2 -d. | sed -e 's/\.//g'`
 
 if [ "$chromebook_arch" = "x86_64" ]; then
 	ubuntu_arch="amd64"
@@ -245,18 +259,7 @@ else
 	exit
 fi
 
-echo -e "\nChrome device model is: $hwid\n"
-
-echo -e "Installing Ubuntu $ubuntu_version with metapackage $ubuntu_metapackage\n"
-
-echo -e "Kernel Arch is: $chromebook_arch  Installing Ubuntu Arch: $ubuntu_arch\n"
-
-read -p "Press [Enter] to continue..."
-
-[ ! -d /mnt/stateful_partition/ubuntu ] && mkdir /mnt/stateful_partition/ubuntu
-
-cd /mnt/stateful_partition/ubuntu
-
+# ChrUbuntu partitions configuration
 if [[ "${target_disk}" =~ "mmcblk" ]]; then
 	target_rootfs="${target_disk}p7"
 	target_kern="${target_disk}p6"
@@ -264,9 +267,17 @@ else
 	target_rootfs="${target_disk}7"
 	target_kern="${target_disk}6"
 fi
-target_mnt="/tmp/urfs"
 
-echo "Target Kernel Partition: $target_kern, Target Root FS: ${target_rootfs}, Target Mount Point: ${target_mnt}"
+# Print summary
+echo -e "\nChrome device model is: $hwid\n"
+echo -e "Installing Ubuntu $ubuntu_version with metapackage $ubuntu_metapackage\n"
+echo -e "Kernel Arch is: $chromebook_arch  Installing Ubuntu Arch: $ubuntu_arch\n"
+echo -e "Target Kernel Partition: $target_kern, Target Root FS: ${target_rootfs}, Target Mount Point: ${target_mnt}\n"
+read -p "Press [Enter] to continue..."
+
+# Entering working folder
+mkdir -p /mnt/stateful_partition/ubuntu
+cd /mnt/stateful_partition/ubuntu
 
 if mount | grep ${target_rootfs}; then
 	echo "Found formatted and mounted ${target_rootfs}."
@@ -275,29 +286,24 @@ if mount | grep ${target_rootfs}; then
 	umount ${target_mnt}/{dev/pts,dev,sys,proc,}
 fi
 
+# Creating target filesystem
 mkfs.ext4 ${target_rootfs}
 mkdir -p $target_mnt
 mount -t ext4 ${target_rootfs} $target_mnt
 
-tar_file="http://cdimage.ubuntu.com/ubuntu-core/releases/$ubuntu_version/release/ubuntu-core-$ubuntu_version-core-$ubuntu_arch.tar.gz"
-if [ $ubuntu_version = "dev" ]; then
-	ubuntu_codename=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Dist: " | tail -1 | sed -r 's/^Dist: (.*)$/\1/'`
-	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Version:" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
-	tar_file="http://cdimage.ubuntu.com/ubuntu-core/daily/current/$ubuntu_codename-core-$ubuntu_arch.tar.gz"
-fi
-
-# convert $ubuntu_version from 12.04.3 to 1204
-ubuntu_version=`echo $ubuntu_version | cut -f1,2 -d. | sed -e 's/\.//g'`
-
+# Fetching and unpacking target template
 wget -O - $tar_file | tar xzp -C $target_mnt/
 
+# Preparing target's mounts for chroot
 for mnt in dev dev/pts sys proc; do
 	mount -o bind /$mnt $target_mnt/$mnt
 done
 
+# Inject working network config into target
 cp /etc/resolv.conf $target_mnt/etc/
 echo chrubuntu > $target_mnt/etc/hostname
 
+# Select coresponding apt repos tool
 if [ $ubuntu_version -lt 1210 ]; then
 	add_apt_repository_package='python-software-properties'
 else
@@ -305,7 +311,9 @@ else
 	base_pkgs="$base_pkgs libnss-myhostname"
 fi
 
-# Create 2nd stage installation script
+# Create and run 1st 2nd stage installation script
+echo "$DEBUG_CMD" > $target_mnt/install-ubuntu.sh
+
 echo "
 $DEBUG_CMD
 apt-get -y update
@@ -315,8 +323,7 @@ aptitude -y install $base_pkgs $add_apt_repository_package
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 dpkg-reconfigure tzdata
-" > $target_mnt/install-ubuntu.sh
-
+" >> $target_mnt/install-ubuntu.sh
 chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 rm $target_mnt/install-ubuntu.sh
@@ -330,27 +337,28 @@ else
 	ubuntu_components="main universe restricted multiverse partner"
 fi
 
-# Add repositories addition to 2nd stage installation script
+# Create and run 2nd 2nd-stage installation script
+echo "$DEBUG_CMD" > $target_mnt/install-ubuntu.sh
+
 for ppa in $ppas; do
+	# Add repositories addition to 2nd stage installation script
 	echo "add-apt-repository -y $ubuntu_components $ppa" >> $target_mnt/install-ubuntu.sh
 done
 
 if echo "$ubuntu_metapackage" | grep desktop; then
 	if [ ! $ubuntu_arch = 'armhf' ] ; then
-		echo "deb http://dl.google.com/linux/chrome/deb/ stable main" > $target_mnt/etc/apt/sources.list.d/google-chrome.list
+		echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> $target_mnt/etc/apt/sources.list.d/google-chrome.list
 		pkgs="$pkgs google-chrome-stable"
 	else
 		pkgs="$pkgs chromium-browser"
 	fi
 fi
 
-# Finalize 2nd stage installation script
 echo "
 aptitude -y update
 aptitude -y dist-upgrade
 aptitude -y --allow-untrusted install $pkgs $ubuntu_metapackage
 " >> $target_mnt/install-ubuntu.sh
-
 chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 rm $target_mnt/install-ubuntu.sh
@@ -363,8 +371,12 @@ KERNEL==\"$udev_target5\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
 " > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
 
+# Create and run 3rd 2nd-stage installation script
+echo "$DEBUG_CMD" > $target_mnt/install-ubuntu.sh
 if [ $ubuntu_version -lt 1304 ]; then
 	# pre-raring
+
+	# Inject cgpt tool into target
 	if [ -f /usr/bin/old_bins/cgpt ]; then
 		cp -p /usr/bin/old_bins/cgpt $target_mnt/usr/bin/
 	else
@@ -372,10 +384,9 @@ if [ $ubuntu_version -lt 1304 ]; then
 	fi
 else
 	# post-raring
-	echo "
-$DEBUG_CMD
-aptitude -y install cgpt vboot-kernel-utils
-" > $target_mnt/install-ubuntu.sh
+
+	# Inject cgpt and vboot tools into target
+	echo "aptitude -y install cgpt vboot-kernel-utils" >> $target_mnt/install-ubuntu.sh
 
 	if [ $ubuntu_arch = "armhf" ]; then
 		cat > $target_mnt/usr/share/X11/xorg.conf.d/exynos5.conf <<EOZ
@@ -406,7 +417,7 @@ Section "InputClass"
         Option "FingerLow" "5"
 EndSection
 EOZ
-		echo "apt-get -y install --no-install-recommends linux-image-chromebook xserver-xorg-video-armsoc" >> $target_mnt/install-ubuntu.sh
+		echo "aptitude -y --without-recommends install linux-image-chromebook xserver-xorg-video-armsoc" >> $target_mnt/install-ubuntu.sh
 
 		# Valid for raring, so far also for saucy but will change
 		kernel=$target_mnt/boot/vmlinuz-3.4.0-5-chromebook
