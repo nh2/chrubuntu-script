@@ -27,6 +27,7 @@ hwid="`crossystem hwid`"
 # Target specifications
 target_mnt="/tmp/urfs"
 chromebook_arch="`uname -m`"
+host_name="chrubuntu"
 ubuntu_metapackage="default"
 ubuntu_latest=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
 ubuntu_version=$ubuntu_latest
@@ -61,11 +62,12 @@ if [ ! "$fw_type" = "developer" ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts aem:np:P:rt:u:v: opt; do
+while getopts aeh:m:np:P:rt:u:v: opt; do
 	case "$opt" in
 		a)	always="yes"				;;
 		e)	encrypt_home="--encrypt-home"
 			base_pkgs="$base_pkgs ecryptfs-utils"	;;
+		h)	host_name=${OPTARG}			;;
 		m)	ubuntu_metapackage=${OPTARG}		;;
 		n)	unset auto_login			;;
 		p)	pkgs="$pkgs ${OPTARG}"			;;
@@ -78,6 +80,7 @@ while getopts aem:np:P:rt:u:v: opt; do
 Usage: [DEBUG=yes] sudo $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
 	-a : Always boot into ubuntu
 	-e : Enable user home folder encryption
+	-h : Specify hostname for target system (default is chrubuntu)
 	-m : Ubuntu meta package (Desktop environment)
 	-n : Disable user auto logon
 	-p : Specify additional packages, might be called multiple times (space separated)
@@ -303,7 +306,7 @@ done
 
 # Inject working network config into target
 cp /etc/resolv.conf $target_mnt/etc/
-echo chrubuntu > $target_mnt/etc/hostname
+echo $host_name > $target_mnt/etc/hostname
 
 # Select coresponding apt repos tool
 if [ $ubuntu_version -lt 1210 ]; then
@@ -429,7 +432,8 @@ KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
 # Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
 mv $target_mnt/etc/rc.local $target_mnt/etc/rc.local.orig
 echo "
-echo -e \"$user_name\\n$user_name\\n\" | adduser $user_name $encrypt_home --gecos \"$user_name,,,\"
+deluser --remove-home $user_name
+echo -e \"$user_name\\n$user_name\\n\\n\\n\\n\\n\\n\" | adduser $user_name $encrypt_home
 adduser $user_name adm
 adduser $user_name sudo
 $auto_login
