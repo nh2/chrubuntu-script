@@ -31,7 +31,6 @@ ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | gr
 base_pkgs="ubuntu-minimal locales tzdata dialog wget"
 ppas=""
 
-reset
 setterm -blank 0
 
 # Basic sanity checks
