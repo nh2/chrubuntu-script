@@ -433,7 +433,7 @@ fi
 # Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
 mv $target_mnt/etc/rc.local $target_mnt/etc/rc.local.orig
 echo"
-echo -e \"$user_name\\n$user_name\\n\" | adduser $user_name $encrypt_home --gecos "$user_name,,,"
+echo -e \"$user_name\\n$user_name\\n\" | adduser $user_name $encrypt_home --gecos \"$user_name,,,\"
 adduser $user_name adm
 adduser $user_name sudo
 $auto_login
