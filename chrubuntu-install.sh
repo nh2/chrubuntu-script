@@ -1,4 +1,4 @@
-#!/bin/bash -e
+#!/bin/bash
 #
 # Script to install Ubuntu on Chromebooks
 #
@@ -6,6 +6,16 @@
 #
 # here would be nice to have some license - BSD one maybe
 #
+
+# Allow debugging
+if [ -n $DEBUG ]; then
+	DEBUG_WRAP="echo"
+	DEBUG_CMD="set -x"
+	set -x
+	exec 1>&2
+else
+	set -e
+fi
 
 # User related defaults
 user_name="user"
@@ -21,6 +31,7 @@ ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | gr
 base_pkgs="ubuntu-minimal locales tzdata dialog wget"
 ppas=""
 
+reset
 setterm -blank 0
 
 # Basic sanity checks
@@ -35,12 +46,6 @@ fi
 if [ ! $BASH_VERSION ]; then
 	echo "This script must be run in bash"
 	exit 1
-fi
-
-# Allow debugging
-if [ -n $DEBUG ]; then
-	DEBUG_WRAP="echo"
-	DEBUG_CMD="set -x"
 fi
 
 # fw_type will always be developer for Mario.
@@ -69,7 +74,7 @@ while getopts aem:np:P:rt:u:v: opt; do
 		u)	user_name=${OPTARG}			;;
 		v)	ubuntu_version=${OPTARG}		;;
 		*)	cat <<EOB
-Usage: [DEBUG=yes] $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
+Usage: [DEBUG=yes] sudo $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
 	-a : Always boot into ubuntu
 	-e : Enable user home folder encryption
 	-m : Ubuntu meta package (Desktop environment)
