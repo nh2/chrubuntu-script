@@ -283,7 +283,7 @@ read -p "Press [Enter] to continue..."
 mkdir -p /mnt/stateful_partition/ubuntu
 cd /mnt/stateful_partition/ubuntu
 
-if mount | grep ${target_rootfs}; then
+if mount | grep ${target_rootfs} > /dev/null; then
 	echo "Found formatted and mounted ${target_rootfs}."
 	echo "Continue at your own risk!"
 	read -p "Press [Enter] to continue or CTRL+C to quit"
@@ -345,7 +345,7 @@ for ppa in $ppas; do
 	echo "add-apt-repository -y $ppa" >> $target_mnt/install-ubuntu.sh
 done
 
-if echo "$ubuntu_metapackage" | grep desktop; then
+if echo "$ubuntu_metapackage" | grep desktop > /dev/null; then
 	if [ ! $ubuntu_arch = 'armhf' ] ; then
 		echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> $target_mnt/etc/apt/sources.list.d/google-chrome.list
 		pkgs="$pkgs google-chrome-stable"
