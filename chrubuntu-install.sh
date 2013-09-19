@@ -331,18 +331,14 @@ chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 rm $target_mnt/install-ubuntu.sh
 
 # Enable all ubuntu components
-if [ $ubuntu_version -lt 1210 ]; then
-	for component in main universe restricted multiverse; do
-		sed -i "/^# deb.*$component/ s/^# //" $target_mnt/etc/apt/sources.list
-	done
-else
-	ubuntu_components="main universe restricted multiverse partner"
-fi
+for component in main universe restricted multiverse partner; do
+	sed -i "/^# deb.*$component/ s/^# //" $target_mnt/etc/apt/sources.list
+done
 
 # Create and run 2nd 2nd-stage installation script
 echo "$DEBUG_CMD" > $target_mnt/install-ubuntu.sh
 
-for ppa in $ppas $ubuntu_components; do
+for ppa in $ppas; do
 	# Add repositories addition to 2nd stage installation script
 	echo "add-apt-repository -y $ppa" >> $target_mnt/install-ubuntu.sh
 done
