@@ -62,7 +62,7 @@ if [ ! "$fw_type" = "developer" ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts aeh:m:np:P:rt:u:v: opt; do
+while getopts aeh:m:np:P:rt:v: opt; do
 	case "$opt" in
 		a)	always="yes"				;;
 		e)	encrypt_home="--encrypt-home"
@@ -74,10 +74,9 @@ while getopts aeh:m:np:P:rt:u:v: opt; do
 		P)	ppas="$ppas ${OPTARG}"			;;
 		r)	repart="yes"				;;
 		t)	target_disk=${OPTARG}			;;
-		u)	user_name=${OPTARG}			;;
 		v)	ubuntu_version=${OPTARG}		;;
 		*)	cat <<EOB
-Usage: [DEBUG=yes] sudo $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-u <user>] [-r] [-t <disk>] [-v <ubuntu_version>]
+Usage: [DEBUG=yes] sudo $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] [-r] [-t <disk>] [-v <ubuntu_version>]
 	-a : Always boot into ubuntu
 	-e : Enable user home folder encryption
 	-h : Specify hostname for target system (default is chrubuntu)
@@ -87,9 +86,8 @@ Usage: [DEBUG=yes] sudo $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] 
 	-P : Specify additional PPAs, might be called multiple times (space separated)
 	-r : Repartition disk
 	-t : Specify target disk
-	-u : Specify user name
 	-v : Specify ubuntu version (lts/latest/dev)
-Example: $0  -a -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
+Example: $0  -a -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -v "lts".
 EOB
 			exit 1					;;
 	esac
@@ -430,16 +428,19 @@ KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
 " > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
 
 # Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
-mv $target_mnt/etc/rc.local $target_mnt/etc/rc.local.orig
+sed -i 's/root:x:/root::' $target_mnt/etc/passwd
 echo "
-deluser --remove-home $user_name
-echo -e \"$user_name\\n$user_name\\n\\n\\n\\n\\n\\n\" | adduser $user_name $encrypt_home
-adduser $user_name adm
-adduser $user_name sudo
+echo \"Please enter details of normal user\"
+read -p \"username: \" user_name
+deluser --remove-home \$user_name
+adduser \$user_name $encrypt_home
+adduser \$user_name adm
+adduser \$user_name sudo
 $auto_login
-mv /etc/rc.local.orig /etc/rc.local
-" > $target_mnt/etc/rc.local
-chmod +x $target_mnt/etc/rc.local
+sed -i 's/root::/root:x:' /etc/passwd
+mv /mkuser.sh /tmp/
+" > $target_mnt/mkuser.sh
+chmod +x $target_mnt/mkuser.sh
 
 # We do not have kernel for x86 chromebooks in archive at all
 # and ARM one only in 13.04 and later
@@ -474,8 +475,10 @@ umount ${target_mnt}/{dev/pts,dev,sys,proc,}
 
 echo -e "Installation seems to be complete.\n"
 echo -e "The ChrUbuntu login is:"
-echo -e "\tUsername: $user_name"
-echo -e "\tPassword: $user_name\n"
+echo -e "\tUsername: root"
+echo -e "\tPassword: (no password)\n"
+echo -e "Note:\t After reboot you should login as root and invoke /mkuser.sh."
+echo -e "\tAbove script will create new user, remove root password and self destroy."
 
 if [ "$always" = "yes" ]; then
 	echo "Setting Ubuntu kernel partition as top priority for all following boots."
