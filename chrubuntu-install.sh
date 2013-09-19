@@ -28,7 +28,8 @@ hwid="`crossystem hwid`"
 target_mnt="/tmp/urfs"
 chromebook_arch="`uname -m`"
 ubuntu_metapackage="default"
-ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+ubuntu_latest=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version: " | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+ubuntu_version=$ubuntu_latest
 base_pkgs="ubuntu-minimal locales tzdata dialog wget"
 ppas=""
 
@@ -227,24 +228,7 @@ else
 	fi
 fi
 
-# Ubuntu versioning
-if [ "$ubuntu_version" = "lts" ]; then
-	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version:" | grep "LTS" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
-elif [ "$ubuntu_version" = "latest" ]; then
-	ubuntu_version=$latest_ubuntu
-fi
-
-if [ $ubuntu_version = "dev" ]; then
-	ubuntu_codename=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Dist: " | tail -1 | sed -r 's/^Dist: (.*)$/\1/'`
-	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Version:" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
-	tar_file="http://cdimage.ubuntu.com/ubuntu-core/daily/current/$ubuntu_codename-core-$ubuntu_arch.tar.gz"
-else
-	tar_file="http://cdimage.ubuntu.com/ubuntu-core/releases/$ubuntu_version/release/ubuntu-core-$ubuntu_version-core-$ubuntu_arch.tar.gz"
-fi
-
-# Convert $ubuntu_version from 12.04.3 to 1204
-ubuntu_version=`echo $ubuntu_version | cut -f1,2 -d. | sed -e 's/\.//g'`
-
+# Ubuntu architecture
 if [ "$chromebook_arch" = "x86_64" ]; then
 	ubuntu_arch="amd64"
 	[ "$ubuntu_metapackage" = "default" ] && ubuntu_metapackage="ubuntu-desktop"
@@ -258,6 +242,24 @@ else
 	echo -e "Error: This script doesn't know how to install ChrUbuntu on $chromebook_arch"
 	exit
 fi
+
+# Ubuntu versioning
+if [ "$ubuntu_version" = "lts" ]; then
+	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release | grep "^Version:" | grep "LTS" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+elif [ "$ubuntu_version" = "latest" ]; then
+	ubuntu_version=$ubuntu_latest
+fi
+
+if [ "$ubuntu_version" = "dev" ]; then
+	ubuntu_codename=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Dist: " | tail -1 | sed -r 's/^Dist: (.*)$/\1/'`
+	ubuntu_version=`wget --quiet -O - http://changelogs.ubuntu.com/meta-release-development | grep "^Version:" | tail -1 | sed -r 's/^Version: ([^ ]+)( LTS)?$/\1/'`
+	tar_file="http://cdimage.ubuntu.com/ubuntu-core/daily/current/$ubuntu_codename-core-$ubuntu_arch.tar.gz"
+else
+	tar_file="http://cdimage.ubuntu.com/ubuntu-core/releases/$ubuntu_version/release/ubuntu-core-$ubuntu_version-core-$ubuntu_arch.tar.gz"
+fi
+
+# Convert $ubuntu_version from 12.04.3 to 1204
+ubuntu_version=`echo $ubuntu_version | cut -f1,2 -d. | sed -e 's/\.//g'`
 
 # ChrUbuntu partitions configuration
 if [[ "${target_disk}" =~ "mmcblk" ]]; then
