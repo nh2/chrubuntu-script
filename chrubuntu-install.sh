@@ -86,7 +86,7 @@ Usage: [DEBUG=yes] sudo $0 [-m <ubuntu_metapackage>] [-n ] [-p <ppa:user/repo>] 
 	-t : Specify target disk
 	-u : Specify user name
 	-v : Specify ubuntu version (lts/latest/dev)
-Example: $0  -a -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa, ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
+Example: $0  -a -e -m "ubuntu-standard" -n -p "mc htop" -P "ppa:eugenesan/ppa ppa:nilarimogard/webupd8" -r -t "/dev/sdc" -u "user" -v "lts".
 EOB
 			exit 1					;;
 	esac
@@ -342,9 +342,9 @@ fi
 # Create and run 2nd 2nd-stage installation script
 echo "$DEBUG_CMD" > $target_mnt/install-ubuntu.sh
 
-for ppa in $ppas; do
+for ppa in $ppas $ubuntu_components; do
 	# Add repositories addition to 2nd stage installation script
-	echo "add-apt-repository -y $ubuntu_components $ppa" >> $target_mnt/install-ubuntu.sh
+	echo "add-apt-repository -y $ppa" >> $target_mnt/install-ubuntu.sh
 done
 
 if echo "$ubuntu_metapackage" | grep desktop; then
