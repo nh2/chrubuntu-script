@@ -332,7 +332,7 @@ rm $target_mnt/install-ubuntu.sh
 
 # Enable all ubuntu components
 if [ $ubuntu_version -lt 1210 ]; then
-	for component in main universe restricted multiverse partner; do
+	for component in main universe restricted multiverse; do
 		sed -i "/^# deb.*$component/ s/^# //" $target_mnt/etc/apt/sources.list
 	done
 else
