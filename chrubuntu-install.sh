@@ -12,7 +12,7 @@ if [ -n $DEBUG ]; then
 	DEBUG_WRAP="echo"
 	DEBUG_CMD="set -x"
 	set -x
-	exec 1>&2
+	exec 2>&1
 else
 	set -e
 fi
