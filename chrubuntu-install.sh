@@ -429,7 +429,7 @@ KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
 " > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
 
 # Treat user creation on live system due to missing ecryptfs support in ChromeOS kernel
-sed -i 's/root:x:/root::' $target_mnt/etc/passwd
+sed -i 's/root:x:/root::/' $target_mnt/etc/passwd
 echo "
 echo \"Please enter details of normal user\"
 read -p \"username: \" user_name
@@ -438,7 +438,7 @@ adduser \$user_name $encrypt_home
 adduser \$user_name adm
 adduser \$user_name sudo
 $auto_login
-sed -i 's/root::/root:x:' /etc/passwd
+sed -i 's/root::/root:x:/' /etc/passwd
 mv /mkuser.sh /tmp/
 " > $target_mnt/mkuser.sh
 chmod +x $target_mnt/mkuser.sh
