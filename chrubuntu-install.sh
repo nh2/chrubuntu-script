@@ -8,7 +8,8 @@
 #
 
 # Allow debugging
-if [ -n $DEBUG ]; then
+if [ -n "$DEBUG" ]; then
+	echo "Enabling debug mode"
 	DEBUG_WRAP="echo"
 	DEBUG_CMD="set -x"
 	set -x
