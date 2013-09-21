@@ -190,19 +190,19 @@ else
 	target_disk="`rootdev -d -s`"
 	echo -e "Using ${target_disk} as target drive\n"
 
+	# Read all required partitions parameters (ROOT-C and KERN-C starts are for optional restore later)
+	ckern_start="`cgpt show -i 6 -n -b -q ${target_disk}`"
+	ckern_size="`cgpt show -i 6 -n -s -q ${target_disk}`"
+	croot_start="`cgpt show -i 7 -n -b -q ${target_disk}`"
+	croot_size="`cgpt show -i 7 -n -s -q ${target_disk}`"
+	state_size="`cgpt show -i 1 -n -s -q ${target_disk}`"
+	state_start="`cgpt show -i 1 -n -b -q ${target_disk}`"
+	broot_start="`cgpt show -i 5 -n -b -q ${target_disk}`"
+
 	# If KERN-C and ROOT-C are one, we partition, otherwise assume they're what they need to be...
 	if [ "$ckern_size" =  "1" -o "$croot_size" = "1" -o "$repart" = "yes" ]; then
 		echo -e "WARNING! All data on this device will be wiped out! Continue at your own risk!\n"
 		read -p "Press [Enter] to install ChrUbuntu on ${target_disk} or CTRL+C to quit"
-
-		# Read all required partitions parameters (ROOT-C and KERN-C starts are for optional restore later)
-		ckern_start="`cgpt show -i 6 -n -b -q ${target_disk}`"
-		ckern_size="`cgpt show -i 6 -n -s -q ${target_disk}`"
-		croot_start="`cgpt show -i 7 -n -b -q ${target_disk}`"
-		croot_size="`cgpt show -i 7 -n -s -q ${target_disk}`"
-		state_size="`cgpt show -i 1 -n -s -q ${target_disk}`"
-		state_start="`cgpt show -i 1 -n -b -q ${target_disk}`"
-		broot_start="`cgpt show -i 5 -n -b -q ${target_disk}`"
 
 		# Do partitioning (if we haven't already)
 		max_ubuntu_size=$((($broot_start-$state_start)/1024/1024/2))
