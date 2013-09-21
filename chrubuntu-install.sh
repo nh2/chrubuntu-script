@@ -23,7 +23,7 @@ user_name="user"
 auto_login="[ -f /usr/lib/lightdm/lightdm-set-defaults ] && /usr/lib/lightdm/lightdm-set-defaults --autologin user"
 
 # hwid lets us know if this is a Mario (Cr-48), Alex (Samsung Series 5), ZGB (Acer), etc
-hwid="`crossystem hwid`"
+hwid="`crossystem hwid`" || hwid="cross"
 
 # Target specifications
 target_mnt="/tmp/urfs"
@@ -51,15 +51,17 @@ if [ ! $BASH_VERSION ]; then
 	exit 1
 fi
 
-# fw_type will always be developer for Mario.
-# Alex and ZGB need the developer BIOS installed though.
-fw_type="`crossystem mainfw_type`"
-if [ ! "$fw_type" = "developer" ]; then
-	echo -e "You're Chromebook is not running a developer BIOS!\n"
-	echo -e "You need to run:\n"
-	echo -e "\tsudo chromeos-firmwareupdate --mode=todev\n"
-	echo -e "and then re-run this script."
-	exit
+if [ ! "$hwid" = "cross" ]; then
+	# fw_type will always be developer for Mario.
+	# Alex and ZGB need the developer BIOS installed though.
+	fw_type="`crossystem mainfw_type`"
+	if [ ! "$fw_type" = "developer" -a  ! "$hwid" = "cross" ]; then
+		echo -e "You're Chromebook is not running a developer BIOS!\n"
+		echo -e "You need to run:\n"
+		echo -e "\tsudo chromeos-firmwareupdate --mode=todev\n"
+		echo -e "and then re-run this script."
+		exit
+	fi
 fi
 
 # Gather options from command line and set flags
@@ -94,14 +96,81 @@ EOB
 	esac
 done
 
-powerd_status="`initctl status powerd`"
-if [ ! "$powerd_status" = "powerd stop/waiting" ]; then
-	echo -e "Stopping powerd to keep display from timing out..."
-	initctl stop powerd
+# Fetch missing bit in cross mode from ChromeOS recovery or stop powerd in native mode
+if [ "$hwid" = "cross" ]; then
+	echo "Running in cross mode"
+
+	# Get platform url
+	echo "Fetching recovery index..."
+	wget -q -c https://dl.google.com/dl/edgedl/chromeos/recovery/recovery.conf -O recovery.conf
+
+	echo "Select your platfrom..."
+	IFS_OLD=$IFS
+	IFS=$'\n'
+	for line in $(grep -e '^name=' -e '^url=' recovery.conf); do
+		if echo "$line" | grep '^url=' > /dev/null; then
+			# We reached previousely selected platfrom
+			# Extracting recovery url
+			if [ "$yesno" = "y" ]; then
+				url=$(echo "$line" | cut -f2 -d'=')
+				break
+			fi
+		else
+			name=$(echo "$line" | cut -f2 -d'=')
+			read -p "Name: $name, [y/N]?" yesno
+			if [ "$yesno" = "y" ]; then
+				continue
+			else
+				unset yesno
+			fi
+		fi
+	done
+	IFS=$IFS_OLD
+
+	echo "Fetching recovery image [$url]..."
+	wget -c $url -O recovery.zip
+
+	# Unpack recovery image
+	echo "Unpacking recovery image..."
+	7z x recovery.zip -so > recovery.img
+
+	# Extract ChromeOS kernel. On recovery images.
+	# Kern A is the recovery kernel, Kern B is what we want.
+	echo "Mounting recovery boot partition..."
+	mkdir -p $target_mnt
+	umount $target_mnt || echo .
+	mount -ro loop,offset=$((`cgpt show -i 12 -n -b -q recovery.img`*512)) recovery.img $target_mnt
+
+	echo "Extracting ChromeOS kernel image..."
+	cp $target_mnt/syslinux/vmlinuz.B vmlinuz
+	killall nautilus || echo .
+	umount $target_mnt
+
+	# Extract ChromeOS kernel modules.
+	# Get start and size of our root partition
+	echo "Mounting recovery rootfs partition..."
+	rootfs_start="`cgpt show -i 3 -n -b -q recovery.img`"
+	mkdir -p $target_mnt
+	umount $target_mnt || echo .
+	mount -ro loop,offset=$(($rootfs_start*512)) recovery.img $target_mnt
+
+	echo "Extracting ChromeOS kernel modules/firmwares..."
+	tar -C $target_mnt -cf vmlinuz.tar lib/modules lib/firmware
+	killall nautilus || echo .
+	chromebook_arch=`file $target_mnt/sbin/init | awk '{print $7}'`
+	umount $target_mnt
+
+	rm -R $target_mnt recovery.img
+else
+	powerd_status="`initctl status powerd`"
+	if [ ! "$powerd_status" = "powerd stop/waiting" ]; then
+		echo -e "Stopping powerd to keep display from timing out..."
+		initctl stop powerd
+	fi
 fi
 
 # Partitioning
-if [ -n "$target_disk" ]; then
+if [ -n "$target_disk" -o "$hwid" = "cross" ]; then
 	echo -e "Got ${target_disk} as target drive\n"
 	echo -e "WARNING! All data on this device will be wiped out! Continue at your own risk!\n"
 	read -p "Press [Enter] to install ChrUbuntu on ${target_disk} or CTRL+C to quit"
@@ -109,13 +178,13 @@ if [ -n "$target_disk" ]; then
 	ext_size="`blockdev --getsz ${target_disk}`"
 	aroot_size=$((ext_size - 65600 - 33))
 	parted --script ${target_disk} "mktable gpt"
-	cgpt create ${target_disk} 
+	cgpt create ${target_disk}
 	cgpt add -i 6 -b 64 -s 32768 -S 1 -P 5 -l KERN-A -t "kernel" ${target_disk}
 	cgpt add -i 7 -b 65600 -s $aroot_size -l ROOT-A -t "rootfs" ${target_disk}
 	sync
 	blockdev --rereadpt ${target_disk}
 	partprobe ${target_disk}
-	crossystem dev_boot_usb=1
+	[ "$hwid" = "cross" ] || crossystem dev_boot_usb=1
 else
 	# Get default root device
 	target_disk="`rootdev -d -s`"
@@ -234,10 +303,10 @@ fi
 if [ "$chromebook_arch" = "x86_64" ]; then
 	ubuntu_arch="amd64"
 	[ "$ubuntu_metapackage" = "default" ] && ubuntu_metapackage="ubuntu-desktop"
-elif [ "$chromebook_arch" = "i686" ]; then
+elif [ "$chromebook_arch" = "i686" -o "$chromebook_arch" = "Intel" ]; then
 	ubuntu_arch="i386"
 	[ "$ubuntu_metapackage" = "default" ] && ubuntu_metapackage="ubuntu-desktop"
-elif [ "$chromebook_arch" = "armv7l" ]; then
+elif [ "$chromebook_arch" = "armv7l" -o "$chromebook_arch" = "arm" ]; then
 	ubuntu_arch="armhf"
 	[ "$ubuntu_metapackage" = "default" ] && ubuntu_metapackage="xubuntu-desktop"
 else
@@ -279,10 +348,6 @@ echo -e "Kernel Arch is: $chromebook_arch  Installing Ubuntu Arch: $ubuntu_arch\
 echo -e "Target Kernel Partition: $target_kern, Target Root FS: ${target_rootfs}, Target Mount Point: ${target_mnt}\n"
 read -p "Press [Enter] to continue..."
 
-# Entering working folder
-mkdir -p /mnt/stateful_partition/ubuntu
-cd /mnt/stateful_partition/ubuntu
-
 if mount | grep ${target_rootfs} > /dev/null; then
 	echo "Found formatted and mounted ${target_rootfs}."
 	echo "Continue at your own risk!"
@@ -312,7 +377,7 @@ if [ $ubuntu_version -lt 1210 ]; then
 	add_apt_repository_package='python-software-properties'
 else
 	add_apt_repository_package='software-properties-common'
-	base_pkgs="$base_pkgs libnss-myhostname"
+	pkgs="$pkgs libnss-myhostname"
 fi
 
 # Create and run 1st 2nd stage installation script
@@ -327,6 +392,8 @@ aptitude -y install $base_pkgs $add_apt_repository_package
 locale-gen en_US.UTF-8
 update-locale LANG=en_US.UTF-8
 dpkg-reconfigure tzdata
+service stop rsyslog || echo .
+service stop cron || echo .
 " >> $target_mnt/install-ubuntu.sh
 chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
@@ -358,6 +425,8 @@ echo "
 aptitude -y update
 aptitude -y dist-upgrade
 aptitude -y --allow-untrusted install $pkgs $ubuntu_metapackage
+service stop rsyslog || echo .
+service stop cron || echo .
 " >> $target_mnt/install-ubuntu.sh
 chmod a+x $target_mnt/install-ubuntu.sh
 chroot $target_mnt /bin/bash -c /install-ubuntu.sh
@@ -415,6 +484,11 @@ EOZ
 		kernel=$target_mnt/boot/vmlinuz-3.4.0-5-chromebook
 	fi
 
+	echo "
+service stop rsyslog || echo .
+service stop cron || echo .
+" >> $target_mnt/install-ubuntu.sh
+
 	chmod a+x $target_mnt/install-ubuntu.sh
 	chroot $target_mnt /bin/bash -c /install-ubuntu.sh
 	rm $target_mnt/install-ubuntu.sh
@@ -446,15 +520,24 @@ chmod +x $target_mnt/mkuser.sh
 # We do not have kernel for x86 chromebooks in archive at all
 # and ARM one only in 13.04 and later
 if [ $ubuntu_arch != "armhf" -o $ubuntu_version -lt 1304 ]; then
-	KERN_VER=`uname -r`
-	mkdir -p $target_mnt/lib/modules/$KERN_VER/
-	cp -ar /lib/modules/$KERN_VER/* $target_mnt/lib/modules/$KERN_VER/
-	[ ! -d $target_mnt/lib/firmware/ ] && mkdir $target_mnt/lib/firmware/
-	cp -ar /lib/firmware/* $target_mnt/lib/firmware/
-	kernel=/boot/vmlinuz-`uname -r`
+	if [ "$hwid" = "cross" ]; then
+		tar -C $target_mnt -xvf vmlinuz.tar
+		kernel=vmlinuz
+	else
+		KERN_VER=`uname -r`
+		mkdir -p $target_mnt/lib/modules/$KERN_VER/
+		cp -ar /lib/modules/$KERN_VER/* $target_mnt/lib/modules/$KERN_VER/
+		[ ! -d $target_mnt/lib/firmware/ ] && mkdir $target_mnt/lib/firmware/
+		cp -ar /lib/firmware/* $target_mnt/lib/firmware/
+		kernel=/boot/vmlinuz-`uname -r`
+	fi
+	config=vmlinuz.cfg
 fi
 
-echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0" > kernel-config
+# We force rootfs to be first hdd in cross mode
+[ "$hwid" = "cross" ] && target_rootfs=/dev/sda
+
+echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0" > $config
 
 if [ $ubuntu_arch = "armhf" ]; then
 	vbutil_arch="arm"
@@ -466,7 +549,7 @@ vbutil_kernel --pack newkern \
 	--keyblock /usr/share/vboot/devkeys/kernel.keyblock \
 	--version 1 \
 	--signprivate /usr/share/vboot/devkeys/kernel_data_key.vbprivk \
-	--config kernel-config \
+	--config $config \
 	--vmlinuz $kernel \
 	--arch $vbutil_arch
 
