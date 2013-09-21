@@ -272,7 +272,6 @@ else
 		echo -e "Your Chromebook will reboot, wipe your data and then"
 		echo -e "you should re-run this script..."
 		read -p "Press [Enter] to continue or CTRL+C to quit"
-		$DEBUG_WRAP umount -f /mnt/stateful_partition
 
 		if [ "$repart" = "yes" ]; then
 			# Kill old parts
