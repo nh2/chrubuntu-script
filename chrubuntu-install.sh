@@ -516,6 +516,10 @@ mv /mkuser.sh /tmp/
 " > $target_mnt/mkuser.sh
 chmod +x $target_mnt/mkuser.sh
 
+# Fix bug causing high CPU usage after closing LID
+# Note: as side effect LID will stop working!
+sed -i 's/^$/\necho\ disable\ >\ \/sys\/firmware\/acpi\/interrupts\/gpe1F\n/' $target_mnt/etc/rc.local
+
 # We do not have kernel for x86 chromebooks in archive at all
 # and ARM one only in 13.04 and later
 if [ $ubuntu_arch != "armhf" -o $ubuntu_version -lt 1304 ]; then
