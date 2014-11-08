@@ -2,7 +2,7 @@
 #
 # Script to transfer Ubuntu to Chromebook's media
 #
-# Version 1.5
+# Version 1.6
 #
 # Copyright 2012-2013 Jay Lee
 # Copyright 2013-2014 Eugene San
@@ -60,7 +60,7 @@ Usage: [DEBUG=yes] sudo $0 [-a] [-t <disk>]
 	-t : Specify target disk
 	-u : Specify user that will mount encrypted target home
 	-q : Skip syncing
-Example: $0 -a -t "/dev/sdb"
+Example: $0 -t "/dev/sdb" -n
 EOB
 			exit 1			;;
 	esac
@@ -143,8 +143,10 @@ fi
 # Mounting target filesystems
 mkdir -p ${target_mnt}
 mount -t ext4 ${target_rootfs} ${target_mnt}
-mkdir -p ${target_mnt}/home
-mount -t ext4 ${target_homefs} ${target_mnt}/home
+if [ -n "${crypt_user}" ]; then
+	mkdir -p ${target_mnt}/home
+	mount -t ext4 ${target_homefs} ${target_mnt}/home
+fi
 
 # Transferring host system to target
 if [ "${no_sync}" != "yes" ]; then
@@ -198,7 +200,8 @@ newkern=/tmp/kern.img
 #echo "console=tty1 loglevel=7 oops=panic panic=-1 root=${target_root} rootwait rw noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3" > $config
 #echo "console=tty1 loglevel=7 oops=panic panic=-1 root=${target_root} rootwait rw noinitrd kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3" > $config
 #echo "console=tty1 loglevel=7 init=/sbin/init oops=panic panic=-1 root=${target_root} rootwait rw noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3" > $config
-echo "console=tty1 loglevel=7 init=/sbin/init oops=panic panic=-1 root=${target_root} rootwait rw noinitrd kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
+#echo "console=tty1 loglevel=7 init=/sbin/init oops=panic panic=-1 root=${target_root} rootwait rw noinitrd kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
+echo "console=tty1 loglevel=7 init=/sbin/init oops=panic panic=-1 root=${target_root} rootwait rw noinitrd kern_guid=%U add_efi_memmap boot=local noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
 
 # Install kernel
 xzcat ${kernel} > ${kernel_orig}
@@ -217,5 +220,8 @@ echo -e "Installation seems to be complete.\n"
 read -p "Press [Enter] to unmount target device..."
 
 sync
-umount ${target_mnt}/home ${target_mnt}
-cryptsetup luksClose home
+if [ -n "${crypt_user}" ]; then
+	umount ${target_mnt}/home
+	cryptsetup luksClose home
+fi
+umount ${target_mnt}
