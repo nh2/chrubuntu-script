@@ -3,9 +3,11 @@
 # Script to transfer Ubuntu to Chromebook's media
 #
 # Copyright 2012-2013 Jay Lee
+# Copyright 2013-2014 Eugene San
 #
 # here would be nice to have some license - BSD one maybe
 #
+# ensure cgpt vboot-kernel-utils parted rsync
 
 # Allow debugging
 if [ -n "$DEBUG" ]; then
@@ -96,7 +98,16 @@ mkdir -p $target_mnt
 mount -t ext4 ${target_rootfs} $target_mnt
 
 # Transferring host system to target
-rsync -axi / /dev $target_mnt/
+rsync -ax --exclude=/initrd* --exclude=/vmlinuz* --exclude=/boot --exclude=/lib/modules --exclude=/lib/firmware / /dev $target_mnt/
+
+cat > $target_mnt/usr/share/X11/xorg.conf.d/touchpad.conf << EOZ
+Section "InputClass"
+	Identifier "touchpad"
+	MatchIsTouchpad "on"
+	Option "FingerHigh" "10"
+	Option "FingerLow" "10"
+EndSection
+EOZ
 
 # Keep CrOS partitions from showing/mounting in Ubuntu
 udev_target=${target_disk:5}
@@ -106,33 +117,38 @@ KERNEL==\"$udev_target5\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
 " > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
 
-# Fix bug causing high CPU usage after closing LID
+# Refresh H/W pinning
+rm -f $target_mnt/etc/udev/rules.d/*.rules
+
 # Note: as side effect LID will stop working!
-sed -i 's/^$/\necho\ disable\ >\ \/sys\/firmware\/acpi\/interrupts\/gpe1F\n/' $target_mnt/etc/rc.local
+sed -i 's/\nexit\ 0/\necho\ disable\ >\ \/sys\/firmware\/acpi\/interrupts\/gpe1F\nexit\ 0/' $target_mnt/etc/rc.local
 
-# We use host kernel
-KERN_VER=`uname -r`
-mkdir -p $target_mnt/lib/modules/$KERN_VER/
-cp -ar /lib/modules/$KERN_VER/* $target_mnt/lib/modules/$KERN_VER/
-[ ! -d $target_mnt/lib/firmware/ ] && mkdir $target_mnt/lib/firmware/
-cp -ar /lib/firmware/* $target_mnt/lib/firmware/
-kernel=/boot/vmlinuz-`uname -r`
-config=vmlinuz.cfg
+# Disable auto interfaces
+sed -i 's/^auto\ eth/#auto\ eth/' $target_mnt/etc/network/interfaces
 
-# We force rootfs to be first hdd in cross mode
-target_rootfs=/dev/sda
+# We use original chros kernel, modules and firmware
+kernel=parrot-c710-kern.img.xz
+rootfs=parrot-c710-root.tar.xz
+kernel_orig=/tmp/kern.orig.img
+config=/tmp/vmlinuz.cfg
+newkern=/tmp/kern.img
+target_root="/dev/sda7"
 
-echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0" > $config
+#echo "console= loglevel=7 init=/sbin/init cros_secure oops=panic panic=-1 root=/dev/dm-1 rootwait ro dm_verity.error_behavior=3 dm_verity.max_bios=-1 dm_verity.dev_wait=1 dm="2 vboot none ro 1,0 2129920 bootcache PARTUUID=%U/PARTNROFF=1 2129920 bfa50cdbd94a258a05124a845ab892a124a2805e 512 20000 100000, vroot none ro 1,0 2097152 verity payload=254:0 hashtree=254:0 hashstart=2097152 alg=sha1 root_hexdigest=5a4ff2e2099cf9d16dd0a5ab93f2f3b823e236af salt=44216786af21f39188b82e41cc3b6f6f9134a372470c2aa61502ae83bf4a5186" noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
+#echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0 " > $config
+echo "console=tty1 debug verbose root=${target_root} rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
 
-vbutil_kernel --pack newkern \
+xzcat ${kernel} > ${kernel_orig}
+vbutil_kernel --repack ${newkern} \
 	--keyblock /usr/share/vboot/devkeys/kernel.keyblock \
 	--version 1 \
 	--signprivate /usr/share/vboot/devkeys/kernel_data_key.vbprivk \
-	--config $config \
-	--vmlinuz $kernel \
-	--arch $chromebook_arch
+	--config ${config} \
+	--oldblob ${kernel_orig}
 
-dd if=newkern of=${target_kern} bs=4M
+dd if=${newkern} of=${target_kern} bs=4M
+
+tar -C ${target_mnt} -xvaf ${rootfs}
 
 echo -e "Installation seems to be complete.\n"
 
