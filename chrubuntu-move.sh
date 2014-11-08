@@ -2,12 +2,14 @@
 #
 # Script to transfer Ubuntu to Chromebook's media
 #
+# Version 1.3
+#
 # Copyright 2012-2013 Jay Lee
 # Copyright 2013-2014 Eugene San
 #
-# here would be nice to have some license - BSD one maybe
+# Here would be nice to have some license - BSD one maybe
 #
-# ensure cgpt vboot-kernel-utils parted rsync
+# Depends on following packages: cgpt vboot-kernel-utils parted rsync
 
 # Allow debugging
 if [ -n "$DEBUG" ]; then
@@ -19,6 +21,9 @@ if [ -n "$DEBUG" ]; then
 else
 	set -e
 fi
+
+# Generic settings
+release="$(basename ${0})"
 
 # Target specifications
 target_mnt="/tmp/urfs"
@@ -81,7 +86,6 @@ else
 fi
 
 # Print summary
-echo -e "Installing Ubuntu $ubuntu_version with metapackage $ubuntu_metapackage\n"
 echo -e "Target Kernel Partition: $target_kern, Target Root FS: ${target_rootfs}, Target Mount Point: ${target_mnt}\n"
 read -p "Press [Enter] to continue..."
 
@@ -94,11 +98,11 @@ fi
 
 # Creating target filesystem
 mkfs.ext4 ${target_rootfs}
-mkdir -p $target_mnt
-mount -t ext4 ${target_rootfs} $target_mnt
+mkdir -p ${target_mnt}
+mount -t ext4 ${target_rootfs} ${target_mnt}
 
 # Transferring host system to target
-rsync -ax --exclude=/initrd* --exclude=/vmlinuz* --exclude=/boot --exclude=/lib/modules --exclude=/lib/firmware / /dev $target_mnt/
+rsync -ax --exclude=/initrd* --exclude=/vmlinuz* --exclude=/boot --exclude=/lib/modules --exclude=/lib/firmware / /dev ${target_mnt}/
 
 cat > $target_mnt/usr/share/X11/xorg.conf.d/touchpad.conf << EOZ
 Section "InputClass"
@@ -109,33 +113,33 @@ Section "InputClass"
 EndSection
 EOZ
 
-# Keep CrOS partitions from showing/mounting in Ubuntu
+# Keep CromeOS partitions from showing/mounting
 udev_target=${target_disk:5}
 echo "KERNEL==\"$udev_target1\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target3\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target5\" ENV{UDISKS_IGNORE}=\"1\"
 KERNEL==\"$udev_target8\" ENV{UDISKS_IGNORE}=\"1\"
-" > $target_mnt/etc/udev/rules.d/99-hide-disks.rules
+" > ${target_mnt}/etc/udev/rules.d/99-hide-disks.rules
 
 # Refresh H/W pinning
-rm -f $target_mnt/etc/udev/rules.d/*.rules
+rm -f ${target_mnt}/etc/udev/rules.d/*.rules
 
 # Note: as side effect LID will stop working!
-sed -i 's/\nexit\ 0/\necho\ disable\ >\ \/sys\/firmware\/acpi\/interrupts\/gpe1F\nexit\ 0/' $target_mnt/etc/rc.local
+sed -i 's/\nexit\ 0/\necho\ disable\ >\ \/sys\/firmware\/acpi\/interrupts\/gpe1F\nexit\ 0/' ${target_mnt}/etc/rc.local
 
 # Disable auto interfaces
-sed -i 's/^auto\ eth/#auto\ eth/' $target_mnt/etc/network/interfaces
+sed -i 's/^auto\ eth/#auto\ eth/' ${target_mnt}/etc/network/interfaces
 
-# We use original chros kernel, modules and firmware
-kernel=parrot-c710-kern.img.xz
-rootfs=parrot-c710-root.tar.xz
+# Use original ChromeOS kernel, modules and firmwares
+kernel=${release%.*}.img.xz
+rootfs=${release%.*}.tar.xz
 kernel_orig=/tmp/kern.orig.img
 config=/tmp/vmlinuz.cfg
 newkern=/tmp/kern.img
 target_root="/dev/sda7"
 
-#echo "console= loglevel=7 init=/sbin/init cros_secure oops=panic panic=-1 root=/dev/dm-1 rootwait ro dm_verity.error_behavior=3 dm_verity.max_bios=-1 dm_verity.dev_wait=1 dm="2 vboot none ro 1,0 2129920 bootcache PARTUUID=%U/PARTNROFF=1 2129920 bfa50cdbd94a258a05124a845ab892a124a2805e 512 20000 100000, vroot none ro 1,0 2097152 verity payload=254:0 hashtree=254:0 hashstart=2097152 alg=sha1 root_hexdigest=5a4ff2e2099cf9d16dd0a5ab93f2f3b823e236af salt=44216786af21f39188b82e41cc3b6f6f9134a372470c2aa61502ae83bf4a5186" noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
-#echo "console=tty1 debug verbose root=${target_rootfs} rootwait rw lsm.module_locking=0 " > $config
+# Prepare kernel comdline
+# console= loglevel=7 init=/sbin/init cros_secure oops=panic panic=-1 root=/dev/dm-1 rootwait ro dm_verity.error_behavior=3 dm_verity.max_bios=-1 dm_verity.dev_wait=1 dm="2 vboot none ro1,0 2545920 bootcache PARTUUID=%U/PARTNROFF=1 2545920 b9d6fa324c47bc0c0a3f96c9a16d9a317432aa9d 512 20000 100000, vroot none ro 1,0 2506752 verity payload=254:0 hashtree=254:0 hashstart=2506752 alg=sha1 root_hexdigest=24393ba8b75a7fd85d73c233ceee70af4e9087ef salt=b012108da6fdd54d3d603ae24fe371ef18e787f788224c19711643bf8cd2e9af" noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3
 echo "console=tty1 debug verbose root=${target_root} rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
 
 xzcat ${kernel} > ${kernel_orig}
