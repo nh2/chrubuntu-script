@@ -2,10 +2,13 @@
 #
 # Script to transfer Ubuntu to Chromebook's media
 #
-# Version 1.6
+# Version 1.7
 #
 # Copyright 2012-2013 Jay Lee
 # Copyright 2013-2014 Eugene San
+#
+# Post install procedure:
+# https://github.com/darkknight1812/c710_ubuntu_pis/blob/master/install.sh
 #
 # Here would be nice to have some license - BSD one maybe
 #
@@ -25,7 +28,7 @@ fi
 # Generic settings
 release="$(basename ${0})"
 
-# Target specifications
+# Default target specifications
 target_mnt="/tmp/urfs"
 chromebook_arch="`uname -m`"
 target_root="/dev/sda7"
@@ -116,7 +119,6 @@ fi
 echo -e "Target Kernel Partition: ${target_kern}, Target Root FS: ${target_rootfs}, Target Mount Point: ${target_mnt}\n"
 read -p "Press [Enter] to continue..."
 
-
 # Creating target filesystems
 if [ "${no_format}" != "yes" ]; then
 	# Format rootfs
@@ -150,7 +152,7 @@ fi
 
 # Transferring host system to target
 if [ "${no_sync}" != "yes" ]; then
-	rsync -ax --exclude=/initrd* --exclude=/vmlinuz* --exclude=/boot --exclude=/lib/modules --exclude=/lib/firmware / /dev ${target_mnt}/
+	rsync -ax / /dev ${target_mnt}/
 fi
 
 # Allow selected crypt user to mount home during login (libpam-mount is required)
@@ -159,58 +161,83 @@ if [ -n "${crypt_user}" ]; then
 	sed -i '/Volume\ definitions/r /tmp/crypt_pam_mount' ${target_mnt}/etc/security/pam_mount.conf.xml
 fi
 
-# Tune touchpad
-mkdir -p ${target_mnt}/usr/share/X11/xorg.conf.d
-cat > ${target_mnt}/usr/share/X11/xorg.conf.d/touchpad.conf << EOZ
-Section "InputClass"
-	Identifier "touchpad"
-	MatchIsTouchpad "on"
-	Option "FingerHigh" "10"
-	Option "FingerLow" "10"
-EndSection
-EOZ
+# Enabled touchpad modules
+cat << 'EOF' | tee -a /etc/modules
+i2c_i801
+i2c_dev
+chromeos_laptop
+cyapa
+EOF
 
-# Keep CromeOS partitions from showing/mounting
-udev_target=${target_disk:5}
-echo "KERNEL==\"${udev_target}1\" ENV{UDISKS_IGNORE}=\"1\"
-KERNEL==\"${udev_target}3\" ENV{UDISKS_IGNORE}=\"1\"
-KERNEL==\"${udev_target}5\" ENV{UDISKS_IGNORE}=\"1\"
-KERNEL==\"${udev_target}8\" ENV{UDISKS_IGNORE}=\"1\"
-" > ${target_mnt}/etc/udev/rules.d/99-hide-disks.rules
+# Configure touchpad
+sed -i '18i Option "VertHysteresis" "10"' $target_mnt/usr/share/X11/xorg.conf.d/50-synaptics.conf
+sed -i '18i Option "HorizHysteresis" "10"' $target_mnt/usr/share/X11/xorg.conf.d/50-synaptics.conf
+sed -i '18i Option "FingerLow" "1"' $target_mnt/usr/share/X11/xorg.conf.d/50-synaptics.conf
+sed -i '18i Option "FingerHigh" "5"' $target_mnt/usr/share/X11/xorg.conf.d/50-synaptics.conf
 
 # Refresh H/W pinning
 rm -f ${target_mnt}/etc/udev/rules.d/*.rules
 
-# Note: as side effect LID will stop working!
+# Keep CromeOS partitions from showing/mounting
+udev_target=${target_disk:5}
+cat << 'EOF' | tee -a ${target_mnt}/etc/udev/rules.d/99-hide-disks.rules
+KERNEL=="$udev_target1" ENV{UDISKS_IGNORE}="1"
+KERNEL=="$udev_target3" ENV{UDISKS_IGNORE}="1"
+KERNEL=="$udev_target5" ENV{UDISKS_IGNORE}="1"
+KERNEL=="$udev_target8" ENV{UDISKS_IGNORE}="1"
+EOF
+
+# Install kexec trigger to switch to Ubuntu kernel on first boot
+cat << 'EOF' | tee ${target_mnt}/etc/rcS.d/S00chrubuntu
+!/bin/sh
+
+test "x`uname -r`" = "x3.4.0" || exit 0
+service kexec-load stop
+service kexec stop
+EOF
+chmod +x ${target_mnt}/etc/rcS.d/S00chrubuntu
+
+# Disabled LID interrupt to workaround cpu usage after lid closure
+# (LID will stop working!)
 sed -i 's/^exit\ 0/\necho\ disable\ >\ \/sys\/firmware\/acpi\/interrupts\/gpe1F\nexit\ 0/' ${target_mnt}/etc/rc.local
+
+# Enabled energy savers
+sed -i 's/splash/"splash intel_pstate=enable"/' ${target_mnt}/etc/default/grub
+sed -i 's/^GOVERNOR=.*/GOVERNOR="powersave"/' ${target_mnt}/etc/init.d/cpufrequtils
+
+# Install post install script
+cat << 'EOF' | tee ${target_mnt}/postinst.sh
+!/bin/sh
+
+update-grub
+add-apt-repository ppa:linrunner/tlp
+aptitude update
+aptitude install cpufrequtils thermald tlp tlp-rdw smartmontools ethtool synaptic
+EOF
+chmod +x ${target_mnt}/postinst.sh
 
 # Disable auto interfaces
 sed -i 's/^auto\ eth/#auto\ eth/' ${target_mnt}/etc/network/interfaces
 
 # Use original ChromeOS kernel, modules and firmwares
-kernel=${release%.*}.img.xz
+kernel=${release%.*}.kernel.xz
 lib=${release%.*}.tar.xz
-kernel_orig=/tmp/kern.orig.img
-config=/tmp/vmlinuz.cfg
-newkern=/tmp/kern.img
+kernel_unxz=/tmp/${release%.*}.kernel
+cmdline=/tmp/${release%.*}.kernel.cmdline
+kernel_ck=/tmp/${release%.*}.kernel.ck
 
 # Prepare kernel comdline
 # console= loglevel=7 init=/sbin/init cros_secure oops=panic panic=-1 root=/dev/dm-1 rootwait ro dm_verity.error_behavior=3 dm_verity.max_bios=-1 dm_verity.dev_wait=1 dm="2 vboot none ro1,0 2545920 bootcache PARTUUID=%U/PARTNROFF=1 2545920 b9d6fa324c47bc0c0a3f96c9a16d9a317432aa9d 512 20000 100000, vroot none ro 1,0 2506752 verity payload=254:0 hashtree=254:0 hashstart=2506752 alg=sha1 root_hexdigest=24393ba8b75a7fd85d73c233ceee70af4e9087ef salt=b012108da6fdd54d3d603ae24fe371ef18e787f788224c19711643bf8cd2e9af" noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3
-#echo "console=tty1 debug verbose root=${target_root} rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
-#echo "console=tty1 loglevel=7 oops=panic panic=-1 root=${target_root} rootwait rw noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3" > $config
-#echo "console=tty1 loglevel=7 oops=panic panic=-1 root=${target_root} rootwait rw noinitrd kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3" > $config
-#echo "console=tty1 loglevel=7 init=/sbin/init oops=panic panic=-1 root=${target_root} rootwait rw noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3" > $config
-#echo "console=tty1 loglevel=7 init=/sbin/init oops=panic panic=-1 root=${target_root} rootwait rw noinitrd kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
-echo "console=tty1 loglevel=7 init=/sbin/init oops=panic panic=-1 root=${target_root} rootwait rw noinitrd kern_guid=%U add_efi_memmap boot=local noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic" > $config
+		echo "console=tty1 debug verbose root=${target_root} rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic disablevmx=off runlevel=1" > $cmdline
 
 # Install kernel
-xzcat ${kernel} > ${kernel_orig}
-vbutil_kernel --repack ${newkern} \
+xzcat ${kernel} > ${kernel_unxz}
+vbutil_kernel --repack ${kernel_ck} \
 	--keyblock /usr/share/vboot/devkeys/kernel.keyblock \
 	--version 1 \
 	--signprivate /usr/share/vboot/devkeys/kernel_data_key.vbprivk \
-	--config ${config} \
-	--oldblob ${kernel_orig}
+	--config ${cmdline} \
+	--oldblob ${kernel_unxz}
 dd if=${newkern} of=${target_kern} bs=4M
 
 # Install lib/{modules,fimrwares}
