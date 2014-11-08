@@ -2,7 +2,7 @@
 #
 # Script to transfer Ubuntu to Chromebook's media
 #
-# Version 1.2
+# Version 1.5
 #
 # Copyright 2012-2013 Jay Lee
 # Copyright 2013-2014 Eugene San
@@ -48,18 +48,18 @@ if [ ! $BASH_VERSION ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts ant:u: opt; do
+while getopts nt:u:q opt; do
 	case "$opt" in
-		a)	always="yes"		;;
 		n)	no_format="yes"		;;
 		t)	target_disk="${OPTARG}"	;;
 		u)	crypt_user="${OPTARG}"		;;
+		q)	no_sync="yes"		;;
 		*)	cat <<EOB
 Usage: [DEBUG=yes] sudo $0 [-a] [-t <disk>]
-	-a : Always boot into ubuntu
 	-n : Skip partitioning and formatting
 	-t : Specify target disk
 	-u : Specify user that will mount encrypted target home
+	-q : Skip syncing
 Example: $0 -a -t "/dev/sdb"
 EOB
 			exit 1			;;
@@ -147,7 +147,9 @@ mkdir -p ${target_mnt}/home
 mount -t ext4 ${target_homefs} ${target_mnt}/home
 
 # Transferring host system to target
-rsync -ax --exclude=/initrd* --exclude=/vmlinuz* --exclude=/boot --exclude=/lib/modules --exclude=/lib/firmware / /dev ${target_mnt}/
+if [ "${no_sync}" != "yes" ]; then
+	rsync -ax --exclude=/initrd* --exclude=/vmlinuz* --exclude=/boot --exclude=/lib/modules --exclude=/lib/firmware / /dev ${target_mnt}/
+fi
 
 # Allow selected crypt user to mount home during login (libpam-mount is required)
 if [ -n "${crypt_user}" ]; then
