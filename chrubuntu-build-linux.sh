@@ -2,7 +2,7 @@
 #
 # Script to build kexec kernel for Chromebook Acer C710
 #
-# Version 0.1
+# Version 0.2
 #
 # (c) 2014 Eugene San
 #
@@ -23,13 +23,11 @@ else
 fi
 
 # Generic settings
-release="$(basename ${0})"
-release="${release%.*}"
-
-# Target specifications
 chromebook_arch="`uname -m`"
 branch="release-R39-6310.B-chromeos-3.4"
-kernel="${release}.kernel"
+release="parrot-c710-R39"
+kernel="$(dirname ${0})/images/${release}"
+kernel_build="/tmp/${release}.build"
 
 setterm -blank 0
 
@@ -60,7 +58,7 @@ EOB
 done
 
 if [ ! -r "${kernel}" ] && [ -z "${compile}" ]; then
-	echo "Invalid target specified"
+	echo "Invalid parameters specified"
 	exit 255
 fi
 
@@ -68,11 +66,11 @@ if [ "${compile}" == "yes" ]; then
 	[ -z "${branch}" ] && echo "Invalid branch specified" && exit 255
 
 	# Checkout kernel
-	[ "${force}" == "yes" ] && mv -f "${kernel}.build" "${kernel}.build.old"
-	[ -d "${kernel}.build" ] || git clone --depth=1 -b ${branch} https://chromium.googlesource.com/chromiumos/third_party/kernel.git "${kernel}.build"
+	[ "${force}" == "yes" ] && mv -f "${kernel_build}" "${kernel_build}.old"
+	[ -d "${kernel_build}" ] || git clone --depth=1 -b ${branch} https://chromium.googlesource.com/chromiumos/third_party/kernel.git "${kernel_build}"
 
 	# Enter kernel tree
-	pushd "${kernel}.build"
+	pushd "${kernel_build}"
 
 	# Fix kernel build on fresh distros
 	sed -i 's/fstack-protector-strong/fstack-protector/' arch/x86/Makefile
@@ -94,15 +92,14 @@ if [ "${compile}" == "yes" ]; then
 	yes "" | make oldconfig
 
 	# Build kernel
-	# make-kpkg -j32 kernel_image
 	make -j32 bzImage
 
 	# Return to script's home
 	popd
 
 	# Export kernel image
-	xz -9 -c "${kernel}.build/arch/x86/boot/bzImage" > "${kernel}.xz"
-	cp "${kernel}.build/.config" "${kernel}.config"
+	xz -9 -c "${kernel_build}/arch/x86/boot/bzImage" > "${kernel}.xz"
+	cp "${kernel_build}/.config" "${kernel}.config"
 fi
 
 if [ "${pack}" == "yes" ]; then
