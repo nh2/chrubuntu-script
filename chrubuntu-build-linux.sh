@@ -2,9 +2,9 @@
 #
 # Script to build kexec kernel for Chromebook Acer C710
 #
-# Version 0.2
+# Version 0.3
 #
-# (c) 2014 Eugene San
+# (c) 2015 Eugene San
 #
 # Here would be nice to have some license - BSD one maybe
 #
@@ -24,10 +24,11 @@ fi
 
 # Generic settings
 chromebook_arch="`uname -m`"
-branch="release-R39-6310.B-chromeos-3.4"
-release="parrot-c710-R39"
+branch="release-R41-6680.B-chromeos-3.4"
+release="parrot-c710-R41"
 kernel="$(dirname ${0})/images/${release}"
-kernel_build="/tmp/${release}.build"
+kernel_build="${release}.build"
+working_dir="/tmp"
 
 setterm -blank 0
 
@@ -40,18 +41,23 @@ if [ ! $BASH_VERSION ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts b:cfk:p opt; do
+while getopts b:cfk:pw: opt; do
 	case "$opt" in
 		b)	branch=${OPTARG}	;;
 		c)	compile="yes"		;;
 		f)	force="yes"		;;
 		k)	kernel="${OPTARG}"	;;
 		p)	pack="yes"		;;
+		w)	working_dir="${OPTARG}"	;;
 		*)	cat <<EOB
 Usage: [DEBUG=yes] sudo $0 [-a] [-t <disk>]
-	-f          : Force fresh kernel tree creation
 	-b <branch> : Use specific remote branch
-Example: $0 -f
+	-c          : Compile fresh kernel image
+	-f          : Force fresh kernel tree creation/re-creation
+	-k          : Specify pre-built kernel image
+	-p          : Pack (wrap) kernel for ChromeBook firmware
+	-w          : Specify working directory
+Example: $0 -c -p -w .
 EOB
 			exit 1			;;
 	esac
@@ -66,11 +72,11 @@ if [ "${compile}" == "yes" ]; then
 	[ -z "${branch}" ] && echo "Invalid branch specified" && exit 255
 
 	# Checkout kernel
-	[ "${force}" == "yes" ] && mv -f "${kernel_build}" "${kernel_build}.old"
-	[ -d "${kernel_build}" ] || git clone --depth=1 -b ${branch} https://chromium.googlesource.com/chromiumos/third_party/kernel.git "${kernel_build}"
+	[ "${force}" == "yes" ] && mv -f "${working_dir}/${kernel_build}" "${working_dir}/${kernel_build}.old"
+	[ -d "${working_dir}/${kernel_build}" ] || git clone --depth=1 -b ${branch} https://chromium.googlesource.com/chromiumos/third_party/kernel.git "${working_dir}/${kernel_build}"
 
 	# Enter kernel tree
-	pushd "${kernel_build}"
+	pushd "${working_dir}/${kernel_build}"
 
 	# Fix kernel build on fresh distros
 	sed -i 's/fstack-protector-strong/fstack-protector/' arch/x86/Makefile
@@ -98,8 +104,8 @@ if [ "${compile}" == "yes" ]; then
 	popd
 
 	# Export kernel image
-	xz -9 -c "${kernel_build}/arch/x86/boot/bzImage" > "${kernel}.xz"
-	cp "${kernel_build}/.config" "${kernel}.config"
+	xz -9 -c "${working_dir}/${kernel_build}/arch/x86/boot/bzImage" > "${kernel}.xz"
+	cp "${working_dir}/${kernel_build}/.config" "${kernel}.config"
 fi
 
 if [ "${pack}" == "yes" ]; then

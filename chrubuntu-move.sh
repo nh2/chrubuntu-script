@@ -2,10 +2,10 @@
 #
 # Script to transfer Ubuntu to Chromebook's media
 #
-# Version 1.8
+# Version 1.9
 #
 # Copyright 2012-2013 Jay Lee
-# Copyright 2013-2014 Eugene San
+# Copyright 2013-2015 Eugene San
 #
 # Post install procedure:
 # https://github.com/darkknight1812/c710_ubuntu_pis/blob/master/install.sh
@@ -26,7 +26,7 @@ else
 fi
 
 # Generic settings
-release="parrot-c710-R39"
+release="parrot-c710-R41"
 
 # Default target specifications
 target_mnt="/tmp/urfs"
@@ -101,7 +101,7 @@ if [ "${no_format}" != "yes" ]; then
 	cgpt add -i 6 -b ${kern_start} -s ${kern_size} -S 1 -P 5 -l KERN-A -t "kernel" ${target_disk}
 
 	root_start=$((24 * 1024 * 1024 / 512)) # 24M
-	root_size=$((8 * 1024 * 1024 * 1024 / 512)) # 8GB
+	root_size=$((10 * 1024 * 1024 * 1024 / 512)) # 10GB
 	cgpt add -i 7 -b ${root_start} -s ${root_size} -l ROOT-A -t "rootfs" ${target_disk}
 
 	home_start=$((root_start + root_size))
