@@ -2,10 +2,10 @@
 #
 # Script to transfer Ubuntu to Chromebook's media
 #
-# Version 2.0
+# Version 2.1
 #
 # Copyright 2012-2013 Jay Lee
-# Copyright 2013-2015 Eugene San
+# Copyright 2013-2016 Eugene San
 #
 # Post install procedure:
 # https://github.com/darkknight1812/c710_ubuntu_pis/blob/master/install.sh
@@ -41,7 +41,7 @@ if [ ! $BASH_VERSION ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts u:nqt: opt; do
+while getopts iu:npqt: opt; do
 	case "$opt" in
 		n)	no_format="yes"
 		;;
@@ -53,12 +53,15 @@ while getopts u:nqt: opt; do
 				crypt_user="${OPTARG}"
 			fi
 		;;
+		p)	packages="yes"
+		;;
 		q)	no_sync="yes"
 		;;
 		*)	cat <<EOB
 Usage: sudo $0 [-u user1]...[-u userx] [-n] [-q] [-t <disk>]
 	-u : Specify user that will mount encrypted target home
 	-n : Skip partitioning and formatting
+	-p : Install target required packages on host
 	-q : Skip syncing
 	-t : Specify target disk
 Example: $0 -u user -n -t "/dev/sdb"
@@ -68,6 +71,13 @@ EOB
 	esac
 done
 
+if [ "${packages}" == "yes" ]; then
+	# Install target required packages on host
+	echo "Going to install target required packages on host!"
+	read -p "Press [Enter] to continue or CTRL+C to quit"
+	aptitude install cgpt vboot-kernel-utils parted rsync ecryptfs-utils libpam-mount lvm2 cpufrequtils thermald tlp tlp-rdw smartmontools ethtool synaptic
+fi
+
 # ChrUbuntu partitions configuration
 [ -z "${target_disk}" ] && echo "Invalid target specified" && exit 255
 target_kernel="${target_disk}6"
@@ -75,11 +85,11 @@ target_rootfs="${target_disk}7"
 target_homefs="${target_disk}1"
 
 # Sanity check target devices
-if mount | grep ${target_rootfs} > /dev/null; then
+if mount | grep ${target_disk} > /dev/null; then
 	echo "Found formatted and mounted ${target_rootfs}."
 	echo "Attemp to unmount will be made, but you continue on your own risk!"
 	read -p "Press [Enter] to continue or CTRL+C to quit"
-	set +e; umount ${target_mnt}/{dev/pts,dev,sys,proc,home,}
+	set +e; umount ${target_mnt}/{dev/pts,dev,sys,proc,home,} ${target_rootfs} ${target_homefs}
 fi
 set +e; cryptsetup luksClose home
 
@@ -100,7 +110,7 @@ if [ "${no_format}" != "yes" ]; then
 	cgpt add -i 6 -b ${kern_start} -s ${kern_size} -S 1 -P 5 -l KERN-A -t "kernel" ${target_disk}
 
 	root_start=$((24 * 1024 * 1024 / 512)) # 24M
-	root_size=$((10 * 1024 * 1024 * 1024 / 512)) # 10GB
+	root_size=$((16 * 1024 * 1024 * 1024 / 512)) # 16GB
 	cgpt add -i 7 -b ${root_start} -s ${root_size} -l ROOT-A -t "rootfs" ${target_disk}
 
 	home_start=$((root_start + root_size))
@@ -140,6 +150,11 @@ if [ "${no_format}" != "yes" ]; then
 	mkfs.ext4 ${target_homefs}
 else
 	if [ -n "${crypt_user}" ]; then
+		for user in ${crypt_users}; do
+			echo -e "Setting password for [${crypt_users}].\nUse different password for each user!.\nTo change password use: cryptsetup luksChangeKey.\n"
+			cryptsetup luksAddKey ${target_homefs}
+		done
+
 		cryptsetup luksOpen ${target_homefs} home
 		target_homefs="/dev/mapper/home"
 	fi
@@ -157,7 +172,7 @@ fi
 
 # Transferring host system to target
 if [ "${no_sync}" != "yes" ]; then
-	rsync -ax --exclude=/tmp/* --exclude=/var/cache/apt/archives/*.deb / /dev /home ${target_mnt}/
+	rsync -ax --delete --exclude=/tmp/* --exclude=/var/cache/apt/archives/*.deb / /dev /home ${target_mnt}/
 fi
 
 # Allow selected crypt user to mount home during login (libpam-mount is required)
@@ -177,28 +192,50 @@ chromeos_laptop
 cyapa
 EOF
 
+# Cleanup Xorg configs in case VM installed it's config
+pushd ${target_mnt}
+OLDIFS=${IFS}; IFS=" "
+for conf in usr/share/X11/xorg.conf.d/*; do
+	dpkg -S /${conf} || rm -v ${conf}
+done
+IFS=${OLDIFS}
+popd
+
 # Configure touchpad
 sed -i '18i Option "VertHysteresis" "10"' ${target_mnt}/usr/share/X11/xorg.conf.d/50-synaptics.conf
 sed -i '18i Option "HorizHysteresis" "10"' ${target_mnt}/usr/share/X11/xorg.conf.d/50-synaptics.conf
 sed -i '18i Option "FingerLow" "1"' ${target_mnt}/usr/share/X11/xorg.conf.d/50-synaptics.conf
 sed -i '18i Option "FingerHigh" "5"' ${target_mnt}/usr/share/X11/xorg.conf.d/50-synaptics.conf
 
-# Refresh H/W pinning
+# Cleanup H/W pinning
 rm -f ${target_mnt}/etc/udev/rules.d/*.rules
 
 # Keep some CromeOS partitions from showing/mounting
 udev_target=${target_disk:5}
-cat << 'EOF' | tee -a ${target_mnt}/etc/udev/rules.d/99-hide-disks.rules
+cat << 'EOF' | tee ${target_mnt}/etc/udev/rules.d/50-chrubuntu.rules
 KERNEL=="${udev_target}6" ENV{UDISKS_IGNORE}="1"
 EOF
 
 # Install kexec trigger to switch to Ubuntu kernel on first boot
 cat << 'EOF' | tee ${target_mnt}/etc/rcS.d/S00chrubuntu
-!/bin/sh
+#!/bin/sh
 
-test "x`uname -r`" = "x3.4.0" || exit 0
-service kexec-load stop
-service kexec stop
+if test "x`uname -r`" = "x3.4.0"; then
+	if test -r /boot/kexec.stamp; then
+		echo "Kexec stamp is still here, aborting..."
+		exit 255
+	else
+		echo "No Kexec stamp, switching to Ubuntu kernel..."
+		touch /boot/kexec.stamp
+		sync
+		service kexec-load stop
+		service kexec stop
+	fi
+else
+	echo "Kexec succeded, removing stamp..."
+	rm -f /boot/kexec.stamp
+	sync
+fi
 EOF
 chmod +x ${target_mnt}/etc/rcS.d/S00chrubuntu
 
@@ -220,7 +257,7 @@ cmdline=/tmp/${release}.kernel.cmdline
 
 # Prepare kernel comdline (stored original for reference)
 # console= loglevel=7 init=/sbin/init cros_secure oops=panic panic=-1 root=/dev/dm-1 rootwait ro dm_verity.error_behavior=3 dm_verity.max_bios=-1 dm_verity.dev_wait=1 dm="2 vboot none ro1,0 2545920 bootcache PARTUUID=%U/PARTNROFF=1 2545920 b9d6fa324c47bc0c0a3f96c9a16d9a317432aa9d 512 20000 100000, vroot none ro 1,0 2506752 verity payload=254:0 hashtree=254:0 hashstart=2506752 alg=sha1 root_hexdigest=24393ba8b75a7fd85d73c233ceee70af4e9087ef salt=b012108da6fdd54d3d603ae24fe371ef18e787f788224c19711643bf8cd2e9af" noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3
-echo "console=tty1 debug verbose root=${runtime_rootfs} rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic disablevmx=off runlevel=1" > $cmdline
+echo "console=tty1 root=${runtime_rootfs} rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap disablevmx=off runlevel=1" > $cmdline
 
 # Prepare and install ChromeOS kernel
 vbutil_kernel --pack ${kernel_ck} \
