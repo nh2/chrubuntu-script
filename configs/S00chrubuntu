@@ -1,0 +1,20 @@
+#!/bin/sh
+
+if test "x`uname -r`" = "x3.4.0"; then
+	if test -r /boot/kexec.stamp; then
+		echo "Kexec stamp is still here, aborting..."
+		exit 255
+	else
+		echo "No Kexec stamp, switching to Ubuntu kernel..."
+		touch /boot/kexec.stamp
+		sync
+		service kexec-load stop
+		service kexec stop
+	fi
+else
+	echo "Kexec succeded, removing stamp..."
+	rm -f /boot/kexec.stamp
+	sync
+	echo "Disabling Lid interrup..."
+	echo disable > /sys/firmware/acpi/interrupts/gpe1F
+fi
