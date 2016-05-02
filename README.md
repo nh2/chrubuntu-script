@@ -2,8 +2,7 @@ ChrUbuntu Scripts
 =================
 
 *** WARNING ***
-The following scripts are intented for use of expirienced users.
-Running those scripts might result in data loss, be warned!
+The following scripts are intented for use of expirienced users. Running those scripts might result in data loss, be warned!
 ***************
 
 This is a collection of scripts related to installation of Linux on Chromebooks, specifically on Acer C710 (parrot).
@@ -25,8 +24,7 @@ There are few possibilites for running Linux (not crouton etc) on those Chromebo
 5. Use "stock" kernel with customized config and use custom boot loader, petit-boot, kexec-loader and plopkexec found to be working.
 
 ***
-As of today (20160502), options 5 from above is available and it is the recommended options.
-It allows almost normal use of your Chromebook.
+As of today (20160502), options 5 from above is available and it is the recommended options. It allows almost normal use of your Chromebook.
 ***
 
 Quick start:
@@ -46,7 +44,7 @@ Here is the most simple procedure:
 
 ***
  Do not repartition your harddrive in any way during installtion process.
- If you with to use different disk layout, modify chrubuntu-format4linux.sh and re-format your harddrive.
+ If you wish to use different disk layout, modify chrubuntu-format4linux.sh and re-format your harddrive.
 ***
 
 Project contents
