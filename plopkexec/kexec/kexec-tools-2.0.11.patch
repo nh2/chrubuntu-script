@@ -1,0 +1,26 @@
+Compile kexec as static executable. By Elmar Hanlhofer
+
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -28,17 +28,17 @@
+ host		= @host@
+ 
+ # Compiler for building kexec
+-CC		= @CC@
+-CPP		= @CPP@
++CC		= @CC@ --static
++CPP		= @CPP@ --static
+ LD		= @LD@
+ AS		= @AS@
+ OBJCOPY		= @OBJCOPY@
+ AR		= @AR@
+ 
+ # C compiler for binaries to run during the build
+-BUILD_CC	= @BUILD_CC@
++BUILD_CC	= @BUILD_CC@ --static
+ BUILD_CFLAGS	= @BUILD_CFLAGS@
+-TARGET_CC	= @TARGET_CC@
++TARGET_CC	= @TARGET_CC@ --static
+ TARGET_LD	= @TARGET_LD@
+ TARGET_CFLAGS	= @TARGET_CFLAGS@
+ 

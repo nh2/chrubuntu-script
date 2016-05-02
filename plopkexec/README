@@ -1,0 +1,9 @@
+build.sh - automatic build script
+
+Directories:
+.build	- dynamic build directory
+floppy  - PlopKexec 0.3 for floppy version
+iso	- iso config
+kernel	- linux config
+kexec	- kexec patch
+plop	- PlopKexec program source code

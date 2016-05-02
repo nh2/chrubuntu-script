@@ -1,0 +1,101 @@
+2016-05-02 Version 1.4 released by Eugene Sanivsky (eugenesan)
+
+    * Rework build system
+    * Drop packaged Linux and Kexec sources, fetch them during build
+    * Move to latest LTS kernel (4.4.8)
+    * Fix kexec build, it was not fully static
+    * General cleanup (more left to do)
+    * Add support for dry run build for debug purposes
+    * Grub2 support for configs with variables by ignoring them
+    * Support BTRFS root subvolume in Grub2 (only Grub2 seems to support it)
+    * Support all filesystems provided by kernel as result hybrid iso/usb/live medias are now supported
+    * Drop x86 support
+    * Add support for kexec via syscall without kexec-tools (disabled due to "invalid argument" :-()
+
+
+2016-02-08 Version 1.3 released by Elmar Hanlhofer
+
+    * plopkexec.cfg searching in root directories was disabled.
+      Now it is enabled.
+
+
+2016-01-19 Version 1.2 released by Elmar Hanlhofer
+
+    * Added Syslinux configuration keyword LINUX.
+
+
+2015-12-01 Version 1.1 released by Elmar Hanlhofer
+
+    * Compile on x64.
+      g++ flags added.
+      Precompiled kexec.
+
+    * Menu rewritten from scratch.
+
+    * Device scan rewritten from scratch.
+
+    * Log view rewritten from scratch.
+
+    * DMESG logs added.
+
+    * Boot entry edit mode added.
+
+    * Syslinux scan updated.
+
+    * LILO scan added.
+
+    * Grub scan added.
+
+    * Grub2 scan added (no support for variables).
+
+    * Kernel updated to 4.3.
+
+    * IDE hard disk scan added.
+
+    * Timeout lower than 10 seconds are forced to 10 seconds. To give time 
+      for detection.
+
+    * Build script updated.
+
+    * Code cleanup.
+
+
+2015-01-17 Version 1.0 released by Elmar Hanlhofer
+
+    * Added scan for the configuration file plopkexec.cfg. Settings in this 
+      config file have the highest priority. The configuration commands are 
+      the same like syslinux config files.
+
+    * Support for syslinux configuration TIMEOUT added.
+
+    * Support for syslinux configuration DEFAULT added.
+
+    * Support for syslinux comments '#' added.
+
+    * Starting kexec with -x parameter.
+
+    * Kernel update to 3.18.2.
+
+    * Added default modules: Ext3/4, USB 3.0, PC-Card, PCI Express
+      This means a bigger PlopKexec file. The new file is too big to fit on a 
+      floppy.
+
+    * No floppy image. Users with floppys have to use version 0.3.
+
+    * Keyboard keys Page Up/Down and Home/End added for menu navigation.
+
+    * Mounting file systems in read-only mode.
+
+    * Bugfix: Mount fails on Ext3/4 file systems.
+              Identified and fixed by Roland Kletzing.
+
+    * Added a simple build script.
+
+    * Removing ^ hotkey from menu label
+
+    * Scan IDE CD/DVD drives
+
+
+2011-12-23 Version 0.3 released by Elmar Hanlhofer
+
+    * Initial release
