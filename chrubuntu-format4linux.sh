@@ -1,11 +1,9 @@
 #!/bin/bash -xe
 
 # Generic settings
-chromebook_arch="`uname -m`"
-branch="release-R50-7978.B-chromeos-3.8"
-release="parrot-R50-kplop"
+arch="`uname -m`"
+release="stock-4.4.8-plopkexec"
 kernel="$(dirname ${0})/images/${release}"
-kernel_build="${release}.build"
 working_dir="."
 
 target_disk="/dev/sdb"
