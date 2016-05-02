@@ -1,0 +1,1 @@
+cros_secure console=tty1 root=/dev/sda7 rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap disablevmx=off runlevel=1 verbose
