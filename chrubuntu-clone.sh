@@ -1,8 +1,10 @@
 #!/bin/bash -xe
 #
-# Script to transfer Ubuntu to Chromebook's media
+# Script to clone currently runing Ubuntu to Chromebook's media.
+# That involves: partitioning, formatting, installing bootfs, clonning and adapting current filesystem
+# chroboot is a minimal Ubuntu installation with petitboot as kexec bootloader
 #
-# Version 2.2
+# Version 2.3
 #
 # Copyright 2012-2013 Jay Lee
 # Copyright 2013-2016 Eugene San
@@ -24,9 +26,11 @@ working_dir="."
 chromebook_arch="`uname -m`"
 esp_part=12
 kernel_part=6
+bootfs_part=12 # 8
 rootfs_part=7
 homefs_part=1
 runtime_kernel="/dev/sda${kernel_part}"
+runtime_bootfs="/dev/sda${bootfs_part}"
 runtime_rootfs="/dev/sda${rootfs_part}"
 runtime_homefs="/dev/sda${homefs_part}"
 target_mnt="/tmp/urfs"
@@ -46,26 +50,31 @@ if [ ! $BASH_VERSION ]; then
 fi
 
 # Gather options from command line and set flags
-while getopts iu:fpqo:d:st opt; do
+while getopts cfhiu:pqt:d:sw opt; do
 	case "$opt" in
-		f)	no_format="yes";;
-		s)	no_sync="yes";;
-		k)	no_kernel="yes";;
-		t)	no_tweak="yes";;
-		o)	target_disk="${OPTARG}";;
-		u)	if [ -n "${crypt_user}" ]; then crypt_users="${crypt_users} ${OPTARG}"; else crypt_user="${OPTARG}"; fi;;
-		p)	packages="yes";;
+		c)	no_chroboot="yes";;
 		d)	working_dir="${OPTARG}";;
+		f)	no_format="yes";;
+		h)	no_sync_home="yes";;
+		k)	no_kernel="yes";;
+		t)	target_disk="${OPTARG}";;
+		p)	packages="yes";;
+		s)	no_sync="yes";;
+		w)	no_tweak="yes";;
+		u)	if [ -n "${crypt_user}" ]; then crypt_users="${crypt_users} ${OPTARG}"; else crypt_user="${OPTARG}"; fi;;
 		*)	cat <<EOB
 Usage: sudo $0 [-u user1]...[-u userx] [-n] [-q] [-t <disk>]
-	-f : Skip partitioning and formatting
-	-s : Skip syncing
-	-w : Skip tweaking
-	-p : Install target required packages on host
-	-u : Specify user that will mount encrypted target home
+	-c : Skip installing bootfs
 	-d : Specify working directory
-	-o : Specify target disk
-Example: $0 -u user -n -t "/dev/sdb"
+	-f : Skip partitioning and formatting
+	-h : Skip syncing home
+	-h : Skip packing and installing kernel
+	-t : Specify target disk
+	-p : Install target required packages on host
+	-s : Skip syncing rootfs
+	-w : Skip tweaking
+	-u : Specify user/s that will mount encrypted target home
+Example: $0 -u user -t "/dev/sdb"
 EOB
 			exit 1;;
 	esac
@@ -81,17 +90,25 @@ fi
 # ChrUbuntu partitions configuration
 [ -z "${target_disk}" ] && echo "Invalid target specified" && exit 255
 target_kernel="${target_disk}${kernel_part}"
+target_bootfs="${target_disk}${bootfs_part}"
 target_rootfs="${target_disk}${rootfs_part}"
 target_homefs="${target_disk}${homefs_part}"
 
 # Sanity check target devices
 if mount | grep ${target_disk} > /dev/null; then
-	echo "Found formatted and mounted ${target_rootfs}."
+	echo "Found one or more mounted partitions of ${target_rootfs}."
 	echo "Attemp to unmount will be made, but you continue on your own risk!"
 	read -p "Press [Enter] to continue or CTRL+C to quit"
-	set +e; umount ${target_mnt}/{dev/pts,dev,sys,proc,home,} ${target_rootfs} ${target_homefs}
+	set +e; umount ${target_mnt}/{dev/pts,dev,sys,proc,home,} ${target_bootfs} ${target_rootfs} ${target_homefs}
 fi
+
+# Close encrypted volume of target home, just in case
 set +e; cryptsetup luksClose chrohome
+
+# Print summary
+echo -e "Installer partitions: Kernel:[${target_kernel}], BootFS:[${target_mnt}.boot@${target_bootfs}|${runtime_bootfs}],"
+echo -e "RootFS: [${target_mnt}@${target_rootfs}|${runtime_rootfs}], Home:[${target_mnt}/home@${target_homefs}|${runtime_homefs}]\n"
+read -p "Press [Enter] to continue..."
 
 # Partitioning
 echo -e "Got ${target_disk} as target drive\n"
@@ -119,18 +136,24 @@ if [ "${no_format}" != "yes" ]; then
 	kern=16
 	kern_start=$((esp_start + esp_size))
 	kern_size=$((kern * 1024 * 1024 / 512))
-	cgpt add -i ${kernel_part} -b ${kern_start} -s ${kern_size} -S 1 -P 1 -l KERN-A -t "kernel" ${target_disk}
+	cgpt add -i ${kernel_part} -b ${kern_start} -s ${kern_size} -S 1 -P 1 -l KERN-C -t "kernel" ${target_disk}
+
+	# BootFS (256M)
+	boot=256
+	boot_start=$((kern_start + kern_size))
+	boot_size=$((boot * 1024 * 1024 / 512))
+	cgpt add -i ${bootfs_part} -b ${boot_start} -s ${boot_size} -S 1 -P 1 -l BOOT-C -t "rootfs" ${target_disk}
 
 	# RootFS (16GB)
 	rootfs=$((16 * 1024))
-	root_start=$((kern_start + kern_size))
+	root_start=$((boot_start + boot_size))
 	root_size=$((rootfs * 1024 * 1024 / 512))
-	cgpt add -i ${rootfs_part} -b ${root_start} -s ${root_size} -l ROOT-A -t "rootfs" ${target_disk}
+	cgpt add -i ${rootfs_part} -b ${root_start} -s ${root_size} -l ROOT-C -t "rootfs" ${target_disk}
 
-	# Home (Fill)
+	# Home (Remaining)
 	home_start=$((root_start + root_size))
 	home_size=$((ext_size - root_start - root_size - gpt_size))
-	cgpt add -i ${homefs_part} -b ${home_start} -s ${home_size} -l DATA-A -t "data" ${target_disk}
+	cgpt add -i ${homefs_part} -b ${home_start} -s ${home_size} -l DATA-C -t "data" ${target_disk}
 
 	sync
 	blockdev --rereadpt ${target_disk}
@@ -138,15 +161,13 @@ if [ "${no_format}" != "yes" ]; then
 else
 	echo -e "INFO: Partitioning skipped.\n"
 fi
-
-# Print summary
-echo -e "Installer partitions: Kernel:[${target_kernel}], RootFS: [${target_mnt}@${target_rootfs}|${runtime_rootfs}], Home:[${target_mnt}/home@${target_homefs}|${runtime_homefs}]\n"
-read -p "Press [Enter] to continue..."
-
 # Creating target filesystems
 if [ "${no_format}" != "yes" ]; then
+	# Format bootfs
+	mkfs.ext4 ${target_bootfs}
+
 	# Format rootfs
-	mkfs.ext4 ${target_rootfs}
+	mkfs.btrfs ${target_rootfs}
 
 	# Format home
 	if [ -n "${crypt_user}" ]; then
@@ -179,16 +200,29 @@ fi
 
 # Mounting target filesystems
 mkdir -p ${target_mnt}
-mount -t ext4 ${target_rootfs} ${target_mnt}
+mkdir -p ${target_mnt}.bootfs
+
+mount -t auto ${target_rootfs} ${target_mnt}
+mount -t auto ${target_bootfs} ${target_mnt}.bootfs
+
 if [ -n "${crypt_user}" ]; then
 	mkdir -p ${target_mnt}/home
 	mount -t ext4 ${target_homefs} ${target_mnt}/home
 fi
 
+# Transferring bootfs system to target
+if [ "${no_bootfs}" != "yes" ]; then
+	tar -C ${target_mnt}.bootfs -xpf bootfs.tar.xz
+fi
+
 # Transferring host system to target
 if [ "${no_sync}" != "yes" ]; then
 	rsync -ax --delete --exclude=/tmp/* --exclude=/var/cache/apt/archives/*.deb / /dev ${target_mnt}/
-	#rsync -ax --delete $(for user in ${crypt_user}; do echo " --exclude=/home/${user}/*"; done) /home/ ${target_mnt}/home/
+fi
+
+# Transferring host home to target
+if [ "${no_sync}" != "yes" ] && [ "${no_sync_home}" != "yes" ]; then
+	rsync -ax --delete $(for user in ${crypt_user}; do echo " --exclude=/home/${user}/*"; done) /home/ ${target_mnt}/home/
 fi
 
 # Tweak target system
@@ -204,11 +238,13 @@ if [ "${no_tweak}" != "yes" ]; then
 
 	# Enabled touchpad modules
 	cat << 'EOF' | tee -a /etc/modules
-	i2c_i801
-	i2c_dev
-	chromeos_laptop
-	cyapa
+i2c_i801
+i2c_dev
+chromeos_laptop
+cyapa
 EOF
+
+	# sed 's/blacklist i2c_i801/#blacklist i2c_i801/g' -i /etc/modprobe.d/blacklist.conf
 
 	# Cleanup Xorg configs in case VM installed it's config
 	pushd ${target_mnt}
@@ -231,34 +267,10 @@ EOF
 	# Keep some CromeOS partitions from showing/mounting
 	udev_target=${target_disk:5}
 	cat << 'EOF' | tee ${target_mnt}/etc/udev/rules.d/50-chrubuntu.rules
-	KERNEL=="${udev_target}6" ENV{UDISKS_IGNORE}="1"
+KERNEL=="${udev_target}6" ENV{UDISKS_IGNORE}="1"
 EOF
 
-	# Install kexec trigger to switch to Ubuntu kernel on first boot
-	cat << 'EOF' | tee ${target_mnt}/etc/rcS.d/S00chrubuntu
-	#!/bin/sh
-
-	if test "x`uname -r`" = "x3.4.0"; then
-		if test -r /boot/kexec.stamp; then
-			echo "Kexec stamp is still here, aborting..."
-			exit 255
-		else
-			echo "No Kexec stamp, switching to Ubuntu kernel..."
-			touch /boot/kexec.stamp
-			sync
-			service kexec-load stop
-			service kexec stop
-		fi
-	else
-		echo "Kexec succeded, removing stamp..."
-		rm -f /boot/kexec.stamp
-		sync
-	fi
-EOF
-	chmod +x ${target_mnt}/etc/rcS.d/S00chrubuntu
-
-	# Disabled LID interrupt to workaround cpu usage after lid closure
-	# (LID will stop working!)
+	# Disable LID interrupt to workaround cpu usage after lid closure (LID will stop working!)
 	sed -i 's/^exit\ 0/\necho\ disable\ >\ \/sys\/firmware\/acpi\/interrupts\/gpe1F\nexit\ 0/' ${target_mnt}/etc/rc.local
 
 	# Enabled energy savers
@@ -273,18 +285,11 @@ fi
 if [ "${no_kernel}" != "yes" ]; then
 	kernel_image=${working_dir}/images/${release}
 
-	if [ -r "${kernel_image}.cmdline_.orig.gz" ]; then
-		# Use original cmdline
-		zcat "${kernel_image}.cmdline.orig.gz" > ${kernel_image}.cmdline
-	else
-		# Prepare kernel cmdline
-		#echo "console=tty1 root=${runtime_rootfs} rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic disablevmx=off" > ${kernel_image}.cmdline
-		#echo "console=tty1 loglevel=7 oops=panic panic=-1 root=${runtime_rootfs} rootwait ro noinitrd vt.global_cursor_default=0 kern_guid=%U add_efi_memmap boot=local noresume noswap i915.modeset=1 tpm_tis.force=1 tpm_tis.interrupts=0 nmi_watchdog=panic,lapic iTCO_vendor_support.vendorsupport=3" > ${kernel_image}.cmdline
-		echo "cros_secure console=tty1 root=/dev/sda7 rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap disablevmx=off runlevel=1 verbose" > ${kernel_image}.cmdline
-	fi
-
 	# Unpack kernel image
 	[ -r "${kernel_image}" ] || xz -d -k "${kernel_image}.xz"
+
+	# Prepare kernel cmdline
+	[ -r "${kernel_image}.cmdline" ] || echo "console=tty1 root=/dev/sda${bootfs_part} rw" > ${kernel_image}.cmdline
 
 	# Make dummy bootloader stub
 	[ -r "${kernel_image}.bootstub.efi" ] || echo "dummy" > ${kernel_image}.bootstub.efi
@@ -310,11 +315,12 @@ fi
 sync
 
 echo -e "Installation seems to be complete.\n"
-read -p "Press [Enter] to unmount target device..."
 
+# Unmount filesystems
+read -p "Press [Enter] to unmount target device..."
 if [ -n "${crypt_user}" ]; then
 	umount ${target_mnt}/home
 	cryptsetup luksClose chrohome
 fi
 umount ${target_mnt}
-
+umount ${target_mnt}.bootfs
