@@ -15,8 +15,8 @@ https://dl.google.com/dl/edgedl/chromeos/recovery/recovery.conf?source=linux_rec
 Releases:
 https://cros-omahaproxy.appspot.com/
 
-Recovery image (R40):
-https://dl.google.com/dl/edgedl/chromeos/recovery/chromeos_6457.107.0_parrot_recovery_stable-channel_mp-v3.bin.zip
+Recovery images:
+R40 - https://dl.google.com/dl/edgedl/chromeos/recovery/chromeos_6457.107.0_parrot_recovery_stable-channel_mp-v3.bin.zip
+R41 - https://dl.google.com/dl/edgedl/chromeos/recovery/chromeos_6680.58.0_parrot_recovery_stable-channel_mp-v3.bin.zip
+R48 - https://dl.google.com/dl/edgedl/chromeos/recovery/chromeos_7647.84.0_parrot_recovery_stable-channel_mp-v3.bin.zip
 
-Recovery image (R41):
-https://dl.google.com/dl/edgedl/chromeos/recovery/chromeos_6680.58.0_parrot_recovery_stable-channel_mp-v3.bin.zip
