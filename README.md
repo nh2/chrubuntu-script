@@ -12,6 +12,9 @@ https://dl.google.com/dl/edgedl/chromeos/recovery/linux_recovery.sh
 Recovery script:
 https://dl.google.com/dl/edgedl/chromeos/recovery/recovery.conf?source=linux_recovery.sh
 
+Obtain the current kernel config:
+modprobe configs; zcat /proc/config.gz
+
 Releases:
 https://cros-omahaproxy.appspot.com/
 
