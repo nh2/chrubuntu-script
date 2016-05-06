@@ -3,7 +3,7 @@
 # Script to clone currently runing Ubuntu to Chromebook's media.
 # That involves: partitioning, formatting, installing kernel with plopkexe bootloader, clonning and adapting current filesystem
 #
-# Version 2.4
+# Version 2.5
 #
 # Copyright 2012-2013 Jay Lee
 # Copyright 2013-2016 Eugene San
@@ -12,12 +12,14 @@
 #
 # Depends on following packages: cgpt vboot-kernel-utils parted rsync libpam-mount cryptsetup
 
+shopt -s lastpipe           # Set *lastpipe* option
+#set +m                      # Disabling job control
+
 # Make sure we run as bash
 if [ ! $BASH_VERSION ]; then
 	echo "This script must be invoked in bash"
 	exit 1
 fi
-
 
 function help {
 	cat <<EOB
@@ -36,13 +38,14 @@ EOB
 	exit 255
 }
 
-
 # Generic settings
 arch="`uname -m`"
 release="stock-4.4.8-plopkexec"
 kernel_image="$(dirname ${0})/images/${release}"
 working_dir="."
 target_mnt="/tmp/chrubuntu"
+btrfs_mnt="/run/btrfs_mount"
+btrfs_mode="yes"
 
 # Default target specifications
 esp_part=1
@@ -88,14 +91,71 @@ if [ -z "${target_disk}" ] || [ ! -b "${target_disk}" ]; then
 	echo "Invalid target specified"
 	exit 255
 fi
+
+if [ ${btrfs_mode} == "yes" ]; then
+	# Parsing and preparing root
+	unset TARGET SOURCE FSTYPE OPTIONS SOURCE_VOL
+	#df --output=source,fstype / | read source_dev source_type
+	# TARGET="/"' 'SOURCE="/dev/sda2[/@]"' 'FSTYPE="btrfs"' 'OPTIONS="rw,relatime,compress=lzo,ssd_spread,discard,space_cache,subvolid=257,subvol=/@"'
+	eval `findmnt -P /`
+	# A-Z a-z 0-9 _ + . / = ! : # &.- (as of lvm version 2.02.78 the following)
+	if [ "${FSTYPE}" == "btrfs" ] && [[ /dev/sda3[/@] =~ (/dev/[A-Za-z0-9_+./=!:#&.-]+)\[(.+)\] ]]; then
+		SOURCE="${BASH_REMATCH[1]}"
+		SOURCE_VOL="${BASH_REMATCH[2]}"
+		for o in ${OPTIONS//,/ }; do 
+			[[ $o =~ subvol.*=[[:digit:]]+ ]] || zOPTIONS+="$o,"
+		done
+		OPTIONS=${zOPTIONS%,*}
+	else
+		echo "Couldn't fetch valid device name or/and volume for BTRFS [${SOURCE}]"
+		exit 1
+	fi
+	dev_rootfs="${SOURCE}"
+	dir_rootfs="${SOURCE_VOL}"
+	source_rootfs="${btrfs_mount}/rootfs"
+	mkdir ${source_rootfs}
+	mount -o ${OPTIONS},subvol=/ ${dev_rootfs} ${source_rootfs}
+	opts_rootfs="${OPTIONS},subvol=/"
+
+	# Parsing and preparing home
+	unset TARGET SOURCE FSTYPE OPTIONS SOURCE_VOL
+	#df --output=source,fstype / | read source_dev source_type
+	# TARGET="/"' 'SOURCE="/dev/sda2[/@]"' 'FSTYPE="btrfs"' 'OPTIONS="rw,relatime,compress=lzo,ssd_spread,discard,space_cache,subvolid=257,subvol=/@"'
+	eval `findmnt -P /home`
+	# A-Z a-z 0-9 _ + . / = ! : # &.- (as of lvm version 2.02.78 the following)
+	if [ "${FSTYPE}" == "btrfs" ] && [[ /dev/sda3[/@] =~ (/dev/[A-Za-z0-9_+./=!:#&.-]+)\[(.+)\] ]]; then
+		SOURCE="${BASH_REMATCH[1]}"
+		SOURCE_VOL="${BASH_REMATCH[2]}"
+		for o in ${OPTIONS//,/ }; do 
+			[[ $o =~ subvolid=[[:digit:]]+ ]] || zOPTIONS+="$o,"
+		done
+		OPTIONS=${zOPTIONS%,*}
+	else
+		echo "Couldn't fetch valid device name or/and volume for BTRFS [${SOURCE}]"
+		exit 1
+	fi
+	dev_homefs="${SOURCE}"
+	dir_homefs="${SOURCE_VOL}"
+	source_homefs="${btrfs_mount}/homefs"
+	mkdir ${source_homefs}
+	mount -o ${OPTIONS},subvol=/ ${dev_homefs} ${source_homefs}
+	opts_homefs="${OPTIONS},subvol=/"
+
+	echo "Working in BTRFS mode"
+else
+	source_rootfs="/"
+	source_homefs="/"
+	dir_rootfs="/"
+	dir_homefs="/home"
+
+	echo "Working in RSYNC mode"
+fi
+dir_esp="/boot/efi"
 target_esp="${target_disk}${esp_part}"
 target_lbp="${target_disk}${lbp_part}"
 target_kernel="${target_disk}${kernel_part}"
 target_rootfs="${target_disk}${rootfs_part}"
 target_homefs="${target_disk}${homefs_part}"
-dir_esp="/boot/efi"
-dir_rootfs="/"
-dir_homefs="/home"
 crypt_homefs="homefs_crypt"
 runtime_esp="${target_disk::7}a${esp_part}"
 runtime_kernel="${target_disk::7}a${kernel_part}"
@@ -207,20 +267,50 @@ else
 	fi
 fi
 
-# Mounting target filesystems
-mkdir -p ${target_mnt}${dir_rootfs}
-mount -t auto ${target_rootfs} ${target_mnt}
-mkdir -p ${target_mnt}${dir_esp} ${target_mnt}${dir_homefs} ${target_mnt}/tmp
-mount -t auto ${target_esp} ${target_mnt}${dir_esp}
-mount -t auto ${target_homefs} ${target_mnt}${dir_homefs}
+if [ ${btrfs_mode} == "yes" ]; then
+	# Mounting target filesystems
+	mkdir -p ${target_mnt}${dir_rootfs}
+	mount -t auto -o ${opts-rootfs} ${target_rootfs} ${target_mnt}
 
-# Transferring host system to target
-if [ "${no_sync}" != "yes" ]; then
-	rsync -ax --delete --exclude=/tmp/* --exclude=${dir_homefs} --exclude=/var/cache/apt/archives/*.deb ${dir_rootfs} /dev ${target_mnt}/
-	rsync -ax --delete ${dir_esp} ${target_mnt}/boot/
+	mkdir -p ${target_mnt}${dir_homefs}
+	mount -t auto -o ${opts-homefs} ${target_homefs} ${target_mnt}${dir_homefs}
 
-	# Transferring host home to target
-	[ "${no_sync_home}" == "yes" ] || rsync -ax --delete $(for folder in .ccache .gradle .wine Android Downloads Mobile Personal Public Temp; do echo " --exclude=/home/*/${folder}/*"; done) ${dir_homefs}/ ${target_mnt}${dir_homefs}/
+	# Transferring host system to target
+	if [ "${no_sync}" != "yes" ]; then
+		# Create readonly snapshot of rootfs
+		#btrfs property set -t subvol /media/tmp/@_ ro true
+		btrfs subvol snapshot -r ${source_rootfs}/${dir_rootfs}_ro
+
+		# Copt snapshot of rootfs to target
+		btrfs send ${source_rootfs}/${dir_rootfs}_ro | btrfs receive -v ${dir_rootfs}_ro ${target_mnt}/${dir_rootfs}
+
+		rsync -ax --delete --exclude=/tmp/* --exclude=${dir_homefs} --exclude=/var/cache/apt/archives/*.deb ${dir_rootfs}/ /dev ${target_mnt}${dir_rootfs}/
+
+		# Mount and sync ESP 
+		mkdir -p ${target_mnt}/${dir_rootfs}/${dir_esp}
+		mount -t auto ${target_esp} ${target_mnt}/${dir_rootfs}/${dir_esp}
+		rsync -ax --delete ${dir_esp}/ ${target_mnt}/${dir_rootfs}/${dir_esp}/
+
+		# Transferring host home to target
+		[ "${no_sync_home}" == "yes" ] || rsync -ax --delete $(for folder in .ccache .gradle .wine Android Downloads Mobile Personal Public Temp; do echo " --exclude=/home/*/${folder}/*"; done) ${dir_homefs}/ ${target_mnt}${dir_homefs}/
+	fi
+else
+	# Mounting target filesystems
+	mkdir -p ${target_mnt}${dir_rootfs}
+	mount -t auto ${target_rootfs} ${target_mnt}
+
+	mkdir -p ${target_mnt}${dir_esp} ${target_mnt}${dir_homefs} ${target_mnt}/tmp
+	mount -t auto ${target_esp} ${target_mnt}${dir_esp}
+	mount -t auto ${target_homefs} ${target_mnt}${dir_homefs}
+
+	# Transferring host system to target
+	if [ "${no_sync}" != "yes" ]; then
+		rsync -ax --delete --exclude=/tmp/* --exclude=${dir_homefs} --exclude=/var/cache/apt/archives/*.deb ${dir_rootfs}/ /dev ${target_mnt}${dir_rootfs}/
+		rsync -ax --delete ${dir_esp}/ ${target_mnt}/${dir_rootfs}/${dir_esp}/
+
+		# Transferring host home to target
+		[ "${no_sync_home}" == "yes" ] || rsync -ax --delete $(for folder in .ccache .gradle .wine Android Downloads Mobile Personal Public Temp; do echo " --exclude=/home/*/${folder}/*"; done) ${dir_homefs}/ ${target_mnt}${dir_homefs}/
+	fi
 fi
 
 # Tweak target system
@@ -252,6 +342,9 @@ if [ "${no_tweak}" != "yes" ]; then
 
 	# Allow network-manager to manage interfaces
 	sed -i 's/^auto\ eth/#auto\ eth/' ${target_mnt}/etc/network/interfaces
+
+	# Replace UUID for fstab and grub on target
+	# TODO
 fi
 
 # Install chrome kernel
