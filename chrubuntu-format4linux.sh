@@ -3,37 +3,37 @@
 # Generic settings
 arch="`uname -m`"
 release="stock-4.4.8-plopkexec"
-kernel="$(dirname ${0})/images/${release}"
+kernel_image="$(dirname ${0})/images/${release}"
 working_dir="."
 
 target_disk="/dev/sdb"
-bgp_part=1
-esp_part=12
+esp_part=1
+lbp_part=12
 kernel_part=2
 rootfs_part=3
 homefs_part=4
 
 # Unpack kernel
-[ -r "${kernel}" ] || xzcat "${kernel}.xz" > "${kernel}"
+[ -r "${kernel_image}" ] || xz -d -k  "${kernel_image}.xz"
 
 # Make dummy bootloader stub
-[ -r "${kernel}.bootstub.efi" ] || echo "dummy" > ${kernel}.bootstub.efi
+[ -r "${kernel_image}.bootstub.efi" ] || echo "dummy" > ${kernel_image}.bootstub.efi
 
 # Make comdline
-[ -r "${kernel}.cmdline" ] || echo "dummy" > ${kernel}.cmdline
+[ -r "${kernel_image}.cmdline" ] || echo "dummy" > ${kernel_image}.cmdline
 
 # Pack kernel in ChromeOS format
-[ -r "${kernel}.ck" ] || ./futility vbutil_kernel --pack ${kernel}.ck \
+[ -r "${kernel_image}.ck" ] || ./futility vbutil_kernel --pack ${kernel_image}.ck \
 	--keyblock /usr/share/vboot/devkeys/kernel.keyblock \
 	--signprivate /usr/share/vboot/devkeys/kernel_data_key.vbprivk \
-	--config ${kernel}.cmdline \
-	--bootloader ${kernel}.bootstub.efi \
-	--vmlinuz ${kernel} \
+	--config ${kernel_image}.cmdline \
+	--bootloader ${kernel_image}.bootstub.efi \
+	--vmlinuz ${kernel_image} \
 	--arch x86 \
 	--version 1
 
 # Make sure the new kernel verifies OK.
-vbutil_kernel --verbose --verify ${kernel}.ck
+vbutil_kernel --verbose --verify ${kernel_image}.ck
 
 sudo cgpt show ${target_disk} || true
 
@@ -54,19 +54,19 @@ ext_size="`sudo blockdev --getsz ${target_disk}`"
 gpt=1
 gpt_size=$((gpt * 1024 * 1024 / 512))
 
-# GRUB [Bios GRUB] (16M)
-bgp=16
-bgp_start=$((gpt_size))
-bgp_size=$((bgp * 1024 * 1024 / 512))
-sudo cgpt add -i ${bgp_part} -b ${bgp_start} -s ${bgp_size} -l BIOS-GRUB -t "data" ${target_disk}
-sudo parted ${target_disk} set ${bgp_part} bios_grub on
-sudo parted ${target_disk} set ${bgp_part} legacy_boot on
-
 # ESP [EFI System Partition] (255M)
 esp=255
-esp_start=$((bgp_start + bgp_size))
+esp_start=$((gpt_size))
 esp_size=$((esp * 1024 * 1024 / 512))
 sudo cgpt add -i ${esp_part} -b ${esp_start} -s ${esp_size} -l EFI-SYSTEM -t "efi" ${target_disk}
+
+# GRUB [Bios GRUB] (16M)
+lbp=16
+lbp_start=$((esp_start + esp_size))
+lbp_size=$((lbp * 1024 * 1024 / 512))
+sudo cgpt add -i ${lbp_part} -b ${lbp_start} -s ${lbp_size} -l BIOS-GRUB -t "data" ${target_disk}
+sudo parted ${target_disk} set ${lbp_part} bios_grub on
+sudo parted ${target_disk} set ${lbp_part} legacy_boot on
 
 # Chrome Kernel (16M)
 kern=16
@@ -100,7 +100,7 @@ sudo cryptsetup luksOpen ${target_disk}${homefs_part} homefs
 sudo mkfs.btrfs -L "homefs" /dev/mapper/homefs
 
 # Install kernel
-sudo dd if=${kernel}.ck of=${target_disk}${kernel_part}
+sudo dd if=${kernel_image}.ck of=${target_disk}${kernel_part}
 
 # Sync
 sync
