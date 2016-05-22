@@ -1,0 +1,1526 @@
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Initializing cgroup subsys cpu
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Linux version 3.4.0 (seugene@gandalf603) (gcc version 4.8.2 (Ubuntu 4.8.2-19ubuntu1) ) #2 SMP Sun Nov 2 11:58:57 IST 2014
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Command line: cros_secure  console=tty1 root=/dev/sda7 rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap disablevmx=off runlevel=1 
+Apr 14 18:03:26 chrosan kernel: [    0.000000] BIOS-provided physical RAM map:
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000000000000 - 0000000000001000 type 16
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000000001000 - 00000000000a0000 (usable)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 00000000000a0000 - 0000000000100000 (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000000100000 - 0000000000f00000 (usable)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000000f00000 - 0000000001000000 (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000001000000 - 0000000020000000 (usable)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000020000000 - 0000000020200000 (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000020200000 - 0000000040000000 (usable)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000040000000 - 0000000040200000 (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000040200000 - 00000000acec0000 (usable)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 00000000acec0000 - 00000000ad000000 type 16
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 00000000ad000000 - 00000000afa00000 (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 00000000f0000000 - 00000000f4000000 (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  BIOS-e820: 0000000100000000 - 000000014f600000 (usable)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] NX (Execute Disable) protection: active
+Apr 14 18:03:26 chrosan kernel: [    0.000000] DMI present.
+Apr 14 18:03:26 chrosan kernel: [    0.000000] DMI: GOOGLE Parrot, BIOS Google_Parrot.2685.37.0 09/10/2012
+Apr 14 18:03:26 chrosan kernel: [    0.000000] e820 update range: 0000000000000000 - 0000000000010000 (usable) ==> (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] e820 remove range: 00000000000a0000 - 0000000000100000 (usable)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] No AGP bridge found
+Apr 14 18:03:26 chrosan kernel: [    0.000000] last_pfn = 0x14f600 max_arch_pfn = 0x400000000
+Apr 14 18:03:26 chrosan kernel: [    0.000000] MTRR default type: uncachable
+Apr 14 18:03:26 chrosan kernel: [    0.000000] MTRR fixed ranges enabled:
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   00000-9FFFF write-back
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   A0000-FFFFF uncachable
+Apr 14 18:03:26 chrosan kernel: [    0.000000] MTRR variable ranges enabled:
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   0 base 000000000 mask F80000000 write-back
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   1 base 080000000 mask FE0000000 write-back
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   2 base 0A0000000 mask FF0000000 write-back
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   3 base 0AD000000 mask FFF000000 uncachable
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   4 base 0AE000000 mask FFE000000 uncachable
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   5 base 100000000 mask FC0000000 write-back
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   6 base 140000000 mask FF0000000 write-back
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   7 base 14F600000 mask FFFE00000 uncachable
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   8 disabled
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   9 disabled
+Apr 14 18:03:26 chrosan kernel: [    0.000000] x86 PAT enabled: cpu 0, old 0x7040600070406, new 0x7010600070106
+Apr 14 18:03:26 chrosan kernel: [    0.000000] e820 update range: 00000000ad000000 - 0000000100000000 (usable) ==> (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] e820 update range: 000000014f600000 - 000000014f800000 (usable) ==> (reserved)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] last_pfn = 0xacec0 max_arch_pfn = 0x400000000
+Apr 14 18:03:26 chrosan kernel: [    0.000000] initial memory mapped : 0 - 20000000
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Base memory trampoline at [ffff88000009b000] 9b000 size 20480
+Apr 14 18:03:26 chrosan kernel: [    0.000000] reserving inaccessible SNB gfx pages
+Apr 14 18:03:26 chrosan kernel: [    0.000000] init_memory_mapping: 0000000000000000-00000000acec0000
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  0000000000 - 00ace00000 page 2M
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  00ace00000 - 00acec0000 page 4k
+Apr 14 18:03:26 chrosan kernel: [    0.000000] kernel direct mapping tables up to acec0000 @ 1fffb000-20000000
+Apr 14 18:03:26 chrosan kernel: [    0.000000] init_memory_mapping: 0000000100000000-000000014f600000
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  0100000000 - 014f600000 page 2M
+Apr 14 18:03:26 chrosan kernel: [    0.000000] kernel direct mapping tables up to 14f600000 @ aceb9000-acec0000
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: RSDP 00000000000f0000 00024 (v02 CORE  )
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: XSDT 00000000aced12e0 0004C (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: FACP 00000000aced4530 000F4 (v03 CORE   COREBOOT 00000000 CORE 00000001)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: DSDT 00000000aced1450 030E0 (v02 COREv4 COREBOOT 20110725 INTL 20090123)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: FACS 00000000aced1410 00040
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: HPET 00000000aced4630 00038 (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: APIC 00000000aced4670 0005C (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: MCFG 00000000aced46d0 0003C (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: SSDT 00000000aced55c0 00818 (v02 CORE   COREBOOT 0000002A CORE 0000002A)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: Local APIC address 0xfee00000
+Apr 14 18:03:26 chrosan kernel: [    0.000000]  [ffffea0000000000-ffffea00053fffff] PMD -> [ffff88014ac00000-ffff88014ebfffff] on node 0
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Zone PFN ranges:
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   DMA      0x00000010 -> 0x00001000
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   DMA32    0x00001000 -> 0x00100000
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   Normal   0x00100000 -> 0x0014f600
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Movable zone start PFN for each node
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Early memory PFN ranges
+Apr 14 18:03:26 chrosan kernel: [    0.000000]     0: 0x00000010 -> 0x000000a0
+Apr 14 18:03:26 chrosan kernel: [    0.000000]     0: 0x00000100 -> 0x00000f00
+Apr 14 18:03:26 chrosan kernel: [    0.000000]     0: 0x00001000 -> 0x00020000
+Apr 14 18:03:26 chrosan kernel: [    0.000000]     0: 0x00020200 -> 0x00040000
+Apr 14 18:03:26 chrosan kernel: [    0.000000]     0: 0x00040200 -> 0x000acec0
+Apr 14 18:03:26 chrosan kernel: [    0.000000]     0: 0x00100000 -> 0x0014f600
+Apr 14 18:03:26 chrosan kernel: [    0.000000] On node 0 totalpages: 1032016
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   DMA zone: 64 pages used for memmap
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   DMA zone: 144 pages reserved
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   DMA zone: 3520 pages, LIFO batch:0
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   DMA32 zone: 16320 pages used for memmap
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   DMA32 zone: 686848 pages, LIFO batch:31
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   Normal zone: 5080 pages used for memmap
+Apr 14 18:03:26 chrosan kernel: [    0.000000]   Normal zone: 320040 pages, LIFO batch:31
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: PM-Timer IO Port: 0x508
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: Local APIC address 0xfee00000
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: LAPIC (acpi_id[0x00] lapic_id[0x00] enabled)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: LAPIC (acpi_id[0x01] lapic_id[0x02] enabled)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: IOAPIC (id[0x02] address[0xfec00000] gsi_base[0])
+Apr 14 18:03:26 chrosan kernel: [    0.000000] IOAPIC[0]: apic_id 2, version 32, address 0xfec00000, GSI 0-23
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 high level)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: IRQ0 used by override.
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: IRQ2 used by override.
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: IRQ9 used by override.
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Using ACPI (MADT) for SMP configuration information
+Apr 14 18:03:26 chrosan kernel: [    0.000000] ACPI: HPET id: 0x8086a201 base: 0xfed00000
+Apr 14 18:03:26 chrosan kernel: [    0.000000] SMP: Allowing 2 CPUs, 0 hotplug CPUs
+Apr 14 18:03:26 chrosan kernel: [    0.000000] nr_irqs_gsi: 40
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Allocating PCI resources starting at afa00000 (gap: afa00000:40600000)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] setup_percpu: NR_CPUS:4 nr_cpumask_bits:4 nr_cpu_ids:2 nr_node_ids:1
+Apr 14 18:03:26 chrosan kernel: [    0.000000] PERCPU: Embedded 26 pages/cpu @ffff88014f200000 s77312 r8192 d20992 u1048576
+Apr 14 18:03:26 chrosan kernel: [    0.000000] pcpu-alloc: s77312 r8192 d20992 u1048576 alloc=1*2097152
+Apr 14 18:03:26 chrosan kernel: [    0.000000] pcpu-alloc: [0] 0 1 
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Built 1 zonelists in Zone order, mobility grouping on.  Total pages: 1010408
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Kernel command line: cros_secure  console=tty1 root=/dev/sda7 rw i915.modeset=1 add_efi_memmap noinitrd noresume noswap disablevmx=off runlevel=1 
+Apr 14 18:03:26 chrosan kernel: [    0.000000] PID hash table entries: 4096 (order: 3, 32768 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] xsave/xrstor: enabled xstate_bv 0x3, cntxt size 0x240
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Checking aperture...
+Apr 14 18:03:26 chrosan kernel: [    0.000000] No AGP bridge found
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Memory: 3979016k/5494784k available (4289k kernel code, 1366720k absent, 149048k reserved, 4496k data, 628k init)
+Apr 14 18:03:26 chrosan kernel: [    0.000000] SLUB: Genslabs=15, HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Hierarchical RCU implementation.
+Apr 14 18:03:26 chrosan kernel: [    0.000000] 	CONFIG_RCU_FANOUT set to non-default value of 32
+Apr 14 18:03:26 chrosan kernel: [    0.000000] NR_IRQS:4352 nr_irqs:512 16
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Console: colour dummy device 80x25
+Apr 14 18:03:26 chrosan kernel: [    0.000000] console [tty1] enabled
+Apr 14 18:03:26 chrosan kernel: [    0.000000] hpet clockevent registered
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Initial TSC value: 5382924098
+Apr 14 18:03:26 chrosan kernel: [    0.000000] Fast TSC calibration using PIT
+Apr 14 18:03:26 chrosan kernel: [    0.001000] Initial usec timer 4906949
+Apr 14 18:03:26 chrosan kernel: [    0.001000] Detected 1097.493 MHz processor.
+Apr 14 18:03:26 chrosan kernel: [    0.000004] Calibrating delay loop (skipped), value calculated using timer frequency.. 2194.98 BogoMIPS (lpj=1097493)
+Apr 14 18:03:26 chrosan kernel: [    0.000019] pid_max: default: 32768 minimum: 301
+Apr 14 18:03:26 chrosan kernel: [    0.000070] Security Framework initialized
+Apr 14 18:03:26 chrosan kernel: [    0.000079] Yama: becoming mindful.
+Apr 14 18:03:26 chrosan kernel: [    0.000115] Mount-cache hash table entries: 256
+Apr 14 18:03:26 chrosan kernel: [    0.000449] Initializing cgroup subsys freezer
+Apr 14 18:03:26 chrosan kernel: [    0.000488] CPU: Physical Processor ID: 0
+Apr 14 18:03:26 chrosan kernel: [    0.000494] CPU: Processor Core ID: 0
+Apr 14 18:03:26 chrosan kernel: [    0.000506] mce: CPU supports 7 MCE banks
+Apr 14 18:03:26 chrosan kernel: [    0.000530] CPU0: Thermal monitoring enabled (TM1)
+Apr 14 18:03:26 chrosan kernel: [    0.000547] using mwait in idle threads.
+Apr 14 18:03:26 chrosan kernel: [    0.000656] ACPI: Core revision 20120320
+Apr 14 18:03:26 chrosan kernel: [    0.005703] acpi_enable!
+Apr 14 18:03:26 chrosan kernel: [    0.007773] ACPI mode enable smi_command = 0xb2 val = 0xe1
+Apr 14 18:03:26 chrosan kernel: [    0.007784] ftrace: allocating 19986 entries in 79 pages
+Apr 14 18:03:26 chrosan kernel: [    0.032231] ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+Apr 14 18:03:26 chrosan kernel: [    0.042243] CPU0: Intel(R) Celeron(R) CPU 847 @ 1.10GHz stepping 07
+Apr 14 18:03:26 chrosan kernel: [    0.143833] Performance Events: PEBS fmt1+, 16-deep LBR, SandyBridge events, Intel PMU driver.
+Apr 14 18:03:26 chrosan kernel: [    0.143851] PEBS disabled due to CPU errata.
+Apr 14 18:03:26 chrosan kernel: [    0.143859] ... version:                3
+Apr 14 18:03:26 chrosan kernel: [    0.143863] ... bit width:              48
+Apr 14 18:03:26 chrosan kernel: [    0.143868] ... generic registers:      8
+Apr 14 18:03:26 chrosan kernel: [    0.143873] ... value mask:             0000ffffffffffff
+Apr 14 18:03:26 chrosan kernel: [    0.143879] ... max period:             000000007fffffff
+Apr 14 18:03:26 chrosan kernel: [    0.143884] ... fixed-purpose events:   3
+Apr 14 18:03:26 chrosan kernel: [    0.143888] ... event mask:             00000007000000ff
+Apr 14 18:03:26 chrosan kernel: [    0.144109] NMI watchdog: enabled, takes one hw-pmu counter.
+Apr 14 18:03:26 chrosan kernel: [    0.144263] Booting Node   0, Processors  #1 Ok.
+Apr 14 18:03:26 chrosan kernel: [    0.157526] NMI watchdog: enabled, takes one hw-pmu counter.
+Apr 14 18:03:26 chrosan kernel: [    0.157579] Brought up 2 CPUs
+Apr 14 18:03:26 chrosan kernel: [    0.157586] Total of 2 processors activated (4389.97 BogoMIPS).
+Apr 14 18:03:26 chrosan kernel: [    0.159678] devtmpfs: initialized
+Apr 14 18:03:26 chrosan kernel: [    0.161763] RTC time: 22:03:23, date: 04/14/16
+Apr 14 18:03:26 chrosan kernel: [    0.161846] NET: Registered protocol family 16
+Apr 14 18:03:26 chrosan kernel: [    0.162401] ACPI: bus type pci registered
+Apr 14 18:03:26 chrosan kernel: [    0.162471] PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf0000000-0xf3ffffff] (base 0xf0000000)
+Apr 14 18:03:26 chrosan kernel: [    0.162483] PCI: MMCONFIG at [mem 0xf0000000-0xf3ffffff] reserved in E820
+Apr 14 18:03:26 chrosan kernel: [    0.178086] PCI: Using configuration type 1 for base access
+Apr 14 18:03:26 chrosan kernel: [    0.180186] bio: create slab <bio-0> at 0
+Apr 14 18:03:26 chrosan kernel: [    0.180304] ACPI: Added _OSI(Module Device)
+Apr 14 18:03:26 chrosan kernel: [    0.180312] ACPI: Added _OSI(Processor Device)
+Apr 14 18:03:26 chrosan kernel: [    0.180318] ACPI: Added _OSI(3.0 _SCP Extensions)
+Apr 14 18:03:26 chrosan kernel: [    0.180324] ACPI: Added _OSI(Processor Aggregator Device)
+Apr 14 18:03:26 chrosan kernel: [    0.182011] ACPI: EC: Look up EC in DSDT
+Apr 14 18:03:26 chrosan kernel: [    0.186427] ACPI: Interpreter enabled
+Apr 14 18:03:26 chrosan kernel: [    0.186437] ACPI: (supports S0 S3 S5)
+Apr 14 18:03:26 chrosan kernel: [    0.186474] ACPI: Using IOAPIC for interrupt routing
+Apr 14 18:03:26 chrosan kernel: [    0.192414] ACPI: EC: GPE = 0x17, I/O: command/status = 0x66, data = 0x62
+Apr 14 18:03:26 chrosan kernel: [    0.192644] ACPI: No dock devices found.
+Apr 14 18:03:26 chrosan kernel: [    0.192653] PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+Apr 14 18:03:26 chrosan kernel: [    0.192824] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+Apr 14 18:03:26 chrosan kernel: [    0.193028] pci_root PNP0A08:00: host bridge window [io  0x0000-0x0cf7]
+Apr 14 18:03:26 chrosan kernel: [    0.193036] pci_root PNP0A08:00: host bridge window [io  0x0d00-0xffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193044] pci_root PNP0A08:00: host bridge window [mem 0x000a0000-0x000bffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193052] pci_root PNP0A08:00: host bridge window [mem 0x000c0000-0x000c3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193060] pci_root PNP0A08:00: host bridge window [mem 0x000c4000-0x000c7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193068] pci_root PNP0A08:00: host bridge window [mem 0x000c8000-0x000cbfff]
+Apr 14 18:03:26 chrosan kernel: [    0.193076] pci_root PNP0A08:00: host bridge window [mem 0x000cc000-0x000cffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193083] pci_root PNP0A08:00: host bridge window [mem 0x000d0000-0x000d3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193091] pci_root PNP0A08:00: host bridge window [mem 0x000d4000-0x000d7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193099] pci_root PNP0A08:00: host bridge window [mem 0x000d8000-0x000dbfff]
+Apr 14 18:03:26 chrosan kernel: [    0.193107] pci_root PNP0A08:00: host bridge window [mem 0x000dc000-0x000dffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193115] pci_root PNP0A08:00: host bridge window [mem 0x000e0000-0x000e3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193123] pci_root PNP0A08:00: host bridge window [mem 0x000e4000-0x000e7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193131] pci_root PNP0A08:00: host bridge window [mem 0x000e8000-0x000ebfff]
+Apr 14 18:03:26 chrosan kernel: [    0.193139] pci_root PNP0A08:00: host bridge window [mem 0x000ec000-0x000effff]
+Apr 14 18:03:26 chrosan kernel: [    0.193147] pci_root PNP0A08:00: host bridge window [mem 0x000f0000-0x000fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193155] pci_root PNP0A08:00: host bridge window [mem 0xafa00001-0xfebfffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193163] pci_root PNP0A08:00: host bridge window [mem 0xfed40000-0xfed44fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193179] pci_root PNP0A08:00: ignoring host bridge window [mem 0x000cc000-0x000cffff] (conflicts with Video ROM [mem 0x000c0000-0x000cedff])
+Apr 14 18:03:26 chrosan kernel: [    0.193242] PCI host bridge to bus 0000:00
+Apr 14 18:03:26 chrosan kernel: [    0.193249] pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7]
+Apr 14 18:03:26 chrosan kernel: [    0.193256] pci_bus 0000:00: root bus resource [io  0x0d00-0xffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193263] pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193269] pci_bus 0000:00: root bus resource [mem 0x000c0000-0x000c3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193276] pci_bus 0000:00: root bus resource [mem 0x000c4000-0x000c7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193283] pci_bus 0000:00: root bus resource [mem 0x000c8000-0x000cbfff]
+Apr 14 18:03:26 chrosan kernel: [    0.193290] pci_bus 0000:00: root bus resource [mem 0x000d0000-0x000d3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193297] pci_bus 0000:00: root bus resource [mem 0x000d4000-0x000d7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193307] pci_bus 0000:00: root bus resource [mem 0x000d8000-0x000dbfff]
+Apr 14 18:03:26 chrosan kernel: [    0.193314] pci_bus 0000:00: root bus resource [mem 0x000dc000-0x000dffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193321] pci_bus 0000:00: root bus resource [mem 0x000e0000-0x000e3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193328] pci_bus 0000:00: root bus resource [mem 0x000e4000-0x000e7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193335] pci_bus 0000:00: root bus resource [mem 0x000e8000-0x000ebfff]
+Apr 14 18:03:26 chrosan kernel: [    0.193342] pci_bus 0000:00: root bus resource [mem 0x000ec000-0x000effff]
+Apr 14 18:03:26 chrosan kernel: [    0.193349] pci_bus 0000:00: root bus resource [mem 0x000f0000-0x000fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193356] pci_bus 0000:00: root bus resource [mem 0xafa00001-0xfebfffff]
+Apr 14 18:03:26 chrosan kernel: [    0.193363] pci_bus 0000:00: root bus resource [mem 0xfed40000-0xfed44fff]
+Apr 14 18:03:26 chrosan kernel: [    0.193382] pci 0000:00:00.0: [8086:0104] type 00 class 0x060000
+Apr 14 18:03:26 chrosan kernel: [    0.193452] pci 0000:00:02.0: [8086:0106] type 00 class 0x030000
+Apr 14 18:03:26 chrosan kernel: [    0.193475] pci 0000:00:02.0: reg 10: [mem 0xe0000000-0xe03fffff 64bit]
+Apr 14 18:03:26 chrosan kernel: [    0.193488] pci 0000:00:02.0: reg 18: [mem 0xd0000000-0xdfffffff 64bit pref]
+Apr 14 18:03:26 chrosan kernel: [    0.193497] pci 0000:00:02.0: reg 20: [io  0x1000-0x103f]
+Apr 14 18:03:26 chrosan kernel: [    0.193622] pci 0000:00:1a.0: [8086:1e2d] type 00 class 0x0c0320
+Apr 14 18:03:26 chrosan kernel: [    0.193662] pci 0000:00:1a.0: reg 10: [mem 0xe0705800-0xe0705bff]
+Apr 14 18:03:26 chrosan kernel: [    0.193838] pci 0000:00:1a.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.193890] pci 0000:00:1b.0: [8086:1e20] type 00 class 0x040300
+Apr 14 18:03:26 chrosan kernel: [    0.193923] pci 0000:00:1b.0: reg 10: [mem 0xe0700000-0xe0703fff 64bit]
+Apr 14 18:03:26 chrosan kernel: [    0.194073] pci 0000:00:1b.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.194119] pci 0000:00:1c.0: [8086:1e12] type 01 class 0x060400
+Apr 14 18:03:26 chrosan kernel: [    0.194278] pci 0000:00:1c.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.194326] pci 0000:00:1c.1: [8086:1e14] type 01 class 0x060400
+Apr 14 18:03:26 chrosan kernel: [    0.194485] pci 0000:00:1c.1: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.194551] pci 0000:00:1d.0: [8086:1e26] type 00 class 0x0c0320
+Apr 14 18:03:26 chrosan kernel: [    0.194591] pci 0000:00:1d.0: reg 10: [mem 0xe0705c00-0xe0705fff]
+Apr 14 18:03:26 chrosan kernel: [    0.194761] pci 0000:00:1d.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.194806] pci 0000:00:1f.0: [8086:1e5f] type 00 class 0x060100
+Apr 14 18:03:26 chrosan kernel: [    0.195026] pci 0000:00:1f.2: [8086:1e03] type 00 class 0x010601
+Apr 14 18:03:26 chrosan kernel: [    0.195069] pci 0000:00:1f.2: reg 10: [io  0x1060-0x1067]
+Apr 14 18:03:26 chrosan kernel: [    0.195087] pci 0000:00:1f.2: reg 14: [io  0x1070-0x1073]
+Apr 14 18:03:26 chrosan kernel: [    0.195105] pci 0000:00:1f.2: reg 18: [io  0x1068-0x106f]
+Apr 14 18:03:26 chrosan kernel: [    0.195123] pci 0000:00:1f.2: reg 1c: [io  0x1074-0x1077]
+Apr 14 18:03:26 chrosan kernel: [    0.195141] pci 0000:00:1f.2: reg 20: [io  0x1040-0x105f]
+Apr 14 18:03:26 chrosan kernel: [    0.195159] pci 0000:00:1f.2: reg 24: [mem 0xe0705000-0xe07057ff]
+Apr 14 18:03:26 chrosan kernel: [    0.195266] pci 0000:00:1f.2: PME# supported from D3hot
+Apr 14 18:03:26 chrosan kernel: [    0.195306] pci 0000:00:1f.3: [8086:1e22] type 00 class 0x0c0500
+Apr 14 18:03:26 chrosan kernel: [    0.195339] pci 0000:00:1f.3: reg 10: [mem 0xe0706000-0xe07060ff 64bit]
+Apr 14 18:03:26 chrosan kernel: [    0.195387] pci 0000:00:1f.3: reg 20: [io  0x0400-0x041f]
+Apr 14 18:03:26 chrosan kernel: [    0.195459] pci 0000:00:1f.6: [8086:1e24] type 00 class 0x118000
+Apr 14 18:03:26 chrosan kernel: [    0.195498] pci 0000:00:1f.6: reg 10: [mem 0xe0704000-0xe0704fff 64bit]
+Apr 14 18:03:26 chrosan kernel: [    0.195769] pci 0000:01:00.0: [168c:0034] type 00 class 0x028000
+Apr 14 18:03:26 chrosan kernel: [    0.195838] pci 0000:01:00.0: reg 10: [mem 0xe0400000-0xe047ffff 64bit]
+Apr 14 18:03:26 chrosan kernel: [    0.195996] pci 0000:01:00.0: reg 30: [mem 0xe0480000-0xe048ffff pref]
+Apr 14 18:03:26 chrosan kernel: [    0.196158] pci 0000:01:00.0: supports D1 D2
+Apr 14 18:03:26 chrosan kernel: [    0.196162] pci 0000:01:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.197863] pci 0000:00:1c.0: PCI bridge to [bus 01-01]
+Apr 14 18:03:26 chrosan kernel: [    0.197883] pci 0000:00:1c.0:   bridge window [mem 0xe0400000-0xe04fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.198061] pci 0000:02:00.0: [14e4:16b5] type 00 class 0x020000
+Apr 14 18:03:26 chrosan kernel: [    0.198129] pci 0000:02:00.0: reg 10: [mem 0xe0500000-0xe050ffff 64bit pref]
+Apr 14 18:03:26 chrosan kernel: [    0.198184] pci 0000:02:00.0: reg 18: [mem 0xe0510000-0xe051ffff 64bit pref]
+Apr 14 18:03:26 chrosan kernel: [    0.198284] pci 0000:02:00.0: reg 30: [mem 0xe0600000-0xe06007ff pref]
+Apr 14 18:03:26 chrosan kernel: [    0.198475] pci 0000:02:00.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.198600] pci 0000:02:00.1: [14e4:16bc] type 00 class 0x080501
+Apr 14 18:03:26 chrosan kernel: [    0.198668] pci 0000:02:00.1: reg 10: [mem 0xe0520000-0xe052ffff 64bit pref]
+Apr 14 18:03:26 chrosan kernel: [    0.198999] pci 0000:02:00.1: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:26 chrosan kernel: [    0.200880] pci 0000:00:1c.1: PCI bridge to [bus 02-02]
+Apr 14 18:03:26 chrosan kernel: [    0.200899] pci 0000:00:1c.1:   bridge window [mem 0xe0600000-0xe06fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.200915] pci 0000:00:1c.1:   bridge window [mem 0xe0500000-0xe05fffff 64bit pref]
+Apr 14 18:03:26 chrosan kernel: [    0.200948] pci_bus 0000:00: on NUMA node 0
+Apr 14 18:03:26 chrosan kernel: [    0.200954] ACPI: PCI Interrupt Routing Table [\_SB_.PCI0._PRT]
+Apr 14 18:03:26 chrosan kernel: [    0.201159] ACPI: PCI Interrupt Routing Table [\_SB_.PCI0.RP01._PRT]
+Apr 14 18:03:26 chrosan kernel: [    0.201635] ACPI: PCI Interrupt Routing Table [\_SB_.PCI0.RP02._PRT]
+Apr 14 18:03:26 chrosan kernel: [    0.202189]  pci0000:00: Requesting ACPI _OSC control (0x1d)
+Apr 14 18:03:26 chrosan kernel: [    0.202246]  pci0000:00: ACPI _OSC control (0x1d) granted
+Apr 14 18:03:26 chrosan kernel: [    0.206202] ACPI: PCI Interrupt Link [LNKA] (IRQs 1 3 4 5 6 7 10 12 14 15) *11, disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.206295] ACPI: PCI Interrupt Link [LNKB] (IRQs 1 3 4 5 6 7 11 12 14 15) *10, disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.206382] ACPI: PCI Interrupt Link [LNKC] (IRQs 1 3 4 5 6 7 10 12 14 15) *11, disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.206467] ACPI: PCI Interrupt Link [LNKD] (IRQs 1 3 4 5 6 7 *11 12 14 15), disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.206552] ACPI: PCI Interrupt Link [LNKE] (IRQs 1 3 4 5 6 7 10 12 14 15) *11, disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.206636] ACPI: PCI Interrupt Link [LNKF] (IRQs 1 3 4 5 6 7 11 12 14 15) *0, disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.206721] ACPI: PCI Interrupt Link [LNKG] (IRQs 1 3 4 5 6 7 10 12 14 15) *0, disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.206806] ACPI: PCI Interrupt Link [LNKH] (IRQs 1 3 4 5 6 7 11 12 14 15) *0, disabled.
+Apr 14 18:03:26 chrosan kernel: [    0.207018] SCSI subsystem initialized
+Apr 14 18:03:26 chrosan kernel: [    0.207086] libata version 3.00 loaded.
+Apr 14 18:03:26 chrosan kernel: [    0.207164] usbcore: registered new interface driver usbfs
+Apr 14 18:03:26 chrosan kernel: [    0.207193] usbcore: registered new interface driver hub
+Apr 14 18:03:26 chrosan kernel: [    0.207242] usbcore: registered new device driver usb
+Apr 14 18:03:26 chrosan kernel: [    0.207425] chromeos_acpi: registering CHSW 0
+Apr 14 18:03:26 chrosan kernel: [    0.207715] chromeos_acpi: registering VBNV 0
+Apr 14 18:03:26 chrosan kernel: [    0.207723] chromeos_acpi: registering VBNV 1
+Apr 14 18:03:26 chrosan kernel: [    0.208114] chromeos_acpi: truncating buffer from 3072 to 1336
+Apr 14 18:03:26 chrosan kernel: [    0.208447] chromeos_acpi: installed
+Apr 14 18:03:26 chrosan kernel: [    0.208452] chromeos_acpi: chromeos_acpi: enabling S3 USB wake
+Apr 14 18:03:26 chrosan kernel: [    0.208500] Advanced Linux Sound Architecture Driver Version 1.0.25.
+Apr 14 18:03:26 chrosan kernel: [    0.208506] PCI: Using ACPI for IRQ routing
+Apr 14 18:03:26 chrosan kernel: [    0.212258] PCI: pci_cache_line_size set to 64 bytes
+Apr 14 18:03:26 chrosan kernel: [    0.212379] reserve RAM buffer: 00000000acec0000 - 00000000afffffff 
+Apr 14 18:03:26 chrosan kernel: [    0.212385] reserve RAM buffer: 000000014f600000 - 000000014fffffff 
+Apr 14 18:03:26 chrosan kernel: [    0.212743] hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0, 0, 0, 0, 0, 0
+Apr 14 18:03:26 chrosan kernel: [    0.212761] hpet0: 8 comparators, 64-bit 14.318180 MHz counter
+Apr 14 18:03:26 chrosan kernel: [    0.214796] Switching to clocksource hpet
+Apr 14 18:03:26 chrosan kernel: [    0.226817] pnp: PnP ACPI init
+Apr 14 18:03:26 chrosan kernel: [    0.226859] ACPI: bus type pnp registered
+Apr 14 18:03:26 chrosan kernel: [    0.226919] pnp 00:00: [irq 16]
+Apr 14 18:03:26 chrosan kernel: [    0.226928] pnp 00:00: [irq 20]
+Apr 14 18:03:26 chrosan kernel: [    0.226981] pnp 00:00: Plug and Play ACPI device, IDs PNP0c0e (active)
+Apr 14 18:03:26 chrosan kernel: [    0.227124] pnp 00:01: [bus 00-ff]
+Apr 14 18:03:26 chrosan kernel: [    0.227129] pnp 00:01: [io  0x0000-0x0cf7 window]
+Apr 14 18:03:26 chrosan kernel: [    0.227133] pnp 00:01: [io  0x0cf8-0x0cff]
+Apr 14 18:03:26 chrosan kernel: [    0.227136] pnp 00:01: [io  0x0d00-0xffff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227140] pnp 00:01: [mem 0x000a0000-0x000bffff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227144] pnp 00:01: [mem 0x000c0000-0x000c3fff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227148] pnp 00:01: [mem 0x000c4000-0x000c7fff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227151] pnp 00:01: [mem 0x000c8000-0x000cbfff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227155] pnp 00:01: [mem 0x000cc000-0x000cffff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227161] pnp 00:01: [mem 0x000d0000-0x000d3fff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227165] pnp 00:01: [mem 0x000d4000-0x000d7fff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227168] pnp 00:01: [mem 0x000d8000-0x000dbfff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227172] pnp 00:01: [mem 0x000dc000-0x000dffff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227176] pnp 00:01: [mem 0x000e0000-0x000e3fff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227179] pnp 00:01: [mem 0x000e4000-0x000e7fff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227183] pnp 00:01: [mem 0x000e8000-0x000ebfff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227187] pnp 00:01: [mem 0x000ec000-0x000effff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227190] pnp 00:01: [mem 0x000f0000-0x000fffff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227194] pnp 00:01: [mem 0xafa00001-0xfebfffff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227198] pnp 00:01: [mem 0xfed40000-0xfed44fff window]
+Apr 14 18:03:26 chrosan kernel: [    0.227280] pnp 00:01: Plug and Play ACPI device, IDs PNP0a08 PNP0a03 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.227317] pnp 00:02: [mem 0xfed1c000-0xfed1ffff]
+Apr 14 18:03:26 chrosan kernel: [    0.227321] pnp 00:02: [mem 0xfed10000-0xfed13fff]
+Apr 14 18:03:26 chrosan kernel: [    0.227324] pnp 00:02: [mem 0xfed18000-0xfed18fff]
+Apr 14 18:03:26 chrosan kernel: [    0.227328] pnp 00:02: [mem 0xfed19000-0xfed19fff]
+Apr 14 18:03:26 chrosan kernel: [    0.227331] pnp 00:02: [mem 0xf0000000-0xf3ffffff]
+Apr 14 18:03:26 chrosan kernel: [    0.227334] pnp 00:02: [mem 0xfed20000-0xfed3ffff]
+Apr 14 18:03:26 chrosan kernel: [    0.227338] pnp 00:02: [mem 0xfed40000-0xfed44fff]
+Apr 14 18:03:26 chrosan kernel: [    0.227341] pnp 00:02: [mem 0xfed45000-0xfed8ffff]
+Apr 14 18:03:26 chrosan kernel: [    0.227344] pnp 00:02: [mem 0x00f00000-0x00ffffff]
+Apr 14 18:03:26 chrosan kernel: [    0.227348] pnp 00:02: [mem 0x20000000-0x201fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.227351] pnp 00:02: [mem 0x40000000-0x401fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.227422] system 00:02: [mem 0xfed1c000-0xfed1ffff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227432] system 00:02: [mem 0xfed10000-0xfed13fff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227439] system 00:02: [mem 0xfed18000-0xfed18fff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227447] system 00:02: [mem 0xfed19000-0xfed19fff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227455] system 00:02: [mem 0xf0000000-0xf3ffffff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227462] system 00:02: [mem 0xfed20000-0xfed3ffff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227470] system 00:02: [mem 0xfed40000-0xfed44fff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227477] system 00:02: [mem 0xfed45000-0xfed8ffff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227485] system 00:02: [mem 0x00f00000-0x00ffffff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227492] system 00:02: [mem 0x20000000-0x201fffff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227500] system 00:02: [mem 0x40000000-0x401fffff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.227508] system 00:02: Plug and Play ACPI device, IDs PNP0c02 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228048] pnp 00:03: [io  0x0000-0x001f]
+Apr 14 18:03:26 chrosan kernel: [    0.228052] pnp 00:03: [io  0x0081-0x0091]
+Apr 14 18:03:26 chrosan kernel: [    0.228055] pnp 00:03: [io  0x0093-0x009f]
+Apr 14 18:03:26 chrosan kernel: [    0.228058] pnp 00:03: [io  0x00c0-0x00df]
+Apr 14 18:03:26 chrosan kernel: [    0.228062] pnp 00:03: [dma 4]
+Apr 14 18:03:26 chrosan kernel: [    0.228123] pnp 00:03: Plug and Play ACPI device, IDs PNP0200 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228139] pnp 00:04: [mem 0xff000000-0xffffffff]
+Apr 14 18:03:26 chrosan kernel: [    0.228192] pnp 00:04: Plug and Play ACPI device, IDs INT0800 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228315] pnp 00:05: [mem 0xfed00000-0xfed003ff]
+Apr 14 18:03:26 chrosan kernel: [    0.228401] system 00:05: [mem 0xfed00000-0xfed003ff] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.228411] system 00:05: Plug and Play ACPI device, IDs PNP0103 PNP0c01 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228431] pnp 00:06: [io  0x00f0]
+Apr 14 18:03:26 chrosan kernel: [    0.228441] pnp 00:06: [irq 13]
+Apr 14 18:03:26 chrosan kernel: [    0.228499] pnp 00:06: Plug and Play ACPI device, IDs PNP0c04 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228518] pnp 00:07: [io  0x002e-0x002f]
+Apr 14 18:03:26 chrosan kernel: [    0.228521] pnp 00:07: [io  0x004e-0x004f]
+Apr 14 18:03:26 chrosan kernel: [    0.228524] pnp 00:07: [io  0x0061]
+Apr 14 18:03:26 chrosan kernel: [    0.228527] pnp 00:07: [io  0x0063]
+Apr 14 18:03:26 chrosan kernel: [    0.228529] pnp 00:07: [io  0x0065]
+Apr 14 18:03:26 chrosan kernel: [    0.228532] pnp 00:07: [io  0x0067]
+Apr 14 18:03:26 chrosan kernel: [    0.228535] pnp 00:07: [io  0x0080]
+Apr 14 18:03:26 chrosan kernel: [    0.228538] pnp 00:07: [io  0x0092]
+Apr 14 18:03:26 chrosan kernel: [    0.228541] pnp 00:07: [io  0x00b2-0x00b3]
+Apr 14 18:03:26 chrosan kernel: [    0.228544] pnp 00:07: [io  0x0500-0x057f]
+Apr 14 18:03:26 chrosan kernel: [    0.228547] pnp 00:07: [io  0x0480-0x04bf]
+Apr 14 18:03:26 chrosan kernel: [    0.228627] system 00:07: [io  0x0500-0x057f] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.228635] system 00:07: [io  0x0480-0x04bf] has been reserved
+Apr 14 18:03:26 chrosan kernel: [    0.228643] system 00:07: Plug and Play ACPI device, IDs PNP0c02 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228660] pnp 00:08: [io  0x0070-0x0077]
+Apr 14 18:03:26 chrosan kernel: [    0.228717] pnp 00:08: Plug and Play ACPI device, IDs PNP0b00 (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228751] pnp 00:09: [io  0x0060]
+Apr 14 18:03:26 chrosan kernel: [    0.228754] pnp 00:09: [io  0x0064]
+Apr 14 18:03:26 chrosan kernel: [    0.228762] pnp 00:09: [irq 1]
+Apr 14 18:03:26 chrosan kernel: [    0.228835] pnp 00:09: Plug and Play ACPI device, IDs PNP0303 PNP030b (active)
+Apr 14 18:03:26 chrosan kernel: [    0.228879] pnp: PnP ACPI: found 10 devices
+Apr 14 18:03:26 chrosan kernel: [    0.228886] ACPI: ACPI bus type pnp unregistered
+Apr 14 18:03:26 chrosan kernel: [    0.236485] pci 0000:00:1c.0: PCI bridge to [bus 01-01]
+Apr 14 18:03:26 chrosan kernel: [    0.236501] pci 0000:00:1c.0:   bridge window [mem 0xe0400000-0xe04fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236521] pci 0000:00:1c.1: PCI bridge to [bus 02-02]
+Apr 14 18:03:26 chrosan kernel: [    0.236534] pci 0000:00:1c.1:   bridge window [mem 0xe0600000-0xe06fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236546] pci 0000:00:1c.1:   bridge window [mem 0xe0500000-0xe05fffff 64bit pref]
+Apr 14 18:03:26 chrosan kernel: [    0.236595] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7]
+Apr 14 18:03:26 chrosan kernel: [    0.236599] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236603] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236607] pci_bus 0000:00: resource 7 [mem 0x000c0000-0x000c3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.236611] pci_bus 0000:00: resource 8 [mem 0x000c4000-0x000c7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.236614] pci_bus 0000:00: resource 9 [mem 0x000c8000-0x000cbfff]
+Apr 14 18:03:26 chrosan kernel: [    0.236618] pci_bus 0000:00: resource 10 [mem 0x000d0000-0x000d3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.236622] pci_bus 0000:00: resource 11 [mem 0x000d4000-0x000d7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.236626] pci_bus 0000:00: resource 12 [mem 0x000d8000-0x000dbfff]
+Apr 14 18:03:26 chrosan kernel: [    0.236630] pci_bus 0000:00: resource 13 [mem 0x000dc000-0x000dffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236634] pci_bus 0000:00: resource 14 [mem 0x000e0000-0x000e3fff]
+Apr 14 18:03:26 chrosan kernel: [    0.236637] pci_bus 0000:00: resource 15 [mem 0x000e4000-0x000e7fff]
+Apr 14 18:03:26 chrosan kernel: [    0.236641] pci_bus 0000:00: resource 16 [mem 0x000e8000-0x000ebfff]
+Apr 14 18:03:26 chrosan kernel: [    0.236645] pci_bus 0000:00: resource 17 [mem 0x000ec000-0x000effff]
+Apr 14 18:03:26 chrosan kernel: [    0.236649] pci_bus 0000:00: resource 18 [mem 0x000f0000-0x000fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236653] pci_bus 0000:00: resource 19 [mem 0xafa00001-0xfebfffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236657] pci_bus 0000:00: resource 20 [mem 0xfed40000-0xfed44fff]
+Apr 14 18:03:26 chrosan kernel: [    0.236661] pci_bus 0000:01: resource 1 [mem 0xe0400000-0xe04fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236665] pci_bus 0000:02: resource 1 [mem 0xe0600000-0xe06fffff]
+Apr 14 18:03:26 chrosan kernel: [    0.236669] pci_bus 0000:02: resource 2 [mem 0xe0500000-0xe05fffff 64bit pref]
+Apr 14 18:03:26 chrosan kernel: [    0.236738] NET: Registered protocol family 2
+Apr 14 18:03:26 chrosan kernel: [    0.236842] IP route cache hash table entries: 131072 (order: 8, 1048576 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.237198] TCP established hash table entries: 262144 (order: 10, 4194304 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.238443] TCP bind hash table entries: 65536 (order: 9, 2097152 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.239519] TCP: Hash tables configured (established 262144 bind 65536)
+Apr 14 18:03:26 chrosan kernel: [    0.239529] TCP: reno registered
+Apr 14 18:03:26 chrosan kernel: [    0.239545] UDP hash table entries: 2048 (order: 5, 196608 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.239644] UDP-Lite hash table entries: 2048 (order: 5, 196608 bytes)
+Apr 14 18:03:26 chrosan kernel: [    0.239867] NET: Registered protocol family 1
+Apr 14 18:03:26 chrosan kernel: [    0.239895] pci 0000:00:02.0: Boot video device
+Apr 14 18:03:26 chrosan kernel: [    0.240061] PCI: CLS 64 bytes, default 64
+Apr 14 18:03:26 chrosan kernel: [    0.240135] PCI-DMA: Using software bounce buffering for IO (SWIOTLB)
+Apr 14 18:03:26 chrosan kernel: [    0.240144] Placing 64MB software IO TLB between ffff8800a8eb9000 - ffff8800aceb9000
+Apr 14 18:03:26 chrosan kernel: [    0.240152] software IO TLB at phys 0xa8eb9000 - 0xaceb9000
+Apr 14 18:03:26 chrosan kernel: [    0.240914] microcode: CPU0 sig=0x206a7, pf=0x10, revision=0x28
+Apr 14 18:03:26 chrosan kernel: [    0.240933] microcode: CPU1 sig=0x206a7, pf=0x10, revision=0x28
+Apr 14 18:03:26 chrosan kernel: [    0.240980] microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+Apr 14 18:03:26 chrosan kernel: [    0.244814] msgmni has been set to 7771
+Apr 14 18:03:26 chrosan kernel: [    0.245275] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 253)
+Apr 14 18:03:26 chrosan kernel: [    0.245285] io scheduler noop registered
+Apr 14 18:03:26 chrosan kernel: [    0.245290] io scheduler deadline registered
+Apr 14 18:03:26 chrosan kernel: [    0.245380] io scheduler cfq registered (default)
+Apr 14 18:03:26 chrosan kernel: [    0.245565] pcieport 0000:00:1c.0: irq 40 for MSI/MSI-X
+Apr 14 18:03:26 chrosan kernel: [    0.245773] pcieport 0000:00:1c.1: irq 41 for MSI/MSI-X
+Apr 14 18:03:26 chrosan kernel: [    0.245959] pcieport 0000:00:1c.0: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:26 chrosan kernel: [    0.245968] pci 0000:01:00.0: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:26 chrosan kernel: [    0.245980] pcie_pme 0000:00:1c.0:pcie01: service driver pcie_pme loaded
+Apr 14 18:03:26 chrosan kernel: [    0.246014] pcieport 0000:00:1c.1: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:26 chrosan kernel: [    0.246022] pci 0000:02:00.0: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:26 chrosan kernel: [    0.246028] pci 0000:02:00.1: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:26 chrosan kernel: [    0.246039] pcie_pme 0000:00:1c.1:pcie01: service driver pcie_pme loaded
+Apr 14 18:03:26 chrosan kernel: [    0.246064] pci_hotplug: PCI Hot Plug PCI Core version: 0.5
+Apr 14 18:03:26 chrosan kernel: [    0.246103] pciehp: PCI Express Hot Plug Controller Driver version: 0.4
+Apr 14 18:03:26 chrosan kernel: [    0.246766] ACPI: AC Adapter [AC] (off-line)
+Apr 14 18:03:26 chrosan kernel: [    0.247099] input: Lid Switch as /devices/LNXSYSTM:00/device:00/PNP0C0D:00/input/input0
+Apr 14 18:03:26 chrosan kernel: [    0.247286] ACPI: Lid Switch [LID0]
+Apr 14 18:03:26 chrosan kernel: [    0.247366] input: Power Button as /devices/LNXSYSTM:00/device:00/PNP0C0C:00/input/input1
+Apr 14 18:03:26 chrosan kernel: [    0.247378] ACPI: Power Button [PWRB]
+Apr 14 18:03:26 chrosan kernel: [    0.247451] input: Sleep Button as /devices/LNXSYSTM:00/device:00/PNP0C0E:00/input/input2
+Apr 14 18:03:26 chrosan kernel: [    0.247462] ACPI: Sleep Button [TPAD]
+Apr 14 18:03:26 chrosan kernel: [    0.247547] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input3
+Apr 14 18:03:26 chrosan kernel: [    0.247557] ACPI: Power Button [PWRF]
+Apr 14 18:03:26 chrosan kernel: [    0.248140] input: Video Bus as /devices/LNXSYSTM:00/device:00/PNP0A08:00/LNXVIDEO:00/input/input4
+Apr 14 18:03:26 chrosan kernel: [    0.248154] ACPI: Video Device [GFX0] (multi-head: yes  rom: no  post: no)
+Apr 14 18:03:26 chrosan kernel: [    0.248209] ACPI: Requesting acpi_cpufreq
+Apr 14 18:03:26 chrosan kernel: [    0.248561] Monitor-Mwait will be used to enter C-1 state
+Apr 14 18:03:26 chrosan kernel: [    0.248598] Monitor-Mwait will be used to enter C-2 state
+Apr 14 18:03:26 chrosan kernel: [    0.248631] Monitor-Mwait will be used to enter C-3 state
+Apr 14 18:03:26 chrosan kernel: [    0.248657] ACPI: acpi_idle registered with cpuidle
+Apr 14 18:03:26 chrosan kernel: [    0.254242] thermal LNXTHERM:00: registered as thermal_zone0
+Apr 14 18:03:26 chrosan kernel: [    0.254251] ACPI: Thermal Zone [THRM] (0 C)
+Apr 14 18:03:26 chrosan kernel: [    0.257423] Non-volatile memory driver v1.3
+Apr 14 18:03:26 chrosan kernel: [    0.257500] Linux agpgart interface v0.103
+Apr 14 18:03:26 chrosan kernel: [    0.257604] agpgart-intel 0000:00:00.0: Intel Sandybridge Chipset
+Apr 14 18:03:26 chrosan kernel: [    0.257770] agpgart-intel 0000:00:00.0: detected gtt size: 2097152K total, 262144K mappable
+Apr 14 18:03:26 chrosan kernel: [    0.259021] agpgart-intel 0000:00:00.0: detected 32768K stolen memory
+Apr 14 18:03:26 chrosan kernel: [    0.259256] agpgart-intel 0000:00:00.0: AGP aperture is 256M @ 0xd0000000
+Apr 14 18:03:26 chrosan kernel: [    0.259360] [drm] Initialized drm 1.1.0 20060810
+Apr 14 18:03:26 chrosan kernel: [    0.259847] i915 0000:00:02.0: setting latency timer to 64
+Apr 14 18:03:26 chrosan kernel: [    0.265743] ACPI: Battery Slot [BATX] (battery present)
+Apr 14 18:03:26 chrosan kernel: [    0.339332] i915 0000:00:02.0: irq 42 for MSI/MSI-X
+Apr 14 18:03:26 chrosan kernel: [    0.339349] [drm] Supports vblank timestamp caching Rev 1 (10.10.2010).
+Apr 14 18:03:26 chrosan kernel: [    0.339358] [drm] Driver supports precise vblank timestamp query.
+Apr 14 18:03:26 chrosan kernel: [    0.353084] [drm] Adding LVDS downclock mode
+Apr 14 18:03:26 chrosan kernel: [    0.667767] [drm] Enabling RC6 states: RC6 on, RC6p off, RC6pp off
+Apr 14 18:03:26 chrosan kernel: [    0.734057] [drm] Adding LVDS downclock mode
+Apr 14 18:03:26 chrosan kernel: [    0.776551] fbcon: inteldrmfb (fb0) is primary device
+Apr 14 18:03:26 chrosan kernel: [    1.018995] Console: switching to colour frame buffer device 170x48
+Apr 14 18:03:26 chrosan kernel: [    1.026459] fb0: inteldrmfb frame buffer device
+Apr 14 18:03:26 chrosan kernel: [    1.026461] drm: registered panic notifier
+Apr 14 18:03:26 chrosan kernel: [    1.026573] [drm] Initialized i915 1.6.0 20080730 for 0000:00:02.0 on minor 0
+Apr 14 18:03:26 chrosan kernel: [    1.027836] loop: module loaded
+Apr 14 18:03:26 chrosan kernel: [    1.027975] ahci 0000:00:1f.2: version 3.0
+Apr 14 18:03:26 chrosan kernel: [    1.028065] ahci 0000:00:1f.2: irq 43 for MSI/MSI-X
+Apr 14 18:03:26 chrosan kernel: [    1.028112] ahci: SSS flag set, parallel bus scan disabled
+Apr 14 18:03:26 chrosan kernel: [    1.028205] ahci 0000:00:1f.2: AHCI 0001.0300 32 slots 4 ports 6 Gbps 0x1 impl SATA mode
+Apr 14 18:03:26 chrosan kernel: [    1.028299] ahci 0000:00:1f.2: flags: 64bit ncq sntf ilck stag pm led clo pio slum part apst 
+Apr 14 18:03:26 chrosan kernel: [    1.028398] ahci 0000:00:1f.2: setting latency timer to 64
+Apr 14 18:03:26 chrosan kernel: [    1.028973] scsi0 : ahci
+Apr 14 18:03:26 chrosan kernel: [    1.029145] scsi1 : ahci
+Apr 14 18:03:26 chrosan kernel: [    1.029290] scsi2 : ahci
+Apr 14 18:03:26 chrosan kernel: [    1.029429] scsi3 : ahci
+Apr 14 18:03:26 chrosan kernel: [    1.029607] ata1: SATA max UDMA/133 abar m2048@0xe0705000 port 0xe0705100 irq 43
+Apr 14 18:03:26 chrosan kernel: [    1.029691] ata2: DUMMY
+Apr 14 18:03:26 chrosan kernel: [    1.029721] ata3: DUMMY
+Apr 14 18:03:26 chrosan kernel: [    1.029751] ata4: DUMMY
+Apr 14 18:03:26 chrosan kernel: [    1.030044] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+Apr 14 18:03:26 chrosan kernel: [    1.030163] ehci_hcd 0000:00:1a.0: setting latency timer to 64
+Apr 14 18:03:26 chrosan kernel: [    1.030169] ehci_hcd 0000:00:1a.0: EHCI Host Controller
+Apr 14 18:03:26 chrosan kernel: [    1.030316] ehci_hcd 0000:00:1a.0: new USB bus registered, assigned bus number 1
+Apr 14 18:03:26 chrosan kernel: [    1.030437] ehci_hcd 0000:00:1a.0: debug port 2
+Apr 14 18:03:26 chrosan kernel: [    1.034393] ehci_hcd 0000:00:1a.0: cache line size of 64 is not supported
+Apr 14 18:03:26 chrosan kernel: [    1.034417] ehci_hcd 0000:00:1a.0: irq 21, io mem 0xe0705800
+Apr 14 18:03:26 chrosan kernel: [    1.039829] ehci_hcd 0000:00:1a.0: USB 2.0 started, EHCI 1.00
+Apr 14 18:03:26 chrosan kernel: [    1.039958] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+Apr 14 18:03:26 chrosan kernel: [    1.040037] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Apr 14 18:03:26 chrosan kernel: [    1.042362] usb usb1: Product: EHCI Host Controller
+Apr 14 18:03:26 chrosan kernel: [    1.044638] usb usb1: Manufacturer: Linux 3.4.0 ehci_hcd
+Apr 14 18:03:26 chrosan kernel: [    1.046927] usb usb1: SerialNumber: 0000:00:1a.0
+Apr 14 18:03:26 chrosan kernel: [    1.049339] hub 1-0:1.0: USB hub found
+Apr 14 18:03:26 chrosan kernel: [    1.051564] hub 1-0:1.0: 7 ports detected
+Apr 14 18:03:26 chrosan kernel: [    1.053891] ehci_hcd 0000:00:1d.0: setting latency timer to 64
+Apr 14 18:03:26 chrosan kernel: [    1.053898] ehci_hcd 0000:00:1d.0: EHCI Host Controller
+Apr 14 18:03:26 chrosan kernel: [    1.056144] ehci_hcd 0000:00:1d.0: new USB bus registered, assigned bus number 2
+Apr 14 18:03:26 chrosan kernel: [    1.058372] ehci_hcd 0000:00:1d.0: debug port 2
+Apr 14 18:03:26 chrosan kernel: [    1.064419] ehci_hcd 0000:00:1d.0: cache line size of 64 is not supported
+Apr 14 18:03:26 chrosan kernel: [    1.064443] ehci_hcd 0000:00:1d.0: irq 19, io mem 0xe0705c00
+Apr 14 18:03:26 chrosan kernel: [    1.071826] ehci_hcd 0000:00:1d.0: USB 2.0 started, EHCI 1.00
+Apr 14 18:03:26 chrosan kernel: [    1.074030] usb usb2: New USB device found, idVendor=1d6b, idProduct=0002
+Apr 14 18:03:26 chrosan kernel: [    1.076207] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Apr 14 18:03:26 chrosan kernel: [    1.078394] usb usb2: Product: EHCI Host Controller
+Apr 14 18:03:26 chrosan kernel: [    1.080546] usb usb2: Manufacturer: Linux 3.4.0 ehci_hcd
+Apr 14 18:03:26 chrosan kernel: [    1.082686] usb usb2: SerialNumber: 0000:00:1d.0
+Apr 14 18:03:26 chrosan kernel: [    1.084962] hub 2-0:1.0: USB hub found
+Apr 14 18:03:26 chrosan kernel: [    1.087077] hub 2-0:1.0: 11 ports detected
+Apr 14 18:03:26 chrosan kernel: [    1.089287] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+Apr 14 18:03:26 chrosan kernel: [    1.091399] uhci_hcd: USB Universal Host Controller Interface driver
+Apr 14 18:03:26 chrosan kernel: [    1.093560] usbcore: registered new interface driver cdc_acm
+Apr 14 18:03:26 chrosan kernel: [    1.095656] cdc_acm: USB Abstract Control Model driver for USB modems and ISDN adapters
+Apr 14 18:03:26 chrosan kernel: [    1.097797] Initializing USB Mass Storage driver...
+Apr 14 18:03:26 chrosan kernel: [    1.099951] usbcore: registered new interface driver usb-storage
+Apr 14 18:03:26 chrosan kernel: [    1.102102] USB Mass Storage support registered.
+Apr 14 18:03:26 chrosan kernel: [    1.104254] usbcore: registered new interface driver libusual
+Apr 14 18:03:26 chrosan kernel: [    1.106406] usbcore: registered new interface driver ums-realtek
+Apr 14 18:03:26 chrosan kernel: [    1.108558] usbcore: registered new interface driver usbserial
+Apr 14 18:03:26 chrosan kernel: [    1.110652] usbcore: registered new interface driver usbserial_generic
+Apr 14 18:03:26 chrosan kernel: [    1.112703] USB Serial support registered for generic
+Apr 14 18:03:26 chrosan kernel: [    1.114740] usbserial: USB Serial Driver core
+Apr 14 18:03:26 chrosan kernel: [    1.116811] i8042: PNP: PS/2 Controller [PNP0303:PS2K] at 0x60,0x64 irq 1
+Apr 14 18:03:26 chrosan kernel: [    1.118847] i8042: PNP: PS/2 appears to have AUX port disabled, if this is incorrect please boot with i8042.nopnp
+Apr 14 18:03:26 chrosan kernel: [    1.126882] serio: i8042 KBD port at 0x60,0x64 irq 1
+Apr 14 18:03:26 chrosan kernel: [    1.129452] rtc_cmos 00:08: RTC can wake from S4
+Apr 14 18:03:26 chrosan kernel: [    1.131778] rtc_cmos 00:08: rtc core: registered rtc_cmos as rtc0
+Apr 14 18:03:26 chrosan kernel: [    1.133994] rtc0: alarms up to one month, 242 bytes nvram, hpet irqs
+Apr 14 18:03:26 chrosan kernel: [    1.136392] iTCO_wdt: Intel TCO WatchDog Timer Driver v1.07
+Apr 14 18:03:26 chrosan kernel: [    1.138629] iTCO_wdt: Found a Panther Point TCO device (Version=2, TCOBASE=0x0560)
+Apr 14 18:03:26 chrosan kernel: [    1.139831] ata1: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+Apr 14 18:03:26 chrosan kernel: [    1.140909] ata1.00: ATA-7: INTEL SSDSA2M160G2GN, 2CV102M3, max UDMA/133
+Apr 14 18:03:26 chrosan kernel: [    1.140913] ata1.00: 312581808 sectors, multi 1: LBA48 NCQ (depth 31/32)
+Apr 14 18:03:26 chrosan kernel: [    1.143231] iTCO_wdt: initialized. heartbeat=30 sec (nowayout=0)
+Apr 14 18:03:26 chrosan kernel: [    1.143236] iTCO_vendor_support: vendor-support=0
+Apr 14 18:03:26 chrosan kernel: [    1.143402] device-mapper: ioctl: 4.22.0-ioctl (2011-10-19) initialised: dm-devel@redhat.com
+Apr 14 18:03:26 chrosan kernel: [    1.143445] device-mapper: verity-chromeos: dm-verity-chromeos registered
+Apr 14 18:03:26 chrosan kernel: [    1.143449] device-mapper: bootcache: version 0.1.0 loaded
+Apr 14 18:03:26 chrosan kernel: [    1.143562] cpuidle: using governor ladder
+Apr 14 18:03:26 chrosan kernel: [    1.147814] cpuidle: using governor menu
+Apr 14 18:03:26 chrosan kernel: [    1.148130] gsmi version 1.0 loaded
+Apr 14 18:03:26 chrosan kernel: [    1.148197] usbcore: registered new interface driver usbhid
+Apr 14 18:03:26 chrosan kernel: [    1.148199] usbhid: USB HID core driver
+Apr 14 18:03:26 chrosan kernel: [    1.161636] ata1.00: configured for UDMA/133
+Apr 14 18:03:26 chrosan kernel: [    1.173238] scsi 0:0:0:0: Direct-Access     ATA      INTEL SSDSA2M160 2CV1 PQ: 0 ANSI: 5
+Apr 14 18:03:26 chrosan kernel: [    1.175989] sd 0:0:0:0: [sda] 312581808 512-byte logical blocks: (160 GB/149 GiB)
+Apr 14 18:03:26 chrosan kernel: [    1.178538] sd 0:0:0:0: [sda] Write Protect is off
+Apr 14 18:03:26 chrosan kernel: [    1.180914] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
+Apr 14 18:03:26 chrosan kernel: [    1.180983] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+Apr 14 18:03:26 chrosan kernel: [    1.186086]  sda: sda1 sda6 sda7
+Apr 14 18:03:26 chrosan kernel: [    1.188972] sd 0:0:0:0: [sda] Attached SCSI disk
+Apr 14 18:03:26 chrosan kernel: [    1.199310] console [pstore-1] enabled
+Apr 14 18:03:26 chrosan kernel: [    1.201730] ramoops: pstore probed successfully
+Apr 14 18:03:26 chrosan kernel: [    1.204141] Netfilter messages via NETLINK v0.30.
+Apr 14 18:03:26 chrosan kernel: [    1.206570] nf_conntrack version 0.5.0 (16384 buckets, 65536 max)
+Apr 14 18:03:26 chrosan kernel: [    1.209184] ctnetlink v0.93: registering with nfnetlink.
+Apr 14 18:03:26 chrosan kernel: [    1.211850] ip_tables: (C) 2000-2006 Netfilter Core Team
+Apr 14 18:03:26 chrosan kernel: [    1.214354] TCP: cubic registered
+Apr 14 18:03:26 chrosan kernel: [    1.217025] NET: Registered protocol family 10
+Apr 14 18:03:26 chrosan kernel: [    1.219881] NET: Registered protocol family 17
+Apr 14 18:03:26 chrosan kernel: [    1.222488] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input5
+Apr 14 18:03:26 chrosan kernel: [    1.223178]   Magic number: 12:885:97
+Apr 14 18:03:26 chrosan kernel: [    1.225110] ALSA device list:
+Apr 14 18:03:26 chrosan kernel: [    1.225112]   No soundcards found.
+Apr 14 18:03:26 chrosan kernel: [    1.241904] Refined TSC clocksource calibration: 1097.506 MHz.
+Apr 14 18:03:26 chrosan kernel: [    1.244335] Switching to clocksource tsc
+Apr 14 18:03:26 chrosan kernel: [    1.289010] cyapa 7-0067: Cypress APA Trackpad Information:
+Apr 14 18:03:26 chrosan kernel: [    1.289014]     Product ID:  CYTRA-103002-00
+Apr 14 18:03:26 chrosan kernel: [    1.289016]     Protocol Generation:  3
+Apr 14 18:03:26 chrosan kernel: [    1.289018]     Firmware Version:  1.9
+Apr 14 18:03:26 chrosan kernel: [    1.289020]     Hardware Version:  1.0
+Apr 14 18:03:26 chrosan kernel: [    1.289021]     Max ABS X,Y:   870,470
+Apr 14 18:03:26 chrosan kernel: [    1.289023]     Physical Size X,Y:   87,47
+Apr 14 18:03:26 chrosan kernel: [    1.311968] input: Cypress APA Trackpad (cyapa) as /devices/pci0000:00/0000:00:1f.3/i2c-7/7-0067/input/input6
+Apr 14 18:03:26 chrosan kernel: [    1.316042] cyapa: LID device: 'Lid Switch' connected
+Apr 14 18:03:26 chrosan kernel: [    1.319742] EXT4-fs (sda7): couldn't mount as ext3 due to feature incompatibilities
+Apr 14 18:03:26 chrosan kernel: [    1.329276] EXT4-fs (sda7): couldn't mount as ext2 due to feature incompatibilities
+Apr 14 18:03:26 chrosan kernel: [    1.341624] EXT4-fs (sda7): mounted filesystem with ordered data mode. Opts: (null)
+Apr 14 18:03:26 chrosan kernel: [    1.344940] VFS: Mounted root (ext4 filesystem) on device 8:7.
+Apr 14 18:03:26 chrosan kernel: [    1.349693] devtmpfs: mounted
+Apr 14 18:03:26 chrosan kernel: [    1.355543] Freeing unused kernel memory: 628k freed
+Apr 14 18:03:26 chrosan kernel: [    1.357977] Write protecting the kernel read-only data: 8192k
+Apr 14 18:03:26 chrosan kernel: [    1.372066] Freeing unused kernel memory: 1836k freed
+Apr 14 18:03:26 chrosan kernel: [    1.378008] Freeing unused kernel memory: 336k freed
+Apr 14 18:03:26 chrosan kernel: [    1.400920] usb 1-1: new high-speed USB device number 2 using ehci_hcd
+Apr 14 18:03:26 chrosan kernel: [    1.518155] usb 1-1: New USB device found, idVendor=8087, idProduct=0024
+Apr 14 18:03:26 chrosan kernel: [    1.521407] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Apr 14 18:03:26 chrosan kernel: [    1.524993] hub 1-1:1.0: USB hub found
+Apr 14 18:03:26 chrosan kernel: [    1.527562] hub 1-1:1.0: 4 ports detected
+Apr 14 18:03:26 chrosan kernel: [    1.538536] init: plymouth-upstart-bridge main process (64) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    1.541395] init: plymouth-upstart-bridge main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    1.557723] init: plymouth-upstart-bridge main process (74) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    1.560111] init: plymouth-upstart-bridge main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    1.576574] init: plymouth-upstart-bridge main process (77) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    1.578898] init: plymouth-upstart-bridge main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    1.632812] usb 2-1: new high-speed USB device number 2 using ehci_hcd
+Apr 14 18:03:26 chrosan kernel: [    1.749134] usb 2-1: New USB device found, idVendor=8087, idProduct=0024
+Apr 14 18:03:26 chrosan kernel: [    1.751390] usb 2-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Apr 14 18:03:26 chrosan kernel: [    1.759056] hub 2-1:1.0: USB hub found
+Apr 14 18:03:26 chrosan kernel: [    1.761382] hub 2-1:1.0: 4 ports detected
+Apr 14 18:03:26 chrosan kernel: [    1.838893] usb 1-1.1: new full-speed USB device number 3 using ehci_hcd
+Apr 14 18:03:26 chrosan kernel: [    1.920624] usb 1-1.1: string descriptor 0 read error: -22
+Apr 14 18:03:26 chrosan kernel: [    1.922918] usb 1-1.1: New USB device found, idVendor=0489, idProduct=e04e
+Apr 14 18:03:26 chrosan kernel: [    1.925210] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 14 18:03:26 chrosan kernel: [    2.001014] usb 1-1.3: new high-speed USB device number 4 using ehci_hcd
+Apr 14 18:03:26 chrosan kernel: [    2.143528] usb 1-1.3: New USB device found, idVendor=064e, idProduct=d251
+Apr 14 18:03:26 chrosan kernel: [    2.143536] usb 1-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 14 18:03:26 chrosan kernel: [    2.143541] usb 1-1.3: Product: HD WebCam
+Apr 14 18:03:26 chrosan kernel: [    2.143544] usb 1-1.3: Manufacturer: SuYin
+Apr 14 18:03:26 chrosan kernel: [    2.143547] usb 1-1.3: SerialNumber: HF1016-A21U-OV02-VA-R01.00.03
+Apr 14 18:03:26 chrosan kernel: [    2.968847] init: bluetooth main process (391) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    2.968867] init: bluetooth main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    2.969744] init: idmapd main process (392) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    2.969777] init: idmapd main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    3.361952] init: idmapd main process (518) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    3.361973] init: idmapd main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    3.384231] init: bluetooth main process (507) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    3.384252] init: bluetooth main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    3.521308] init: cups main process (508) killed by HUP signal
+Apr 14 18:03:26 chrosan kernel: [    3.521329] init: cups main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    3.572071] init: idmapd main process (565) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    3.572103] init: idmapd main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    3.616884] init: bluetooth main process (564) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    3.616931] init: bluetooth main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    3.776846] init: idmapd main process (618) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    3.776869] init: idmapd main process ended, respawning
+Apr 14 18:03:26 chrosan kernel: [    3.931567] init: bluetooth main process (607) terminated with status 1
+Apr 14 18:03:26 chrosan kernel: [    3.931589] init: bluetooth main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    4.158651] init: idmapd main process (715) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    4.158673] init: idmapd main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    4.258879] init: Failed to obtain startpar-bridge instance: Unknown parameter: INSTANCE
+Apr 14 18:03:27 chrosan kernel: [    4.358221] init: failsafe main process (654) killed by TERM signal
+Apr 14 18:03:27 chrosan kernel: [    4.361239] init: bluetooth main process (712) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    4.361261] init: bluetooth main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    4.460164] init: idmapd main process (797) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    4.460186] init: idmapd main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    4.690893] init: idmapd main process (894) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    4.690917] init: idmapd main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    4.844948] init: bluetooth main process (879) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    4.844971] init: bluetooth main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    4.962494] init: idmapd main process (963) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    4.962519] init: idmapd main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    5.058060] init: bluetooth main process (964) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    5.058089] init: bluetooth main process ended, respawning
+Apr 14 18:03:27 chrosan kernel: [    5.104785] init: idmapd main process (1003) terminated with status 1
+Apr 14 18:03:27 chrosan kernel: [    5.104811] init: idmapd main process ended, respawning
+Apr 14 18:03:28 chrosan kernel: [    5.452002] init: idmapd main process (1074) terminated with status 1
+Apr 14 18:03:28 chrosan kernel: [    5.452026] init: idmapd main process ended, respawning
+Apr 14 18:03:28 chrosan kernel: [    5.486899] init: bluetooth main process (1031) terminated with status 1
+Apr 14 18:03:28 chrosan kernel: [    5.486933] init: bluetooth main process ended, respawning
+Apr 14 18:03:28 chrosan kernel: [    5.638133] init: idmapd main process (1129) terminated with status 1
+Apr 14 18:03:28 chrosan kernel: [    5.638158] init: idmapd main process ended, respawning
+Apr 14 18:03:28 chrosan kernel: [    5.752868] init: bluetooth main process (1127) terminated with status 1
+Apr 14 18:03:28 chrosan kernel: [    5.752895] init: bluetooth main process ended, respawning
+Apr 14 18:03:28 chrosan kernel: [    5.822647] init: idmapd main process (1166) terminated with status 1
+Apr 14 18:03:28 chrosan kernel: [    5.822671] init: idmapd main process ended, respawning
+Apr 14 18:03:28 chrosan kernel: [    5.990285] init: idmapd main process (1200) terminated with status 1
+Apr 14 18:03:28 chrosan kernel: [    5.990309] init: idmapd main process ended, respawning
+Apr 14 18:03:28 chrosan kernel: [    6.023143] init: bluetooth main process (1175) terminated with status 1
+Apr 14 18:03:28 chrosan kernel: [    6.023174] init: bluetooth main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.133634] init: idmapd main process (1229) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.133658] init: idmapd main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.192865] init: bluetooth main process (1223) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.192895] init: bluetooth main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.280893] init: idmapd main process (1262) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.280917] init: idmapd main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.403150] init: bluetooth main process (1265) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.403179] init: bluetooth main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.444348] init: idmapd main process (1294) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.444372] init: idmapd main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.590282] init: idmapd main process (1329) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.590308] init: idmapd main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.622844] init: bluetooth main process (1307) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.622875] init: bluetooth main process ended, respawning
+Apr 14 18:03:29 chrosan kernel: [    6.733065] init: idmapd main process (1359) terminated with status 1
+Apr 14 18:03:29 chrosan kernel: [    6.733088] init: idmapd main process ended, respawning
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Initializing cgroup subsys cpuset
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Initializing cgroup subsys cpu
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Initializing cgroup subsys cpuacct
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Linux version 4.2.0-34-generic (buildd@lgw01-55) (gcc version 4.8.2 (Ubuntu 4.8.2-19ubuntu1) ) #39~14.04.1-Ubuntu SMP Fri Mar 11 11:38:02 UTC 2016 (Ubuntu 4.2.0-34.39~14.04.1-generic 4.2.8-ckt4)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Command line: root=UUID=bd5d1a5d-90be-46cd-8888-6600bc0a4d4a ro ipv6.disable=1 nomdmonddf nomdmonisw
+Apr 14 18:03:43 chrosan kernel: [    0.000000] KERNEL supported cpus:
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   Intel GenuineIntel
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   AMD AuthenticAMD
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   Centaur CentaurHauls
+Apr 14 18:03:43 chrosan kernel: [    0.000000] x86/fpu: Supporting XSAVE feature 0x01: 'x87 floating point registers'
+Apr 14 18:03:43 chrosan kernel: [    0.000000] x86/fpu: Supporting XSAVE feature 0x02: 'SSE registers'
+Apr 14 18:03:43 chrosan kernel: [    0.000000] x86/fpu: Enabled xstate features 0x3, context size is 0x240 bytes, using 'standard' format.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] x86/fpu: Using 'eager' FPU context switches.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] e820: BIOS-provided physical RAM map:
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000000000000-0x000000000000ffff] reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000000010000-0x000000000009ffff] usable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x00000000000a0000-0x00000000000fffff] reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000000100000-0x0000000000efffff] usable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000000f00000-0x0000000000ffffff] reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000001000000-0x000000001fffffff] usable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000020000000-0x00000000201fffff] reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000020200000-0x000000003fffffff] usable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000040000000-0x00000000401fffff] reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000040200000-0x00000000acebffff] usable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x00000000acec0000-0x00000000af9fffff] reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x00000000f0000000-0x00000000f3ffffff] reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BIOS-e820: [mem 0x0000000100000000-0x000000014f5fffff] usable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] NX (Execute Disable) protection: active
+Apr 14 18:03:43 chrosan kernel: [    0.000000] SMBIOS 2.7 present.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] DMI: GOOGLE Parrot, BIOS Google_Parrot.2685.37.0 09/10/2012
+Apr 14 18:03:43 chrosan kernel: [    0.000000] e820: update [mem 0x00000000-0x00000fff] usable ==> reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000] e820: remove [mem 0x000a0000-0x000fffff] usable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] e820: last_pfn = 0x14f600 max_arch_pfn = 0x400000000
+Apr 14 18:03:43 chrosan kernel: [    0.000000] MTRR default type: uncachable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] MTRR fixed ranges enabled:
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   00000-9FFFF write-back
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   A0000-FFFFF uncachable
+Apr 14 18:03:43 chrosan kernel: [    0.000000] MTRR variable ranges enabled:
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   0 base 000000000 mask F80000000 write-back
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   1 base 080000000 mask FE0000000 write-back
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   2 base 0A0000000 mask FF0000000 write-back
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   3 base 0AD000000 mask FFF000000 uncachable
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   4 base 0AE000000 mask FFE000000 uncachable
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   5 base 100000000 mask FC0000000 write-back
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   6 base 140000000 mask FF0000000 write-back
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   7 base 14F600000 mask FFFE00000 uncachable
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   8 base 0D0000000 mask FF0000000 write-combining
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   9 disabled
+Apr 14 18:03:43 chrosan kernel: [    0.000000] x86/PAT: Configuration [0-7]: WB  WC  UC- UC  WB  WC  UC- WT  
+Apr 14 18:03:43 chrosan kernel: [    0.000000] e820: last_pfn = 0xacec0 max_arch_pfn = 0x400000000
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Base memory trampoline at [ffff880000099000] 99000 size 24576
+Apr 14 18:03:43 chrosan kernel: [    0.000000] reserving inaccessible SNB gfx pages
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x00000000-0x000fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x00000000-0x000fffff] page 4k
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BRK [0x14eff3000, 0x14eff3fff] PGTABLE
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BRK [0x14eff4000, 0x14eff4fff] PGTABLE
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BRK [0x14eff5000, 0x14eff5fff] PGTABLE
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x14f400000-0x14f5fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x14f400000-0x14f5fffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BRK [0x14eff6000, 0x14eff6fff] PGTABLE
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x140000000-0x14f3fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x140000000-0x14f3fffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x120000000-0x13fffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x120000000-0x13fffffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BRK [0x14eff7000, 0x14eff7fff] PGTABLE
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x00100000-0x00efffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x00100000-0x001fffff] page 4k
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x00200000-0x00dfffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x00e00000-0x00efffff] page 4k
+Apr 14 18:03:43 chrosan kernel: [    0.000000] BRK [0x14eff8000, 0x14eff8fff] PGTABLE
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x01000000-0x1fffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x01000000-0x1fffffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x20200000-0x3fffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x20200000-0x3fffffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x40200000-0xacebffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x40200000-0xacdfffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0xace00000-0xacebffff] page 4k
+Apr 14 18:03:43 chrosan kernel: [    0.000000] init_memory_mapping: [mem 0x100000000-0x11fffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [mem 0x100000000-0x11fffffff] page 2M
+Apr 14 18:03:43 chrosan kernel: [    0.000000] RAMDISK: [mem 0x14cea9000-0x14dffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: Early table checksum verification disabled
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: RSDP 0x00000000000F0000 000024 (v02 CORE  )
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: XSDT 0x00000000ACED12E0 00004C (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: FACP 0x00000000ACED4530 0000F4 (v03 CORE   COREBOOT 00000000 CORE 00000001)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI BIOS Warning (bug): 32/64X length mismatch in FADT/Gpe0Block: 128/64 (20150619/tbfadt-623)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: DSDT 0x00000000ACED1450 0030E0 (v02 COREv4 COREBOOT 20110725 INTL 20090123)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: FACS 0x00000000ACED1410 000040
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: FACS 0x00000000ACED1410 000040
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: HPET 0x00000000ACED4630 000038 (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: APIC 0x00000000ACED4670 00005C (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: MCFG 0x00000000ACED46D0 00003C (v01 CORE   COREBOOT 00000000 CORE 00000000)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: SSDT 0x00000000ACED55C0 000818 (v02 CORE   COREBOOT 0000002A CORE 0000002A)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: Local APIC address 0xfee00000
+Apr 14 18:03:43 chrosan kernel: [    0.000000] No NUMA configuration found
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Faking a node at [mem 0x0000000000000000-0x000000014f5fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] NODE_DATA(0) allocated [mem 0x14f5f8000-0x14f5fcfff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]  [ffffea0000000000-ffffea00053fffff] PMD -> [ffff880148a00000-ffff88014c9fffff] on node 0
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Zone ranges:
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   DMA      [mem 0x0000000000010000-0x0000000000ffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   DMA32    [mem 0x0000000001000000-0x00000000ffffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   Normal   [mem 0x0000000100000000-0x000000014f5fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Movable zone start for each node
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Early memory node ranges
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   node   0: [mem 0x0000000000010000-0x000000000009ffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   node   0: [mem 0x0000000000100000-0x0000000000efffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   node   0: [mem 0x0000000001000000-0x000000001fffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   node   0: [mem 0x0000000020200000-0x000000003fffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   node   0: [mem 0x0000000040200000-0x00000000acebffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   node   0: [mem 0x0000000100000000-0x000000014f5fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Initmem setup node 0 [mem 0x0000000000010000-0x000000014f5fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] On node 0 totalpages: 1032016
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   DMA zone: 59 pages used for memmap
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   DMA zone: 144 pages reserved
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   DMA zone: 3728 pages, LIFO batch:0
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   DMA32 zone: 10987 pages used for memmap
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   DMA32 zone: 703168 pages, LIFO batch:31
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   Normal zone: 5080 pages used for memmap
+Apr 14 18:03:43 chrosan kernel: [    0.000000]   Normal zone: 325120 pages, LIFO batch:31
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Reserving Intel graphics stolen memory at 0xada00000-0xaf9fffff
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: PM-Timer IO Port: 0x508
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: Local APIC address 0xfee00000
+Apr 14 18:03:43 chrosan kernel: [    0.000000] IOAPIC[0]: apic_id 2, version 32, address 0xfec00000, GSI 0-23
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: INT_SRC_OVR (bus 0 bus_irq 0 global_irq 2 dfl dfl)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: INT_SRC_OVR (bus 0 bus_irq 9 global_irq 9 high level)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: IRQ0 used by override.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: IRQ9 used by override.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Using ACPI (MADT) for SMP configuration information
+Apr 14 18:03:43 chrosan kernel: [    0.000000] ACPI: HPET id: 0x8086a201 base: 0xfed00000
+Apr 14 18:03:43 chrosan kernel: [    0.000000] smpboot: Allowing 2 CPUs, 0 hotplug CPUs
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0x00000000-0x0000ffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0x000a0000-0x000fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0x00f00000-0x00ffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0x20000000-0x201fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0x40000000-0x401fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0xacec0000-0xaf9fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0xafa00000-0xefffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0xf0000000-0xf3ffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PM: Registered nosave memory: [mem 0xf4000000-0xffffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.000000] e820: [mem 0xafa00000-0xefffffff] available for PCI devices
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Booting paravirtualized kernel on bare hardware
+Apr 14 18:03:43 chrosan kernel: [    0.000000] clocksource: refined-jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645519600211568 ns
+Apr 14 18:03:43 chrosan kernel: [    0.000000] setup_percpu: NR_CPUS:256 nr_cpumask_bits:256 nr_cpu_ids:2 nr_node_ids:1
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PERCPU: Embedded 33 pages/cpu @ffff88014f200000 s96728 r8192 d30248 u1048576
+Apr 14 18:03:43 chrosan kernel: [    0.000000] pcpu-alloc: s96728 r8192 d30248 u1048576 alloc=1*2097152
+Apr 14 18:03:43 chrosan kernel: [    0.000000] pcpu-alloc: [0] 0 1 
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Built 1 zonelists in Node order, mobility grouping on.  Total pages: 1015746
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Policy zone: Normal
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Kernel command line: root=UUID=bd5d1a5d-90be-46cd-8888-6600bc0a4d4a ro ipv6.disable=1 nomdmonddf nomdmonisw
+Apr 14 18:03:43 chrosan kernel: [    0.000000] PID hash table entries: 4096 (order: 3, 32768 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Calgary: detecting Calgary via BIOS EBDA area
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Calgary: Unable to locate Rio Grande table in EBDA - bailing!
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Memory: 3961240K/4128064K available (7944K kernel code, 1243K rwdata, 3816K rodata, 1468K init, 1292K bss, 166824K reserved, 0K cma-reserved)
+Apr 14 18:03:43 chrosan kernel: [    0.000000] SLUB: HWalign=64, Order=0-3, MinObjects=0, CPUs=2, Nodes=1
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Hierarchical RCU implementation.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] 	Build-time adjustment of leaf fanout to 64.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] 	RCU restricting CPUs from NR_CPUS=256 to nr_cpu_ids=2.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] RCU: Adjusting geometry for rcu_fanout_leaf=64, nr_cpu_ids=2
+Apr 14 18:03:43 chrosan kernel: [    0.000000] NR_IRQS:16640 nr_irqs:440 16
+Apr 14 18:03:43 chrosan kernel: [    0.000000] 	Offload RCU callbacks from all CPUs
+Apr 14 18:03:43 chrosan kernel: [    0.000000] 	Offload RCU callbacks from CPUs: 0-1.
+Apr 14 18:03:43 chrosan kernel: [    0.000000] Console: colour dummy device 80x25
+Apr 14 18:03:43 chrosan kernel: [    0.000000] console [tty0] enabled
+Apr 14 18:03:43 chrosan kernel: [    0.000000] clocksource: hpet: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 133484882848 ns
+Apr 14 18:03:43 chrosan kernel: [    0.000000] hpet clockevent registered
+Apr 14 18:03:43 chrosan kernel: [    0.000000] tsc: Fast TSC calibration using PIT
+Apr 14 18:03:43 chrosan kernel: [    0.000000] tsc: Detected 1097.509 MHz processor
+Apr 14 18:03:43 chrosan kernel: [    0.000072] Calibrating delay loop (skipped), value calculated using timer frequency.. 2195.01 BogoMIPS (lpj=4390036)
+Apr 14 18:03:43 chrosan kernel: [    0.000088] pid_max: default: 32768 minimum: 301
+Apr 14 18:03:43 chrosan kernel: [    0.000105] ACPI: Core revision 20150619
+Apr 14 18:03:43 chrosan kernel: [    0.005281] ACPI: All ACPI Tables successfully acquired
+Apr 14 18:03:43 chrosan kernel: [    0.005324] Security Framework initialized
+Apr 14 18:03:43 chrosan kernel: [    0.005346] AppArmor: AppArmor initialized
+Apr 14 18:03:43 chrosan kernel: [    0.005353] Yama: becoming mindful.
+Apr 14 18:03:43 chrosan kernel: [    0.005974] Dentry cache hash table entries: 524288 (order: 10, 4194304 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.007824] Inode-cache hash table entries: 262144 (order: 9, 2097152 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.008631] Mount-cache hash table entries: 8192 (order: 4, 65536 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.008651] Mountpoint-cache hash table entries: 8192 (order: 4, 65536 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.009024] Initializing cgroup subsys blkio
+Apr 14 18:03:43 chrosan kernel: [    0.009036] Initializing cgroup subsys memory
+Apr 14 18:03:43 chrosan kernel: [    0.009055] Initializing cgroup subsys devices
+Apr 14 18:03:43 chrosan kernel: [    0.009064] Initializing cgroup subsys freezer
+Apr 14 18:03:43 chrosan kernel: [    0.009073] Initializing cgroup subsys net_cls
+Apr 14 18:03:43 chrosan kernel: [    0.009082] Initializing cgroup subsys perf_event
+Apr 14 18:03:43 chrosan kernel: [    0.009091] Initializing cgroup subsys net_prio
+Apr 14 18:03:43 chrosan kernel: [    0.009100] Initializing cgroup subsys hugetlb
+Apr 14 18:03:43 chrosan kernel: [    0.009146] CPU: Physical Processor ID: 0
+Apr 14 18:03:43 chrosan kernel: [    0.009153] CPU: Processor Core ID: 0
+Apr 14 18:03:43 chrosan kernel: [    0.009168] mce: CPU supports 7 MCE banks
+Apr 14 18:03:43 chrosan kernel: [    0.009190] CPU0: Thermal LVT vector (0xfa) already installed
+Apr 14 18:03:43 chrosan kernel: [    0.009201] process: using mwait in idle threads
+Apr 14 18:03:43 chrosan kernel: [    0.009212] Last level iTLB entries: 4KB 512, 2MB 8, 4MB 8
+Apr 14 18:03:43 chrosan kernel: [    0.009220] Last level dTLB entries: 4KB 512, 2MB 32, 4MB 32, 1GB 0
+Apr 14 18:03:43 chrosan kernel: [    0.010093] Freeing SMP alternatives memory: 28K (ffffffff81ea7000 - ffffffff81eae000)
+Apr 14 18:03:43 chrosan kernel: [    0.015608] ftrace: allocating 30986 entries in 122 pages
+Apr 14 18:03:43 chrosan kernel: [    0.049000] x2apic: IRQ remapping doesn't support X2APIC mode
+Apr 14 18:03:43 chrosan kernel: [    0.049506] ..TIMER: vector=0x30 apic1=0 pin1=2 apic2=-1 pin2=-1
+Apr 14 18:03:43 chrosan kernel: [    0.089205] TSC deadline timer enabled
+Apr 14 18:03:43 chrosan kernel: [    0.089212] smpboot: CPU0: Intel(R) Celeron(R) CPU 847 @ 1.10GHz (fam: 06, model: 2a, stepping: 07)
+Apr 14 18:03:43 chrosan kernel: [    0.089269] Performance Events: PEBS fmt1+, 16-deep LBR, SandyBridge events, full-width counters, Intel PMU driver.
+Apr 14 18:03:43 chrosan kernel: [    0.089325] ... version:                3
+Apr 14 18:03:43 chrosan kernel: [    0.089331] ... bit width:              48
+Apr 14 18:03:43 chrosan kernel: [    0.089338] ... generic registers:      8
+Apr 14 18:03:43 chrosan kernel: [    0.089345] ... value mask:             0000ffffffffffff
+Apr 14 18:03:43 chrosan kernel: [    0.089352] ... max period:             0000ffffffffffff
+Apr 14 18:03:43 chrosan kernel: [    0.089358] ... fixed-purpose events:   3
+Apr 14 18:03:43 chrosan kernel: [    0.089365] ... event mask:             00000007000000ff
+Apr 14 18:03:43 chrosan kernel: [    0.091077] x86: Booting SMP configuration:
+Apr 14 18:03:43 chrosan kernel: [    0.091087] .... node  #0, CPUs:      #1
+Apr 14 18:03:43 chrosan kernel: [    0.092158] CPU1: Thermal LVT vector (0xfa) already installed
+Apr 14 18:03:43 chrosan kernel: [    0.094274] x86: Booted up 1 node, 2 CPUs
+Apr 14 18:03:43 chrosan kernel: [    0.094292] smpboot: Total of 2 processors activated (4390.03 BogoMIPS)
+Apr 14 18:03:43 chrosan kernel: [    0.094372] NMI watchdog: enabled on all CPUs, permanently consumes one hw-PMU counter.
+Apr 14 18:03:43 chrosan kernel: [    0.096723] devtmpfs: initialized
+Apr 14 18:03:43 chrosan kernel: [    0.104606] evm: security.selinux
+Apr 14 18:03:43 chrosan kernel: [    0.104615] evm: security.SMACK64
+Apr 14 18:03:43 chrosan kernel: [    0.104621] evm: security.SMACK64EXEC
+Apr 14 18:03:43 chrosan kernel: [    0.104628] evm: security.SMACK64TRANSMUTE
+Apr 14 18:03:43 chrosan kernel: [    0.104634] evm: security.SMACK64MMAP
+Apr 14 18:03:43 chrosan kernel: [    0.104641] evm: security.ima
+Apr 14 18:03:43 chrosan kernel: [    0.104647] evm: security.capability
+Apr 14 18:03:43 chrosan kernel: [    0.104920] clocksource: jiffies: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 7645041785100000 ns
+Apr 14 18:03:43 chrosan kernel: [    0.105077] pinctrl core: initialized pinctrl subsystem
+Apr 14 18:03:43 chrosan kernel: [    0.105294] RTC time: 22:03:31, date: 04/14/16
+Apr 14 18:03:43 chrosan kernel: [    0.105523] NET: Registered protocol family 16
+Apr 14 18:03:43 chrosan kernel: [    0.118265] cpuidle: using governor ladder
+Apr 14 18:03:43 chrosan kernel: [    0.122266] cpuidle: using governor menu
+Apr 14 18:03:43 chrosan kernel: [    0.122445] ACPI: bus type PCI registered
+Apr 14 18:03:43 chrosan kernel: [    0.122454] acpiphp: ACPI Hot Plug PCI Controller Driver version: 0.5
+Apr 14 18:03:43 chrosan kernel: [    0.122602] PCI: MMCONFIG for domain 0000 [bus 00-3f] at [mem 0xf0000000-0xf3ffffff] (base 0xf0000000)
+Apr 14 18:03:43 chrosan kernel: [    0.122617] PCI: MMCONFIG at [mem 0xf0000000-0xf3ffffff] reserved in E820
+Apr 14 18:03:43 chrosan kernel: [    0.122639] PCI: Using configuration type 1 for base access
+Apr 14 18:03:43 chrosan kernel: [    0.123067] NMI watchdog: enabled on all CPUs, permanently consumes one hw-PMU counter.
+Apr 14 18:03:43 chrosan kernel: [    0.123103] perf_event_intel: PMU erratum BJ122, BV98, HSD29 workaround disabled, HT off
+Apr 14 18:03:43 chrosan kernel: [    0.130970] ACPI: Added _OSI(Module Device)
+Apr 14 18:03:43 chrosan kernel: [    0.130980] ACPI: Added _OSI(Processor Device)
+Apr 14 18:03:43 chrosan kernel: [    0.130987] ACPI: Added _OSI(3.0 _SCP Extensions)
+Apr 14 18:03:43 chrosan kernel: [    0.130994] ACPI: Added _OSI(Processor Aggregator Device)
+Apr 14 18:03:43 chrosan kernel: [    0.135427] ACPI : EC: EC started
+Apr 14 18:03:43 chrosan kernel: [    0.136008] ACPI: Interpreter enabled
+Apr 14 18:03:43 chrosan kernel: [    0.136025] ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S1_] (20150619/hwxface-580)
+Apr 14 18:03:43 chrosan kernel: [    0.136044] ACPI Exception: AE_NOT_FOUND, While evaluating Sleep State [\_S2_] (20150619/hwxface-580)
+Apr 14 18:03:43 chrosan kernel: [    0.136080] ACPI: (supports S0 S3 S4 S5)
+Apr 14 18:03:43 chrosan kernel: [    0.136088] ACPI: Using IOAPIC for interrupt routing
+Apr 14 18:03:43 chrosan kernel: [    0.136134] PCI: Using host bridge windows from ACPI; if necessary, use "pci=nocrs" and report a bug
+Apr 14 18:03:43 chrosan kernel: [    0.142918] ACPI: PCI Root Bridge [PCI0] (domain 0000 [bus 00-ff])
+Apr 14 18:03:43 chrosan kernel: [    0.142935] acpi PNP0A08:00: _OSC: OS supports [ExtendedConfig ASPM ClockPM Segments MSI]
+Apr 14 18:03:43 chrosan kernel: [    0.143020] acpi PNP0A08:00: _OSC: OS now controls [PCIeHotplug PME AER PCIeCapability]
+Apr 14 18:03:43 chrosan kernel: [    0.143146] acpi PNP0A08:00: ignoring host bridge window [mem 0x000cc000-0x000cffff window] (conflicts with Video ROM [mem 0x000c0000-0x000cedff])
+Apr 14 18:03:43 chrosan kernel: [    0.143164] acpi PNP0A08:00: [Firmware Info]: MMCONFIG for domain 0000 [bus 00-3f] only partially covers this bridge
+Apr 14 18:03:43 chrosan kernel: [    0.143406] PCI host bridge to bus 0000:00
+Apr 14 18:03:43 chrosan kernel: [    0.143416] pci_bus 0000:00: root bus resource [bus 00-ff]
+Apr 14 18:03:43 chrosan kernel: [    0.143426] pci_bus 0000:00: root bus resource [io  0x0000-0x0cf7 window]
+Apr 14 18:03:43 chrosan kernel: [    0.143434] pci_bus 0000:00: root bus resource [io  0x0d00-0xffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143443] pci_bus 0000:00: root bus resource [mem 0x000a0000-0x000bffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143456] pci_bus 0000:00: root bus resource [mem 0x000c0000-0x000c3fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143468] pci_bus 0000:00: root bus resource [mem 0x000c4000-0x000c7fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143481] pci_bus 0000:00: root bus resource [mem 0x000c8000-0x000cbfff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143493] pci_bus 0000:00: root bus resource [mem 0x000d0000-0x000d3fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143505] pci_bus 0000:00: root bus resource [mem 0x000d4000-0x000d7fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143518] pci_bus 0000:00: root bus resource [mem 0x000d8000-0x000dbfff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143531] pci_bus 0000:00: root bus resource [mem 0x000dc000-0x000dffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143543] pci_bus 0000:00: root bus resource [mem 0x000e0000-0x000e3fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143555] pci_bus 0000:00: root bus resource [mem 0x000e4000-0x000e7fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143568] pci_bus 0000:00: root bus resource [mem 0x000e8000-0x000ebfff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143580] pci_bus 0000:00: root bus resource [mem 0x000ec000-0x000effff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143593] pci_bus 0000:00: root bus resource [mem 0x000f0000-0x000fffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143605] pci_bus 0000:00: root bus resource [mem 0xafa00001-0xfebfffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143618] pci_bus 0000:00: root bus resource [mem 0xfed40000-0xfed44fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.143641] pci 0000:00:00.0: [8086:0104] type 00 class 0x060000
+Apr 14 18:03:43 chrosan kernel: [    0.143805] pci 0000:00:02.0: [8086:0106] type 00 class 0x030000
+Apr 14 18:03:43 chrosan kernel: [    0.143826] pci 0000:00:02.0: reg 0x10: [mem 0xe0000000-0xe03fffff 64bit]
+Apr 14 18:03:43 chrosan kernel: [    0.143838] pci 0000:00:02.0: reg 0x18: [mem 0xd0000000-0xdfffffff 64bit pref]
+Apr 14 18:03:43 chrosan kernel: [    0.143848] pci 0000:00:02.0: reg 0x20: [io  0x1000-0x103f]
+Apr 14 18:03:43 chrosan kernel: [    0.144049] pci 0000:00:1a.0: [8086:1e2d] type 00 class 0x0c0320
+Apr 14 18:03:43 chrosan kernel: [    0.144082] pci 0000:00:1a.0: reg 0x10: [mem 0xe0705800-0xe0705bff]
+Apr 14 18:03:43 chrosan kernel: [    0.144229] pci 0000:00:1a.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.144293] pci 0000:00:1a.0: System wakeup disabled by ACPI
+Apr 14 18:03:43 chrosan kernel: [    0.144386] pci 0000:00:1b.0: [8086:1e20] type 00 class 0x040300
+Apr 14 18:03:43 chrosan kernel: [    0.144421] pci 0000:00:1b.0: reg 0x10: [mem 0xe0700000-0xe0703fff 64bit]
+Apr 14 18:03:43 chrosan kernel: [    0.144565] pci 0000:00:1b.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.144630] pci 0000:00:1b.0: System wakeup disabled by ACPI
+Apr 14 18:03:43 chrosan kernel: [    0.144716] pci 0000:00:1c.0: [8086:1e12] type 01 class 0x060400
+Apr 14 18:03:43 chrosan kernel: [    0.144852] pci 0000:00:1c.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.144991] pci 0000:00:1c.1: [8086:1e14] type 01 class 0x060400
+Apr 14 18:03:43 chrosan kernel: [    0.145125] pci 0000:00:1c.1: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.145276] pci 0000:00:1d.0: [8086:1e26] type 00 class 0x0c0320
+Apr 14 18:03:43 chrosan kernel: [    0.145309] pci 0000:00:1d.0: reg 0x10: [mem 0xe0705c00-0xe0705fff]
+Apr 14 18:03:43 chrosan kernel: [    0.145455] pci 0000:00:1d.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.145516] pci 0000:00:1d.0: System wakeup disabled by ACPI
+Apr 14 18:03:43 chrosan kernel: [    0.145599] pci 0000:00:1f.0: [8086:1e5f] type 00 class 0x060100
+Apr 14 18:03:43 chrosan kernel: [    0.145880] pci 0000:00:1f.2: [8086:1e03] type 00 class 0x010601
+Apr 14 18:03:43 chrosan kernel: [    0.145915] pci 0000:00:1f.2: reg 0x10: [io  0x1060-0x1067]
+Apr 14 18:03:43 chrosan kernel: [    0.145932] pci 0000:00:1f.2: reg 0x14: [io  0x1070-0x1073]
+Apr 14 18:03:43 chrosan kernel: [    0.145949] pci 0000:00:1f.2: reg 0x18: [io  0x1068-0x106f]
+Apr 14 18:03:43 chrosan kernel: [    0.145967] pci 0000:00:1f.2: reg 0x1c: [io  0x1074-0x1077]
+Apr 14 18:03:43 chrosan kernel: [    0.145984] pci 0000:00:1f.2: reg 0x20: [io  0x1040-0x105f]
+Apr 14 18:03:43 chrosan kernel: [    0.146002] pci 0000:00:1f.2: reg 0x24: [mem 0xe0705000-0xe07057ff]
+Apr 14 18:03:43 chrosan kernel: [    0.146085] pci 0000:00:1f.2: PME# supported from D3hot
+Apr 14 18:03:43 chrosan kernel: [    0.146211] pci 0000:00:1f.3: [8086:1e22] type 00 class 0x0c0500
+Apr 14 18:03:43 chrosan kernel: [    0.146243] pci 0000:00:1f.3: reg 0x10: [mem 0xe0706000-0xe07060ff 64bit]
+Apr 14 18:03:43 chrosan kernel: [    0.146297] pci 0000:00:1f.3: reg 0x20: [io  0x0400-0x041f]
+Apr 14 18:03:43 chrosan kernel: [    0.146459] pci 0000:00:1f.6: [8086:1e24] type 00 class 0x118000
+Apr 14 18:03:43 chrosan kernel: [    0.146496] pci 0000:00:1f.6: reg 0x10: [mem 0xe0704000-0xe0704fff 64bit]
+Apr 14 18:03:43 chrosan kernel: [    0.146835] pci 0000:01:00.0: [168c:0034] type 00 class 0x028000
+Apr 14 18:03:43 chrosan kernel: [    0.146906] pci 0000:01:00.0: reg 0x10: [mem 0xe0400000-0xe047ffff 64bit]
+Apr 14 18:03:43 chrosan kernel: [    0.147061] pci 0000:01:00.0: reg 0x30: [mem 0xe0480000-0xe048ffff pref]
+Apr 14 18:03:43 chrosan kernel: [    0.147216] pci 0000:01:00.0: supports D1 D2
+Apr 14 18:03:43 chrosan kernel: [    0.147219] pci 0000:01:00.0: PME# supported from D0 D1 D2 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.154338] pci 0000:00:1c.0: PCI bridge to [bus 01]
+Apr 14 18:03:43 chrosan kernel: [    0.154360] pci 0000:00:1c.0:   bridge window [mem 0xe0400000-0xe04fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.154525] pci 0000:02:00.0: [14e4:16b5] type 00 class 0x020000
+Apr 14 18:03:43 chrosan kernel: [    0.154600] pci 0000:02:00.0: reg 0x10: [mem 0xe0500000-0xe050ffff 64bit pref]
+Apr 14 18:03:43 chrosan kernel: [    0.154652] pci 0000:02:00.0: reg 0x18: [mem 0xe0510000-0xe051ffff 64bit pref]
+Apr 14 18:03:43 chrosan kernel: [    0.154750] pci 0000:02:00.0: reg 0x30: [mem 0xe0600000-0xe06007ff pref]
+Apr 14 18:03:43 chrosan kernel: [    0.154944] pci 0000:02:00.0: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.155108] pci 0000:02:00.1: [14e4:16bc] type 00 class 0x080501
+Apr 14 18:03:43 chrosan kernel: [    0.155180] pci 0000:02:00.1: reg 0x10: [mem 0xe0520000-0xe052ffff 64bit pref]
+Apr 14 18:03:43 chrosan kernel: [    0.155501] pci 0000:02:00.1: PME# supported from D0 D3hot D3cold
+Apr 14 18:03:43 chrosan kernel: [    0.162361] pci 0000:00:1c.1: PCI bridge to [bus 02]
+Apr 14 18:03:43 chrosan kernel: [    0.162383] pci 0000:00:1c.1:   bridge window [mem 0xe0600000-0xe06fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.162405] pci 0000:00:1c.1:   bridge window [mem 0xe0500000-0xe05fffff 64bit pref]
+Apr 14 18:03:43 chrosan kernel: [    0.162617] ACPI: PCI Interrupt Link [LNKA] (IRQs 1 3 4 5 6 7 10 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.162722] ACPI: PCI Interrupt Link [LNKB] (IRQs 1 3 4 5 6 7 11 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.162816] ACPI: PCI Interrupt Link [LNKC] (IRQs 1 3 4 5 6 7 10 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.162909] ACPI: PCI Interrupt Link [LNKD] (IRQs 1 3 4 5 6 7 11 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.163002] ACPI: PCI Interrupt Link [LNKE] (IRQs 1 3 4 5 6 7 10 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.163094] ACPI: PCI Interrupt Link [LNKF] (IRQs 1 3 4 5 6 7 11 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.163186] ACPI: PCI Interrupt Link [LNKG] (IRQs 1 3 4 5 6 7 10 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.163279] ACPI: PCI Interrupt Link [LNKH] (IRQs 1 3 4 5 6 7 11 12 14 15) *0, disabled.
+Apr 14 18:03:43 chrosan kernel: [    0.164046] ACPI: Enabled 1 GPEs in block 00 to 3F
+Apr 14 18:03:43 chrosan kernel: [    0.164119] ACPI : EC: GPE = 0x17, I/O: command/status = 0x66, data = 0x62
+Apr 14 18:03:43 chrosan kernel: [    0.164332] vgaarb: setting as boot device: PCI:0000:00:02.0
+Apr 14 18:03:43 chrosan kernel: [    0.164342] vgaarb: device added: PCI:0000:00:02.0,decodes=io+mem,owns=io+mem,locks=none
+Apr 14 18:03:43 chrosan kernel: [    0.164356] vgaarb: loaded
+Apr 14 18:03:43 chrosan kernel: [    0.164363] vgaarb: bridge control possible 0000:00:02.0
+Apr 14 18:03:43 chrosan kernel: [    0.164883] SCSI subsystem initialized
+Apr 14 18:03:43 chrosan kernel: [    0.164977] libata version 3.00 loaded.
+Apr 14 18:03:43 chrosan kernel: [    0.165030] ACPI: bus type USB registered
+Apr 14 18:03:43 chrosan kernel: [    0.165071] usbcore: registered new interface driver usbfs
+Apr 14 18:03:43 chrosan kernel: [    0.165096] usbcore: registered new interface driver hub
+Apr 14 18:03:43 chrosan kernel: [    0.165123] usbcore: registered new device driver usb
+Apr 14 18:03:43 chrosan kernel: [    0.165418] PCI: Using ACPI for IRQ routing
+Apr 14 18:03:43 chrosan kernel: [    0.169143] PCI: pci_cache_line_size set to 64 bytes
+Apr 14 18:03:43 chrosan kernel: [    0.169239] e820: reserve RAM buffer [mem 0xacec0000-0xafffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.169243] e820: reserve RAM buffer [mem 0x14f600000-0x14fffffff]
+Apr 14 18:03:43 chrosan kernel: [    0.169484] NetLabel: Initializing
+Apr 14 18:03:43 chrosan kernel: [    0.169492] NetLabel:  domain hash size = 128
+Apr 14 18:03:43 chrosan kernel: [    0.169498] NetLabel:  protocols = UNLABELED CIPSOv4
+Apr 14 18:03:43 chrosan kernel: [    0.169531] NetLabel:  unlabeled traffic allowed by default
+Apr 14 18:03:43 chrosan kernel: [    0.169681] hpet0: at MMIO 0xfed00000, IRQs 2, 8, 0, 0, 0, 0, 0, 0
+Apr 14 18:03:43 chrosan kernel: [    0.169699] hpet0: 8 comparators, 64-bit 14.318180 MHz counter
+Apr 14 18:03:43 chrosan kernel: [    0.171748] clocksource: Switched to clocksource hpet
+Apr 14 18:03:43 chrosan kernel: [    0.183613] AppArmor: AppArmor Filesystem Enabled
+Apr 14 18:03:43 chrosan kernel: [    0.183773] pnp: PnP ACPI init
+Apr 14 18:03:43 chrosan kernel: [    0.183952] system 00:00: [mem 0xfed1c000-0xfed1ffff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.183963] system 00:00: [mem 0xfed10000-0xfed13fff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.183972] system 00:00: [mem 0xfed18000-0xfed18fff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.183981] system 00:00: [mem 0xfed19000-0xfed19fff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.183990] system 00:00: [mem 0xf0000000-0xf3ffffff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.183999] system 00:00: [mem 0xfed20000-0xfed3ffff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184008] system 00:00: [mem 0xfed40000-0xfed44fff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184017] system 00:00: [mem 0xfed45000-0xfed8ffff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184026] system 00:00: [mem 0x00f00000-0x00ffffff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184034] system 00:00: [mem 0x20000000-0x201fffff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184043] system 00:00: [mem 0x40000000-0x401fffff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184057] system 00:00: Plug and Play ACPI device, IDs PNP0c02 (active)
+Apr 14 18:03:43 chrosan kernel: [    0.184665] system 00:01: [mem 0xfed00000-0xfed003ff] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184678] system 00:01: Plug and Play ACPI device, IDs PNP0103 PNP0c01 (active)
+Apr 14 18:03:43 chrosan kernel: [    0.184757] system 00:02: [io  0x0500-0x057f] could not be reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184767] system 00:02: [io  0x0480-0x04bf] has been reserved
+Apr 14 18:03:43 chrosan kernel: [    0.184777] system 00:02: Plug and Play ACPI device, IDs PNP0c02 (active)
+Apr 14 18:03:43 chrosan kernel: [    0.184821] pnp 00:03: Plug and Play ACPI device, IDs PNP0b00 (active)
+Apr 14 18:03:43 chrosan kernel: [    0.184889] pnp 00:04: Plug and Play ACPI device, IDs PNP0303 PNP030b (active)
+Apr 14 18:03:43 chrosan kernel: [    0.184924] pnp: PnP ACPI: found 5 devices
+Apr 14 18:03:43 chrosan kernel: [    0.192991] clocksource: acpi_pm: mask: 0xffffff max_cycles: 0xffffff, max_idle_ns: 2085701024 ns
+Apr 14 18:03:43 chrosan kernel: [    0.193051] pci 0000:00:1c.0: PCI bridge to [bus 01]
+Apr 14 18:03:43 chrosan kernel: [    0.193069] pci 0000:00:1c.0:   bridge window [mem 0xe0400000-0xe04fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.193091] pci 0000:00:1c.1: PCI bridge to [bus 02]
+Apr 14 18:03:43 chrosan kernel: [    0.193106] pci 0000:00:1c.1:   bridge window [mem 0xe0600000-0xe06fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.193119] pci 0000:00:1c.1:   bridge window [mem 0xe0500000-0xe05fffff 64bit pref]
+Apr 14 18:03:43 chrosan kernel: [    0.193142] pci_bus 0000:00: resource 4 [io  0x0000-0x0cf7 window]
+Apr 14 18:03:43 chrosan kernel: [    0.193146] pci_bus 0000:00: resource 5 [io  0x0d00-0xffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193150] pci_bus 0000:00: resource 6 [mem 0x000a0000-0x000bffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193154] pci_bus 0000:00: resource 7 [mem 0x000c0000-0x000c3fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193157] pci_bus 0000:00: resource 8 [mem 0x000c4000-0x000c7fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193161] pci_bus 0000:00: resource 9 [mem 0x000c8000-0x000cbfff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193164] pci_bus 0000:00: resource 10 [mem 0x000d0000-0x000d3fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193168] pci_bus 0000:00: resource 11 [mem 0x000d4000-0x000d7fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193171] pci_bus 0000:00: resource 12 [mem 0x000d8000-0x000dbfff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193175] pci_bus 0000:00: resource 13 [mem 0x000dc000-0x000dffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193179] pci_bus 0000:00: resource 14 [mem 0x000e0000-0x000e3fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193182] pci_bus 0000:00: resource 15 [mem 0x000e4000-0x000e7fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193186] pci_bus 0000:00: resource 16 [mem 0x000e8000-0x000ebfff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193189] pci_bus 0000:00: resource 17 [mem 0x000ec000-0x000effff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193193] pci_bus 0000:00: resource 18 [mem 0x000f0000-0x000fffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193197] pci_bus 0000:00: resource 19 [mem 0xafa00001-0xfebfffff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193200] pci_bus 0000:00: resource 20 [mem 0xfed40000-0xfed44fff window]
+Apr 14 18:03:43 chrosan kernel: [    0.193204] pci_bus 0000:01: resource 1 [mem 0xe0400000-0xe04fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.193208] pci_bus 0000:02: resource 1 [mem 0xe0600000-0xe06fffff]
+Apr 14 18:03:43 chrosan kernel: [    0.193212] pci_bus 0000:02: resource 2 [mem 0xe0500000-0xe05fffff 64bit pref]
+Apr 14 18:03:43 chrosan kernel: [    0.193273] NET: Registered protocol family 2
+Apr 14 18:03:43 chrosan kernel: [    0.193559] TCP established hash table entries: 32768 (order: 6, 262144 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.193735] TCP bind hash table entries: 32768 (order: 7, 524288 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.193870] TCP: Hash tables configured (established 32768 bind 32768)
+Apr 14 18:03:43 chrosan kernel: [    0.193927] UDP hash table entries: 2048 (order: 4, 65536 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.193972] UDP-Lite hash table entries: 2048 (order: 4, 65536 bytes)
+Apr 14 18:03:43 chrosan kernel: [    0.194073] NET: Registered protocol family 1
+Apr 14 18:03:43 chrosan kernel: [    0.194110] pci 0000:00:02.0: Video device with shadowed ROM
+Apr 14 18:03:43 chrosan kernel: [    0.194694] PCI: CLS 64 bytes, default 64
+Apr 14 18:03:43 chrosan kernel: [    0.194803] Trying to unpack rootfs image as initramfs...
+Apr 14 18:03:43 chrosan kernel: [    4.364974] Freeing initrd memory: 17756K (ffff88014cea9000 - ffff88014e000000)
+Apr 14 18:03:43 chrosan kernel: [    4.365006] PCI-DMA: Using software bounce buffering for IO (SWIOTLB)
+Apr 14 18:03:43 chrosan kernel: [    4.365016] software IO TLB [mem 0xa8ec0000-0xacec0000] (64MB) mapped at [ffff8800a8ec0000-ffff8800acebffff]
+Apr 14 18:03:43 chrosan kernel: [    4.365170] RAPL PMU detected, API unit is 2^-32 Joules, 3 fixed counters 163840 ms ovfl timer
+Apr 14 18:03:43 chrosan kernel: [    4.365183] hw unit of domain pp0-core 2^-16 Joules
+Apr 14 18:03:43 chrosan kernel: [    4.365190] hw unit of domain package 2^-16 Joules
+Apr 14 18:03:43 chrosan kernel: [    4.365197] hw unit of domain pp1-gpu 2^-16 Joules
+Apr 14 18:03:43 chrosan kernel: [    4.365303] microcode: CPU0 sig=0x206a7, pf=0x10, revision=0x28
+Apr 14 18:03:43 chrosan kernel: [    4.365324] microcode: CPU1 sig=0x206a7, pf=0x10, revision=0x28
+Apr 14 18:03:43 chrosan kernel: [    4.365433] microcode: Microcode Update Driver: v2.00 <tigran@aivazian.fsnet.co.uk>, Peter Oruba
+Apr 14 18:03:43 chrosan kernel: [    4.366147] futex hash table entries: 512 (order: 3, 32768 bytes)
+Apr 14 18:03:43 chrosan kernel: [    4.366173] Initialise system trusted keyring
+Apr 14 18:03:43 chrosan kernel: [    4.366215] audit: initializing netlink subsys (disabled)
+Apr 14 18:03:43 chrosan kernel: [    4.366245] audit: type=2000 audit(1460671415.352:1): initialized
+Apr 14 18:03:43 chrosan kernel: [    4.366946] HugeTLB registered 2 MB page size, pre-allocated 0 pages
+Apr 14 18:03:43 chrosan kernel: [    4.370154] zpool: loaded
+Apr 14 18:03:43 chrosan kernel: [    4.370166] zbud: loaded
+Apr 14 18:03:43 chrosan kernel: [    4.370552] VFS: Disk quotas dquot_6.6.0
+Apr 14 18:03:43 chrosan kernel: [    4.370635] VFS: Dquot-cache hash table entries: 512 (order 0, 4096 bytes)
+Apr 14 18:03:43 chrosan kernel: [    4.371594] fuse init (API version 7.23)
+Apr 14 18:03:43 chrosan kernel: [    4.371895] Key type big_key registered
+Apr 14 18:03:43 chrosan kernel: [    4.372437] Key type asymmetric registered
+Apr 14 18:03:43 chrosan kernel: [    4.372451] Asymmetric key parser 'x509' registered
+Apr 14 18:03:43 chrosan kernel: [    4.372489] Block layer SCSI generic (bsg) driver version 0.4 loaded (major 249)
+Apr 14 18:03:43 chrosan kernel: [    4.372553] io scheduler noop registered
+Apr 14 18:03:43 chrosan kernel: [    4.372566] io scheduler deadline registered (default)
+Apr 14 18:03:43 chrosan kernel: [    4.372639] io scheduler cfq registered
+Apr 14 18:03:43 chrosan kernel: [    4.373450] pcieport 0000:00:1c.0: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:43 chrosan kernel: [    4.373462] pci 0000:01:00.0: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:43 chrosan kernel: [    4.373475] pcie_pme 0000:00:1c.0:pcie01: service driver pcie_pme loaded
+Apr 14 18:03:43 chrosan kernel: [    4.373519] pcieport 0000:00:1c.1: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:43 chrosan kernel: [    4.373528] pci 0000:02:00.0: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:43 chrosan kernel: [    4.373536] pci 0000:02:00.1: Signaling PME through PCIe PME interrupt
+Apr 14 18:03:43 chrosan kernel: [    4.373548] pcie_pme 0000:00:1c.1:pcie01: service driver pcie_pme loaded
+Apr 14 18:03:43 chrosan kernel: [    4.373561] pci_hotplug: PCI Hot Plug PCI Core version: 0.5
+Apr 14 18:03:43 chrosan kernel: [    4.373580] pciehp: PCI Express Hot Plug Controller Driver version: 0.4
+Apr 14 18:03:43 chrosan kernel: [    4.373655] intel_idle: MWAIT substates: 0x21120
+Apr 14 18:03:43 chrosan kernel: [    4.373658] intel_idle: v0.4 model 0x2A
+Apr 14 18:03:43 chrosan kernel: [    4.373660] intel_idle: lapic_timer_reliable_states 0xffffffff
+Apr 14 18:03:43 chrosan kernel: [    4.374159] ACPI: AC Adapter [AC] (off-line)
+Apr 14 18:03:43 chrosan kernel: [    4.374283] input: Lid Switch as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0D:00/input/input0
+Apr 14 18:03:43 chrosan kernel: [    4.374336] ACPI: Lid Switch [LID0]
+Apr 14 18:03:43 chrosan kernel: [    4.374420] input: Power Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0C:00/input/input1
+Apr 14 18:03:43 chrosan kernel: [    4.374436] ACPI: Power Button [PWRB]
+Apr 14 18:03:43 chrosan kernel: [    4.374513] input: Sleep Button as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0C0E:00/input/input2
+Apr 14 18:03:43 chrosan kernel: [    4.374527] ACPI: Sleep Button [TPAD]
+Apr 14 18:03:43 chrosan kernel: [    4.374615] input: Power Button as /devices/LNXSYSTM:00/LNXPWRBN:00/input/input3
+Apr 14 18:03:43 chrosan kernel: [    4.374629] ACPI: Power Button [PWRF]
+Apr 14 18:03:43 chrosan kernel: [    4.376128] thermal LNXTHERM:00: registered as thermal_zone0
+Apr 14 18:03:43 chrosan kernel: [    4.376138] ACPI: Thermal Zone [THRM] (44 C)
+Apr 14 18:03:43 chrosan kernel: [    4.376226] GHES: HEST is not enabled!
+Apr 14 18:03:43 chrosan kernel: [    4.376839] Serial: 8250/16550 driver, 32 ports, IRQ sharing enabled
+Apr 14 18:03:43 chrosan kernel: [    4.383455] ACPI: Battery Slot [BATX] (battery present)
+Apr 14 18:03:43 chrosan kernel: [    4.384280] Linux agpgart interface v0.103
+Apr 14 18:03:43 chrosan kernel: [    4.388285] brd: module loaded
+Apr 14 18:03:43 chrosan kernel: [    4.389946] loop: module loaded
+Apr 14 18:03:43 chrosan kernel: [    4.390381] libphy: Fixed MDIO Bus: probed
+Apr 14 18:03:43 chrosan kernel: [    4.390395] tun: Universal TUN/TAP device driver, 1.6
+Apr 14 18:03:43 chrosan kernel: [    4.390402] tun: (C) 1999-2004 Max Krasnyansky <maxk@qualcomm.com>
+Apr 14 18:03:43 chrosan kernel: [    4.390488] PPP generic driver version 2.4.2
+Apr 14 18:03:43 chrosan kernel: [    4.390634] ehci_hcd: USB 2.0 'Enhanced' Host Controller (EHCI) Driver
+Apr 14 18:03:43 chrosan kernel: [    4.390651] ehci-pci: EHCI PCI platform driver
+Apr 14 18:03:43 chrosan kernel: [    4.390870] ehci-pci 0000:00:1a.0: EHCI Host Controller
+Apr 14 18:03:43 chrosan kernel: [    4.390887] ehci-pci 0000:00:1a.0: new USB bus registered, assigned bus number 1
+Apr 14 18:03:43 chrosan kernel: [    4.390917] ehci-pci 0000:00:1a.0: debug port 2
+Apr 14 18:03:43 chrosan kernel: [    4.394851] ehci-pci 0000:00:1a.0: cache line size of 64 is not supported
+Apr 14 18:03:43 chrosan kernel: [    4.394875] ehci-pci 0000:00:1a.0: irq 21, io mem 0xe0705800
+Apr 14 18:03:43 chrosan kernel: [    4.407747] ehci-pci 0000:00:1a.0: USB 2.0 started, EHCI 1.00
+Apr 14 18:03:43 chrosan kernel: [    4.407891] usb usb1: New USB device found, idVendor=1d6b, idProduct=0002
+Apr 14 18:03:43 chrosan kernel: [    4.407902] usb usb1: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Apr 14 18:03:43 chrosan kernel: [    4.407915] usb usb1: Product: EHCI Host Controller
+Apr 14 18:03:43 chrosan kernel: [    4.407923] usb usb1: Manufacturer: Linux 4.2.0-34-generic ehci_hcd
+Apr 14 18:03:43 chrosan kernel: [    4.407931] usb usb1: SerialNumber: 0000:00:1a.0
+Apr 14 18:03:43 chrosan kernel: [    4.408293] hub 1-0:1.0: USB hub found
+Apr 14 18:03:43 chrosan kernel: [    4.408315] hub 1-0:1.0: 7 ports detected
+Apr 14 18:03:43 chrosan kernel: [    4.408918] ehci-pci 0000:00:1d.0: EHCI Host Controller
+Apr 14 18:03:43 chrosan kernel: [    4.408935] ehci-pci 0000:00:1d.0: new USB bus registered, assigned bus number 2
+Apr 14 18:03:43 chrosan kernel: [    4.408963] ehci-pci 0000:00:1d.0: debug port 2
+Apr 14 18:03:43 chrosan kernel: [    4.412885] ehci-pci 0000:00:1d.0: cache line size of 64 is not supported
+Apr 14 18:03:43 chrosan kernel: [    4.412914] ehci-pci 0000:00:1d.0: irq 19, io mem 0xe0705c00
+Apr 14 18:03:43 chrosan kernel: [    4.423764] ehci-pci 0000:00:1d.0: USB 2.0 started, EHCI 1.00
+Apr 14 18:03:43 chrosan kernel: [    4.423931] usb usb2: New USB device found, idVendor=1d6b, idProduct=0002
+Apr 14 18:03:43 chrosan kernel: [    4.423942] usb usb2: New USB device strings: Mfr=3, Product=2, SerialNumber=1
+Apr 14 18:03:43 chrosan kernel: [    4.423955] usb usb2: Product: EHCI Host Controller
+Apr 14 18:03:43 chrosan kernel: [    4.423964] usb usb2: Manufacturer: Linux 4.2.0-34-generic ehci_hcd
+Apr 14 18:03:43 chrosan kernel: [    4.423972] usb usb2: SerialNumber: 0000:00:1d.0
+Apr 14 18:03:43 chrosan kernel: [    4.424340] hub 2-0:1.0: USB hub found
+Apr 14 18:03:43 chrosan kernel: [    4.424363] hub 2-0:1.0: 11 ports detected
+Apr 14 18:03:43 chrosan kernel: [    4.424947] ehci-platform: EHCI generic platform driver
+Apr 14 18:03:43 chrosan kernel: [    4.424987] ohci_hcd: USB 1.1 'Open' Host Controller (OHCI) Driver
+Apr 14 18:03:43 chrosan kernel: [    4.425005] ohci-pci: OHCI PCI platform driver
+Apr 14 18:03:43 chrosan kernel: [    4.425035] ohci-platform: OHCI generic platform driver
+Apr 14 18:03:43 chrosan kernel: [    4.425059] uhci_hcd: USB Universal Host Controller Interface driver
+Apr 14 18:03:43 chrosan kernel: [    4.425172] i8042: PNP: PS/2 Controller [PNP0303:PS2K] at 0x60,0x64 irq 1
+Apr 14 18:03:43 chrosan kernel: [    4.425180] i8042: PNP: PS/2 appears to have AUX port disabled, if this is incorrect please boot with i8042.nopnp
+Apr 14 18:03:43 chrosan kernel: [    4.433711] serio: i8042 KBD port at 0x60,0x64 irq 1
+Apr 14 18:03:43 chrosan kernel: [    4.434192] mousedev: PS/2 mouse device common for all mice
+Apr 14 18:03:43 chrosan kernel: [    4.435487] rtc_cmos 00:03: RTC can wake from S4
+Apr 14 18:03:43 chrosan kernel: [    4.435708] rtc_cmos 00:03: rtc core: registered rtc_cmos as rtc0
+Apr 14 18:03:43 chrosan kernel: [    4.435760] rtc_cmos 00:03: alarms up to one month, 242 bytes nvram, hpet irqs
+Apr 14 18:03:43 chrosan kernel: [    4.435785] i2c /dev entries driver
+Apr 14 18:03:43 chrosan kernel: [    4.435946] device-mapper: uevent: version 1.0.3
+Apr 14 18:03:43 chrosan kernel: [    4.436215] device-mapper: ioctl: 4.33.0-ioctl (2015-8-18) initialised: dm-devel@redhat.com
+Apr 14 18:03:43 chrosan kernel: [    4.436256] Intel P-state driver initializing.
+Apr 14 18:03:43 chrosan kernel: [    4.436504] ledtrig-cpu: registered to indicate activity on CPUs
+Apr 14 18:03:43 chrosan kernel: [    4.437148] PCCT header not found.
+Apr 14 18:03:43 chrosan kernel: [    4.437495] IPv6: Loaded, but administratively disabled, reboot required to enable
+Apr 14 18:03:43 chrosan kernel: [    4.437519] NET: Registered protocol family 17
+Apr 14 18:03:43 chrosan kernel: [    4.437569] Key type dns_resolver registered
+Apr 14 18:03:43 chrosan kernel: [    4.438514] Loading compiled-in X.509 certificates
+Apr 14 18:03:43 chrosan kernel: [    4.441256] Loaded X.509 cert 'Build time autogenerated kernel key: d4accbbd312ba9df317537b8f58703496ce2e7c8'
+Apr 14 18:03:43 chrosan kernel: [    4.441317] registered taskstats version 1
+Apr 14 18:03:43 chrosan kernel: [    4.441385] zswap: loading zswap
+Apr 14 18:03:43 chrosan kernel: [    4.441398] zswap: using zbud pool
+Apr 14 18:03:43 chrosan kernel: [    4.441417] zswap: using lzo compressor
+Apr 14 18:03:43 chrosan kernel: [    4.445666] Key type trusted registered
+Apr 14 18:03:43 chrosan kernel: [    4.452194] Key type encrypted registered
+Apr 14 18:03:43 chrosan kernel: [    4.452219] AppArmor: AppArmor sha1 policy hashing enabled
+Apr 14 18:03:43 chrosan kernel: [    4.452233] ima: No TPM chip found, activating TPM-bypass!
+Apr 14 18:03:43 chrosan kernel: [    4.452286] evm: HMAC attrs: 0x1
+Apr 14 18:03:43 chrosan kernel: [    4.452776]   Magic number: 12:885:97
+Apr 14 18:03:43 chrosan kernel: [    4.452913] rtc_cmos 00:03: setting system clock to 2016-04-14 22:03:35 UTC (1460671415)
+Apr 14 18:03:43 chrosan kernel: [    4.453023] BIOS EDD facility v0.16 2004-Jun-25, 0 devices found
+Apr 14 18:03:43 chrosan kernel: [    4.453031] EDD information not available.
+Apr 14 18:03:43 chrosan kernel: [    4.453164] PM: Hibernation image not present or could not be loaded.
+Apr 14 18:03:43 chrosan kernel: [    4.453833] Freeing unused kernel memory: 1468K (ffffffff81d38000 - ffffffff81ea7000)
+Apr 14 18:03:43 chrosan kernel: [    4.453848] Write protecting the kernel read-only data: 12288k
+Apr 14 18:03:43 chrosan kernel: [    4.454286] Freeing unused kernel memory: 236K (ffff88014e7c5000 - ffff88014e800000)
+Apr 14 18:03:43 chrosan kernel: [    4.454523] Freeing unused kernel memory: 280K (ffff88014ebba000 - ffff88014ec00000)
+Apr 14 18:03:43 chrosan kernel: [    4.478836] input: AT Translated Set 2 keyboard as /devices/platform/i8042/serio0/input/input4
+Apr 14 18:03:43 chrosan kernel: [    4.510958] ACPI: Video Device [GFX0] (multi-head: yes  rom: no  post: no)
+Apr 14 18:03:43 chrosan kernel: [    4.511185] input: Video Bus as /devices/LNXSYSTM:00/LNXSYBUS:00/PNP0A08:00/LNXVIDEO:00/input/input5
+Apr 14 18:03:43 chrosan kernel: [    4.521349] [drm] Initialized drm 1.1.0 20060810
+Apr 14 18:03:43 chrosan kernel: [    4.528402] pps_core: LinuxPPS API ver. 1 registered
+Apr 14 18:03:43 chrosan kernel: [    4.528415] pps_core: Software ver. 5.3.6 - Copyright 2005-2007 Rodolfo Giometti <giometti@linux.it>
+Apr 14 18:03:43 chrosan kernel: [    4.531161] PTP clock support registered
+Apr 14 18:03:43 chrosan kernel: [    4.534911] ahci 0000:00:1f.2: version 3.0
+Apr 14 18:03:43 chrosan kernel: [    4.535174] ahci 0000:00:1f.2: SSS flag set, parallel bus scan disabled
+Apr 14 18:03:43 chrosan kernel: [    4.535215] ahci 0000:00:1f.2: AHCI 0001.0300 32 slots 4 ports 6 Gbps 0x1 impl SATA mode
+Apr 14 18:03:43 chrosan kernel: [    4.535231] ahci 0000:00:1f.2: flags: 64bit ncq sntf ilck stag pm led clo pio slum part apst 
+Apr 14 18:03:43 chrosan kernel: [    4.539792] sdhci: Secure Digital Host Controller Interface driver
+Apr 14 18:03:43 chrosan kernel: [    4.539805] sdhci: Copyright(c) Pierre Ossman
+Apr 14 18:03:43 chrosan kernel: [    4.543874] scsi host0: ahci
+Apr 14 18:03:43 chrosan kernel: [    4.543959] sdhci-pci 0000:02:00.1: SDHCI controller found [14e4:16bc] (rev 10)
+Apr 14 18:03:43 chrosan kernel: [    4.544500] sdhci-pci 0000:02:00.1: No vmmc regulator found
+Apr 14 18:03:43 chrosan kernel: [    4.544511] sdhci-pci 0000:02:00.1: No vqmmc regulator found
+Apr 14 18:03:43 chrosan kernel: [    4.547500] mmc0: SDHCI controller on PCI [0000:02:00.1] using ADMA 64-bit
+Apr 14 18:03:43 chrosan kernel: [    4.550293] scsi host1: ahci
+Apr 14 18:03:43 chrosan kernel: [    4.550731] tg3.c:v3.137 (May 11, 2014)
+Apr 14 18:03:43 chrosan kernel: [    4.558331] scsi host2: ahci
+Apr 14 18:03:43 chrosan kernel: [    4.563668] scsi host3: ahci
+Apr 14 18:03:43 chrosan kernel: [    4.563795] ata1: SATA max UDMA/133 abar m2048@0xe0705000 port 0xe0705100 irq 26
+Apr 14 18:03:43 chrosan kernel: [    4.563809] ata2: DUMMY
+Apr 14 18:03:43 chrosan kernel: [    4.563815] ata3: DUMMY
+Apr 14 18:03:43 chrosan kernel: [    4.563822] ata4: DUMMY
+Apr 14 18:03:43 chrosan kernel: [    4.600176] [drm] Memory usable by graphics device = 2048M
+Apr 14 18:03:43 chrosan kernel: [    4.600192] [drm] Replacing VGA console driver
+Apr 14 18:03:43 chrosan kernel: [    4.602635] [drm] Supports vblank timestamp caching Rev 2 (21.10.2013).
+Apr 14 18:03:43 chrosan kernel: [    4.602648] [drm] Driver supports precise vblank timestamp query.
+Apr 14 18:03:43 chrosan kernel: [    4.605135] vgaarb: device changed decodes: PCI:0000:00:02.0,olddecodes=io+mem,decodes=io+mem:owns=io+mem
+Apr 14 18:03:43 chrosan kernel: [    4.620040] tg3 0000:02:00.0 eth0: Tigon3 [partno(BCM57785) rev 57785100] (PCI Express) MAC address b8:88:e3:ce:fb:d6
+Apr 14 18:03:43 chrosan kernel: [    4.620062] tg3 0000:02:00.0 eth0: attached PHY is 57765 (10/100/1000Base-T Ethernet) (WireSpeed[1], EEE[1])
+Apr 14 18:03:43 chrosan kernel: [    4.620076] tg3 0000:02:00.0 eth0: RXcsums[1] LinkChgREG[0] MIirq[0] ASF[0] TSOcap[1]
+Apr 14 18:03:43 chrosan kernel: [    4.620089] tg3 0000:02:00.0 eth0: dma_rwctrl[00000001] dma_mask[64-bit]
+Apr 14 18:03:43 chrosan kernel: [    4.639844] [drm] Initialized i915 1.6.0 20150522 for 0000:00:02.0 on minor 0
+Apr 14 18:03:43 chrosan kernel: [    4.652454] fbcon: inteldrmfb (fb0) is primary device
+Apr 14 18:03:43 chrosan kernel: [    4.719700] usb 1-1: new high-speed USB device number 2 using ehci-pci
+Apr 14 18:03:43 chrosan kernel: [    4.735692] usb 2-1: new high-speed USB device number 2 using ehci-pci
+Apr 14 18:03:43 chrosan kernel: [    4.852227] usb 1-1: New USB device found, idVendor=8087, idProduct=0024
+Apr 14 18:03:43 chrosan kernel: [    4.852232] usb 1-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Apr 14 18:03:43 chrosan kernel: [    4.853013] hub 1-1:1.0: USB hub found
+Apr 14 18:03:43 chrosan kernel: [    4.853216] hub 1-1:1.0: 4 ports detected
+Apr 14 18:03:43 chrosan kernel: [    4.868316] usb 2-1: New USB device found, idVendor=8087, idProduct=0024
+Apr 14 18:03:43 chrosan kernel: [    4.868319] usb 2-1: New USB device strings: Mfr=0, Product=0, SerialNumber=0
+Apr 14 18:03:43 chrosan kernel: [    4.868912] hub 2-1:1.0: USB hub found
+Apr 14 18:03:43 chrosan kernel: [    4.869093] hub 2-1:1.0: 4 ports detected
+Apr 14 18:03:43 chrosan kernel: [    4.883703] ata1: SATA link up 3.0 Gbps (SStatus 123 SControl 300)
+Apr 14 18:03:43 chrosan kernel: [    4.884047] ata1.00: ATA-7: INTEL SSDSA2M160G2GN, 2CV102M3, max UDMA/133
+Apr 14 18:03:43 chrosan kernel: [    4.884050] ata1.00: 312581808 sectors, multi 1: LBA48 NCQ (depth 31/32)
+Apr 14 18:03:43 chrosan kernel: [    4.884468] ata1.00: configured for UDMA/133
+Apr 14 18:03:43 chrosan kernel: [    4.884764] scsi 0:0:0:0: Direct-Access     ATA      INTEL SSDSA2M160 02M3 PQ: 0 ANSI: 5
+Apr 14 18:03:43 chrosan kernel: [    4.885312] ata1.00: Enabling discard_zeroes_data
+Apr 14 18:03:43 chrosan kernel: [    4.885336] sd 0:0:0:0: [sda] 312581808 512-byte logical blocks: (160 GB/149 GiB)
+Apr 14 18:03:43 chrosan kernel: [    4.885395] sd 0:0:0:0: Attached scsi generic sg0 type 0
+Apr 14 18:03:43 chrosan kernel: [    4.885602] sd 0:0:0:0: [sda] Write Protect is off
+Apr 14 18:03:43 chrosan kernel: [    4.885607] sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
+Apr 14 18:03:43 chrosan kernel: [    4.885666] sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+Apr 14 18:03:43 chrosan kernel: [    4.886197] ata1.00: Enabling discard_zeroes_data
+Apr 14 18:03:43 chrosan kernel: [    4.888985]  sda: sda1 sda6 sda7
+Apr 14 18:03:43 chrosan kernel: [    4.889674] ata1.00: Enabling discard_zeroes_data
+Apr 14 18:03:43 chrosan kernel: [    4.889804] sd 0:0:0:0: [sda] Attached SCSI disk
+Apr 14 18:03:43 chrosan kernel: [    5.123687] usb 1-1.1: new full-speed USB device number 3 using ehci-pci
+Apr 14 18:03:43 chrosan kernel: [    5.217785] usb 1-1.1: string descriptor 0 read error: -22
+Apr 14 18:03:43 chrosan kernel: [    5.217793] usb 1-1.1: New USB device found, idVendor=0489, idProduct=e04e
+Apr 14 18:03:43 chrosan kernel: [    5.217796] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 14 18:03:43 chrosan kernel: [    5.287683] usb 1-1.3: new high-speed USB device number 4 using ehci-pci
+Apr 14 18:03:43 chrosan kernel: [    5.293916] Console: switching to colour frame buffer device 170x48
+Apr 14 18:03:43 chrosan kernel: [    5.318829] i915 0000:00:02.0: fb0: inteldrmfb frame buffer device
+Apr 14 18:03:43 chrosan kernel: [    5.321088] i915 0000:00:02.0: registered panic notifier
+Apr 14 18:03:43 chrosan kernel: [    5.368561] tsc: Refined TSC clocksource calibration: 1097.506 MHz
+Apr 14 18:03:43 chrosan kernel: [    5.370843] clocksource: tsc: mask: 0xffffffffffffffff max_cycles: 0xfd1e55c821, max_idle_ns: 440795210298 ns
+Apr 14 18:03:43 chrosan kernel: [    5.443676] usb 1-1.3: New USB device found, idVendor=064e, idProduct=d251
+Apr 14 18:03:43 chrosan kernel: [    5.446040] usb 1-1.3: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 14 18:03:43 chrosan kernel: [    5.448399] usb 1-1.3: Product: HD WebCam
+Apr 14 18:03:43 chrosan kernel: [    5.450709] usb 1-1.3: Manufacturer: SuYin
+Apr 14 18:03:43 chrosan kernel: [    5.452992] usb 1-1.3: SerialNumber: HF1016-A21U-OV02-VA-R01.00.03
+Apr 14 18:03:43 chrosan kernel: [    5.515130] md: linear personality registered for level -1
+Apr 14 18:03:43 chrosan kernel: [    5.520493] md: multipath personality registered for level -4
+Apr 14 18:03:43 chrosan kernel: [    5.525932] md: raid0 personality registered for level 0
+Apr 14 18:03:43 chrosan kernel: [    5.532232] md: raid1 personality registered for level 1
+Apr 14 18:03:43 chrosan kernel: [    5.603637] raid6: sse2x1   gen()  2965 MB/s
+Apr 14 18:03:43 chrosan kernel: [    5.671622] raid6: sse2x1   xor()  2271 MB/s
+Apr 14 18:03:43 chrosan kernel: [    5.739630] raid6: sse2x2   gen()  3668 MB/s
+Apr 14 18:03:43 chrosan kernel: [    5.807615] raid6: sse2x2   xor()  2655 MB/s
+Apr 14 18:03:43 chrosan kernel: [    5.875610] raid6: sse2x4   gen()  4263 MB/s
+Apr 14 18:03:43 chrosan kernel: [    5.943613] raid6: sse2x4   xor()  3234 MB/s
+Apr 14 18:03:43 chrosan kernel: [    5.943652] raid6: using algorithm sse2x4 gen() 4263 MB/s
+Apr 14 18:03:43 chrosan kernel: [    5.943698] raid6: .... xor() 3234 MB/s, rmw enabled
+Apr 14 18:03:43 chrosan kernel: [    5.943741] raid6: using ssse3x2 recovery algorithm
+Apr 14 18:03:43 chrosan kernel: [    5.946507] xor: measuring software checksum speed
+Apr 14 18:03:43 chrosan kernel: [    5.983604]    prefetch64-sse:  6018.000 MB/sec
+Apr 14 18:03:43 chrosan kernel: [    6.023604]    generic_sse:  5518.000 MB/sec
+Apr 14 18:03:43 chrosan kernel: [    6.023643] xor: using function: prefetch64-sse (6018.000 MB/sec)
+Apr 14 18:03:43 chrosan kernel: [    6.026176] async_tx: api initialized (async)
+Apr 14 18:03:43 chrosan kernel: [    6.041608] md: raid6 personality registered for level 6
+Apr 14 18:03:43 chrosan kernel: [    6.041662] md: raid5 personality registered for level 5
+Apr 14 18:03:43 chrosan kernel: [    6.041709] md: raid4 personality registered for level 4
+Apr 14 18:03:43 chrosan kernel: [    6.053664] md: raid10 personality registered for level 10
+Apr 14 18:03:43 chrosan kernel: [    6.108413] Btrfs loaded
+Apr 14 18:03:43 chrosan kernel: [    6.371957] clocksource: Switched to clocksource tsc
+Apr 14 18:03:43 chrosan kernel: [   11.146061] EXT4-fs (sda7): INFO: recovery required on readonly filesystem
+Apr 14 18:03:43 chrosan kernel: [   11.146140] EXT4-fs (sda7): write access will be enabled during recovery
+Apr 14 18:03:43 chrosan kernel: [   11.194219] EXT4-fs (sda7): recovery complete
+Apr 14 18:03:43 chrosan kernel: [   11.194524] EXT4-fs (sda7): mounted filesystem with ordered data mode. Opts: (null)
+Apr 14 18:03:43 chrosan kernel: [   11.326716] random: init urandom read with 29 bits of entropy available
+Apr 14 18:03:43 chrosan kernel: [   11.615595] EXT4-fs (sda7): re-mounted. Opts: errors=remount-ro,discard
+Apr 14 18:03:43 chrosan kernel: [   12.110041] lp: driver loaded but no devices found
+Apr 14 18:03:43 chrosan kernel: [   12.146154] i801_smbus 0000:00:1f.3: SMBus using PCI interrupt
+Apr 14 18:03:43 chrosan kernel: [   12.188756] FS-Cache: Loaded
+Apr 14 18:03:43 chrosan kernel: [   12.310222] RPC: Registered named UNIX socket transport module.
+Apr 14 18:03:43 chrosan kernel: [   12.310229] RPC: Registered udp transport module.
+Apr 14 18:03:43 chrosan kernel: [   12.310231] RPC: Registered tcp transport module.
+Apr 14 18:03:43 chrosan kernel: [   12.310233] RPC: Registered tcp NFSv4.1 backchannel transport module.
+Apr 14 18:03:43 chrosan kernel: [   12.359612] ppdev: user-space parallel port driver
+Apr 14 18:03:43 chrosan kernel: [   12.366366] FS-Cache: Netfs 'nfs' registered for caching
+Apr 14 18:03:43 chrosan kernel: [   12.439159] Installing knfsd (copyright (C) 1996 okir@monad.swb.de).
+Apr 14 18:03:43 chrosan kernel: [   12.475640] shpchp: Standard Hot Plug PCI Controller Driver version: 0.4
+Apr 14 18:03:43 chrosan kernel: [   12.541563] ACPI Warning: SystemIO range 0x0000000000000528-0x000000000000052F conflicts with OpRegion 0x0000000000000500-0x000000000000057F (\PMIO) (20150619/utaddress-254)
+Apr 14 18:03:43 chrosan kernel: [   12.541577] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+Apr 14 18:03:43 chrosan kernel: [   12.541583] ACPI Warning: SystemIO range 0x00000000000004C0-0x00000000000004CF conflicts with OpRegion 0x0000000000000480-0x00000000000004EB (\GPIO) (20150619/utaddress-254)
+Apr 14 18:03:43 chrosan kernel: [   12.541589] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+Apr 14 18:03:43 chrosan kernel: [   12.541592] ACPI Warning: SystemIO range 0x00000000000004B0-0x00000000000004BF conflicts with OpRegion 0x0000000000000480-0x00000000000004EB (\GPIO) (20150619/utaddress-254)
+Apr 14 18:03:43 chrosan kernel: [   12.541598] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+Apr 14 18:03:43 chrosan kernel: [   12.541600] ACPI Warning: SystemIO range 0x0000000000000480-0x00000000000004AF conflicts with OpRegion 0x0000000000000480-0x00000000000004EB (\GPIO) (20150619/utaddress-254)
+Apr 14 18:03:43 chrosan kernel: [   12.541606] ACPI: If an ACPI driver is available for this device, you should use it instead of the native driver
+Apr 14 18:03:43 chrosan kernel: [   12.541609] lpc_ich: Resource conflict(s) found affecting gpio_ich
+Apr 14 18:03:43 chrosan kernel: [   12.768732] Bluetooth: Core ver 2.20
+Apr 14 18:03:43 chrosan kernel: [   12.768770] NET: Registered protocol family 31
+Apr 14 18:03:43 chrosan kernel: [   12.768773] Bluetooth: HCI device and connection manager initialized
+Apr 14 18:03:43 chrosan kernel: [   12.768781] Bluetooth: HCI socket layer initialized
+Apr 14 18:03:43 chrosan kernel: [   12.768785] Bluetooth: L2CAP socket layer initialized
+Apr 14 18:03:43 chrosan kernel: [   12.768796] Bluetooth: SCO socket layer initialized
+Apr 14 18:03:43 chrosan kernel: [   12.825045] Bluetooth: BNEP (Ethernet Emulation) ver 1.3
+Apr 14 18:03:43 chrosan kernel: [   12.825051] Bluetooth: BNEP filters: protocol multicast
+Apr 14 18:03:43 chrosan kernel: [   12.825062] Bluetooth: BNEP socket layer initialized
+Apr 14 18:03:43 chrosan kernel: [   12.828158] Bluetooth: RFCOMM TTY layer initialized
+Apr 14 18:03:43 chrosan kernel: [   12.828172] Bluetooth: RFCOMM socket layer initialized
+Apr 14 18:03:43 chrosan kernel: [   12.828180] Bluetooth: RFCOMM ver 1.11
+Apr 14 18:03:43 chrosan kernel: [   12.901299] audit: type=1400 audit(1460671423.946:2): apparmor="STATUS" operation="profile_load" profile="unconfined" name="/usr/lib/cups/backend/cups-pdf" pid=640 comm="apparmor_parser"
+Apr 14 18:03:43 chrosan kernel: [   12.901314] audit: type=1400 audit(1460671423.946:3): apparmor="STATUS" operation="profile_load" profile="unconfined" name="/usr/sbin/cupsd" pid=640 comm="apparmor_parser"
+Apr 14 18:03:43 chrosan kernel: [   12.902227] audit: type=1400 audit(1460671423.946:4): apparmor="STATUS" operation="profile_replace" profile="unconfined" name="/usr/sbin/cupsd" pid=640 comm="apparmor_parser"
+Apr 14 18:03:44 chrosan kernel: [   13.346209] audit: type=1400 audit(1460671424.390:5): apparmor="STATUS" operation="profile_load" profile="unconfined" name="/sbin/dhclient" pid=695 comm="apparmor_parser"
+Apr 14 18:03:44 chrosan kernel: [   13.346224] audit: type=1400 audit(1460671424.390:6): apparmor="STATUS" operation="profile_load" profile="unconfined" name="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=695 comm="apparmor_parser"
+Apr 14 18:03:44 chrosan kernel: [   13.346233] audit: type=1400 audit(1460671424.390:7): apparmor="STATUS" operation="profile_load" profile="unconfined" name="/usr/lib/connman/scripts/dhclient-script" pid=695 comm="apparmor_parser"
+Apr 14 18:03:44 chrosan kernel: [   13.347168] audit: type=1400 audit(1460671424.390:8): apparmor="STATUS" operation="profile_replace" profile="unconfined" name="/usr/lib/NetworkManager/nm-dhcp-client.action" pid=695 comm="apparmor_parser"
+Apr 14 18:03:44 chrosan kernel: [   13.347181] audit: type=1400 audit(1460671424.390:9): apparmor="STATUS" operation="profile_replace" profile="unconfined" name="/usr/lib/connman/scripts/dhclient-script" pid=695 comm="apparmor_parser"
+Apr 14 18:03:44 chrosan kernel: [   13.358418] audit: type=1400 audit(1460671424.402:10): apparmor="STATUS" operation="profile_replace" profile="unconfined" name="/usr/lib/connman/scripts/dhclient-script" pid=695 comm="apparmor_parser"
+Apr 14 18:03:44 chrosan kernel: [   13.416539] cros_ec_lpc cros_ec_lpc.0: EC ID not detected
+Apr 14 18:03:44 chrosan kernel: [   13.821116] cyapatp: module verification failed: signature and/or required key missing - tainting kernel
+Apr 14 18:03:44 chrosan kernel: [   13.826554] 7-0067 supply vcc not found, using dummy regulator
+Apr 14 18:03:44 chrosan kernel: [   13.827876] ath: phy0: ASPM enabled: 0x43
+Apr 14 18:03:44 chrosan kernel: [   13.827881] ath: EEPROM regdomain: 0x6c
+Apr 14 18:03:44 chrosan kernel: [   13.827884] ath: EEPROM indicates we should expect a direct regpair map
+Apr 14 18:03:44 chrosan kernel: [   13.827887] ath: Country alpha2 being used: 00
+Apr 14 18:03:44 chrosan kernel: [   13.827889] ath: Regpair used: 0x6c
+Apr 14 18:03:44 chrosan kernel: [   13.918894] intel_rapl: Found RAPL domain package
+Apr 14 18:03:44 chrosan kernel: [   13.918901] intel_rapl: Found RAPL domain core
+Apr 14 18:03:44 chrosan kernel: [   13.918904] intel_rapl: Found RAPL domain uncore
+Apr 14 18:03:44 chrosan kernel: [   13.928858] ieee80211 phy0: Selected rate control algorithm 'minstrel_ht'
+Apr 14 18:03:44 chrosan kernel: [   13.937653] ieee80211 phy0: Atheros AR9462 Rev:2 mem=0xffffc90000b00000, irq=17
+Apr 14 18:03:45 chrosan kernel: [   13.952660] input: Cypress APA Trackpad (cyapa) as /devices/pci0000:00/0000:00:1f.3/i2c-7/7-0067/input/input6
+Apr 14 18:03:45 chrosan kernel: [   14.044693] cfg80211: World regulatory domain updated:
+Apr 14 18:03:45 chrosan kernel: [   14.044701] cfg80211:  DFS Master region: unset
+Apr 14 18:03:45 chrosan kernel: [   14.044704] cfg80211:   (start_freq - end_freq @ bandwidth), (max_antenna_gain, max_eirp), (dfs_cac_time)
+Apr 14 18:03:45 chrosan kernel: [   14.044710] cfg80211:   (2402000 KHz - 2472000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:45 chrosan kernel: [   14.044714] cfg80211:   (2457000 KHz - 2482000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:45 chrosan kernel: [   14.044717] cfg80211:   (2474000 KHz - 2494000 KHz @ 20000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:45 chrosan kernel: [   14.044721] cfg80211:   (5170000 KHz - 5250000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:45 chrosan kernel: [   14.044724] cfg80211:   (5735000 KHz - 5835000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:45 chrosan kernel: [   14.246668] snd_hda_codec_realtek hdaudioC0D0: autoconfig for ALC269VB: line_outs=1 (0x14/0x0/0x0/0x0/0x0) type:speaker
+Apr 14 18:03:45 chrosan kernel: [   14.246676] snd_hda_codec_realtek hdaudioC0D0:    speaker_outs=0 (0x0/0x0/0x0/0x0/0x0)
+Apr 14 18:03:45 chrosan kernel: [   14.246681] snd_hda_codec_realtek hdaudioC0D0:    hp_outs=1 (0x21/0x0/0x0/0x0/0x0)
+Apr 14 18:03:45 chrosan kernel: [   14.246684] snd_hda_codec_realtek hdaudioC0D0:    mono: mono_out=0x0
+Apr 14 18:03:45 chrosan kernel: [   14.246687] snd_hda_codec_realtek hdaudioC0D0:    inputs:
+Apr 14 18:03:45 chrosan kernel: [   14.246692] snd_hda_codec_realtek hdaudioC0D0:      Internal Mic=0x1b
+Apr 14 18:03:45 chrosan kernel: [   14.246696] snd_hda_codec_realtek hdaudioC0D0:      Mic=0x19
+Apr 14 18:03:45 chrosan kernel: [   14.302125] input: HDA Intel PCH Mic as /devices/pci0000:00/0000:00:1b.0/sound/card0/input7
+Apr 14 18:03:45 chrosan kernel: [   14.302326] input: HDA Intel PCH Headphone as /devices/pci0000:00/0000:00:1b.0/sound/card0/input8
+Apr 14 18:03:45 chrosan kernel: [   14.302509] input: HDA Intel PCH HDMI/DP,pcm=3 as /devices/pci0000:00/0000:00:1b.0/sound/card0/input9
+Apr 14 18:03:45 chrosan kernel: [   14.302714] input: HDA Intel PCH HDMI/DP,pcm=7 as /devices/pci0000:00/0000:00:1b.0/sound/card0/input10
+Apr 14 18:03:45 chrosan kernel: [   14.302892] input: HDA Intel PCH HDMI/DP,pcm=8 as /devices/pci0000:00/0000:00:1b.0/sound/card0/input11
+Apr 14 18:03:45 chrosan kernel: [   14.607660] audit: type=1400 audit(1460671425.654:11): apparmor="STATUS" operation="profile_load" profile="unconfined" name="docker-default" pid=1018 comm="apparmor_parser"
+Apr 14 18:03:46 chrosan kernel: [   15.141365] media: Linux media interface: v0.10
+Apr 14 18:03:46 chrosan kernel: [   15.172195] Linux video capture interface: v2.00
+Apr 14 18:03:46 chrosan kernel: [   15.298277] uvcvideo: Found UVC 1.00 device HD WebCam (064e:d251)
+Apr 14 18:03:46 chrosan kernel: [   15.324921] input: HD WebCam as /devices/pci0000:00/0000:00:1a.0/usb1/1-1/1-1.3/1-1.3:1.0/input/input12
+Apr 14 18:03:46 chrosan kernel: [   15.325241] usbcore: registered new interface driver uvcvideo
+Apr 14 18:03:46 chrosan kernel: [   15.325245] USB Video Class driver (1.1.1)
+Apr 14 18:03:46 chrosan kernel: [   15.373809] usbcore: registered new interface driver btusb
+Apr 14 18:03:46 chrosan kernel: [   15.434051] usbcore: registered new interface driver ath3k
+Apr 14 18:03:46 chrosan kernel: [   15.664196] usb 1-1.1: USB disconnect, device number 3
+Apr 14 18:03:46 chrosan kernel: [   15.867382] usb 1-1.1: new full-speed USB device number 5 using ehci-pci
+Apr 14 18:03:47 chrosan kernel: [   15.961182] usb 1-1.1: string descriptor 0 read error: -22
+Apr 14 18:03:47 chrosan kernel: [   15.962724] usb 1-1.1: New USB device found, idVendor=0489, idProduct=e04e
+Apr 14 18:03:47 chrosan kernel: [   15.962729] usb 1-1.1: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 14 18:03:47 chrosan kernel: [   16.668420] zram: Added device: zram0
+Apr 14 18:03:47 chrosan kernel: [   16.668709] zram: Added device: zram1
+Apr 14 18:03:47 chrosan kernel: [   16.691050] zram0: detected capacity change from 0 to 1019138048
+Apr 14 18:03:47 chrosan kernel: [   16.704435] Adding 995248k swap on /dev/zram0.  Priority:5 extents:1 across:995248k SSFS
+Apr 14 18:03:47 chrosan kernel: [   16.713238] zram1: detected capacity change from 0 to 1019138048
+Apr 14 18:03:47 chrosan kernel: [   16.893507] random: nonblocking pool is initialized
+Apr 14 18:03:47 chrosan kernel: [   16.936320] ip_tables: (C) 2000-2006 Netfilter Core Team
+Apr 14 18:03:48 chrosan kernel: [   17.048625] EXT4-fs (zram1): mounted filesystem without journal. Opts: delalloc,nobarrier,data=writeback,discard
+Apr 14 18:03:48 chrosan kernel: [   17.075156] bridge: automatic filtering via arp/ip/ip6tables has been deprecated. Update your scripts to load br_netfilter if you need this.
+Apr 14 18:03:48 chrosan kernel: [   17.238269] nf_conntrack version 0.5.0 (16384 buckets, 65536 max)
+Apr 14 18:03:49 chrosan kernel: [   17.980957] ip6_tables: (C) 2000-2006 Netfilter Core Team
+Apr 14 18:03:49 chrosan kernel: [   18.358719] vboxdrv: Found 2 processor cores
+Apr 14 18:03:49 chrosan kernel: [   18.379568] vboxdrv: TSC mode is Invariant, tentative frequency 1097505486 Hz
+Apr 14 18:03:49 chrosan kernel: [   18.379573] vboxdrv: Successfully loaded version 5.0.16 (interface 0x00240000)
+Apr 14 18:03:49 chrosan kernel: [   18.593190] VBoxNetFlt: Successfully started.
+Apr 14 18:03:49 chrosan kernel: [   18.601680] VBoxNetAdp: Successfully started.
+Apr 14 18:03:49 chrosan kernel: [   18.609760] VBoxPciLinuxInit
+Apr 14 18:03:49 chrosan kernel: [   18.620615] vboxpci: IOMMU not found (not registered)
+Apr 14 18:03:50 chrosan kernel: [   19.283431] Non-volatile memory driver v1.3
+Apr 14 18:03:50 chrosan kernel: [   19.895844] acpi_call: Cannot get handle: Error: AE_NOT_FOUND
+Apr 14 18:03:50 chrosan kernel: [   19.941271] acpi_call: Cannot get handle: Error: AE_NOT_FOUND
+Apr 14 18:03:53 chrosan kernel: [   22.407966] wlan0: authenticate with c8:a7:0a:b9:06:74
+Apr 14 18:03:53 chrosan kernel: [   22.420707] wlan0: direct probe to c8:a7:0a:b9:06:74 (try 1/3)
+Apr 14 18:03:53 chrosan kernel: [   22.623276] wlan0: send auth to c8:a7:0a:b9:06:74 (try 2/3)
+Apr 14 18:03:53 chrosan kernel: [   22.624323] wlan0: authenticated
+Apr 14 18:03:53 chrosan kernel: [   22.627351] wlan0: associate with c8:a7:0a:b9:06:74 (try 1/3)
+Apr 14 18:03:53 chrosan kernel: [   22.629692] wlan0: RX AssocResp from c8:a7:0a:b9:06:74 (capab=0x11 status=0 aid=2)
+Apr 14 18:03:53 chrosan kernel: [   22.629848] wlan0: associated
+Apr 14 18:03:53 chrosan kernel: [   22.635930] ath: EEPROM regdomain: 0x8348
+Apr 14 18:03:53 chrosan kernel: [   22.635937] ath: EEPROM indicates we should expect a country code
+Apr 14 18:03:53 chrosan kernel: [   22.635942] ath: doing EEPROM country->regdmn map search
+Apr 14 18:03:53 chrosan kernel: [   22.635945] ath: country maps to regdmn code: 0x3a
+Apr 14 18:03:53 chrosan kernel: [   22.635948] ath: Country alpha2 being used: US
+Apr 14 18:03:53 chrosan kernel: [   22.635951] ath: Regpair used: 0x3a
+Apr 14 18:03:53 chrosan kernel: [   22.635954] ath: regdomain 0x8348 dynamically updated by country IE
+Apr 14 18:03:53 chrosan kernel: [   22.635999] cfg80211: Regulatory domain changed to country: US
+Apr 14 18:03:53 chrosan kernel: [   22.636002] cfg80211:  DFS Master region: unset
+Apr 14 18:03:53 chrosan kernel: [   22.636006] cfg80211:   (start_freq - end_freq @ bandwidth), (max_antenna_gain, max_eirp), (dfs_cac_time)
+Apr 14 18:03:53 chrosan kernel: [   22.636012] cfg80211:   (2402000 KHz - 2472000 KHz @ 40000 KHz), (300 mBi, 2700 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.636017] cfg80211:   (5170000 KHz - 5250000 KHz @ 40000 KHz), (300 mBi, 1700 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.636022] cfg80211:   (5250000 KHz - 5330000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (0 s)
+Apr 14 18:03:53 chrosan kernel: [   22.636026] cfg80211:   (5490000 KHz - 5600000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (0 s)
+Apr 14 18:03:53 chrosan kernel: [   22.636031] cfg80211:   (5650000 KHz - 5710000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (0 s)
+Apr 14 18:03:53 chrosan kernel: [   22.636035] cfg80211:   (5735000 KHz - 5835000 KHz @ 40000 KHz), (300 mBi, 3000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.636040] cfg80211:   (57240000 KHz - 63720000 KHz @ 2160000 KHz), (N/A, 4000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.712732] wlan0: deauthenticating from c8:a7:0a:b9:06:74 by local choice (Reason: 2=PREV_AUTH_NOT_VALID)
+Apr 14 18:03:53 chrosan kernel: [   22.719544] wlan0: authenticate with c8:a7:0a:b9:06:74
+Apr 14 18:03:53 chrosan kernel: [   22.730516] wlan0: send auth to c8:a7:0a:b9:06:74 (try 1/3)
+Apr 14 18:03:53 chrosan kernel: [   22.731466] wlan0: authenticated
+Apr 14 18:03:53 chrosan kernel: [   22.732277] cfg80211: World regulatory domain updated:
+Apr 14 18:03:53 chrosan kernel: [   22.732283] cfg80211:  DFS Master region: unset
+Apr 14 18:03:53 chrosan kernel: [   22.732286] cfg80211:   (start_freq - end_freq @ bandwidth), (max_antenna_gain, max_eirp), (dfs_cac_time)
+Apr 14 18:03:53 chrosan kernel: [   22.732291] cfg80211:   (2402000 KHz - 2472000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.732296] cfg80211:   (2457000 KHz - 2482000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.732299] cfg80211:   (2474000 KHz - 2494000 KHz @ 20000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.732303] cfg80211:   (5170000 KHz - 5250000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.732307] cfg80211:   (5735000 KHz - 5835000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.735215] wlan0: associate with c8:a7:0a:b9:06:74 (try 1/3)
+Apr 14 18:03:53 chrosan kernel: [   22.736621] wlan0: RX AssocResp from c8:a7:0a:b9:06:74 (capab=0x11 status=0 aid=2)
+Apr 14 18:03:53 chrosan kernel: [   22.736747] wlan0: associated
+Apr 14 18:03:53 chrosan kernel: [   22.741299] ath: EEPROM regdomain: 0x8348
+Apr 14 18:03:53 chrosan kernel: [   22.741306] ath: EEPROM indicates we should expect a country code
+Apr 14 18:03:53 chrosan kernel: [   22.741309] ath: doing EEPROM country->regdmn map search
+Apr 14 18:03:53 chrosan kernel: [   22.741312] ath: country maps to regdmn code: 0x3a
+Apr 14 18:03:53 chrosan kernel: [   22.741314] ath: Country alpha2 being used: US
+Apr 14 18:03:53 chrosan kernel: [   22.741316] ath: Regpair used: 0x3a
+Apr 14 18:03:53 chrosan kernel: [   22.741320] ath: regdomain 0x8348 dynamically updated by country IE
+Apr 14 18:03:53 chrosan kernel: [   22.741358] cfg80211: Regulatory domain changed to country: US
+Apr 14 18:03:53 chrosan kernel: [   22.741361] cfg80211:  DFS Master region: unset
+Apr 14 18:03:53 chrosan kernel: [   22.741363] cfg80211:   (start_freq - end_freq @ bandwidth), (max_antenna_gain, max_eirp), (dfs_cac_time)
+Apr 14 18:03:53 chrosan kernel: [   22.741368] cfg80211:   (2402000 KHz - 2472000 KHz @ 40000 KHz), (300 mBi, 2700 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.741373] cfg80211:   (5170000 KHz - 5250000 KHz @ 40000 KHz), (300 mBi, 1700 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.741377] cfg80211:   (5250000 KHz - 5330000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (0 s)
+Apr 14 18:03:53 chrosan kernel: [   22.741380] cfg80211:   (5490000 KHz - 5600000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (0 s)
+Apr 14 18:03:53 chrosan kernel: [   22.741384] cfg80211:   (5650000 KHz - 5710000 KHz @ 40000 KHz), (300 mBi, 2000 mBm), (0 s)
+Apr 14 18:03:53 chrosan kernel: [   22.741387] cfg80211:   (5735000 KHz - 5835000 KHz @ 40000 KHz), (300 mBi, 3000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.741391] cfg80211:   (57240000 KHz - 63720000 KHz @ 2160000 KHz), (N/A, 4000 mBm), (N/A)
+Apr 14 18:03:53 chrosan kernel: [   22.824834] wlan0: Limiting TX power to 24 (24 - 0) dBm as advertised by c8:a7:0a:b9:06:74
+Apr 14 18:04:01 chrosan kernel: [   33.917203] EXT4-fs (dm-0): mounted filesystem with ordered data mode. Opts: discard
+Apr 14 18:04:11 chrosan kernel: [   43.207882] audit_printk_skb: 195 callbacks suppressed
+Apr 14 18:04:11 chrosan kernel: [   43.207889] audit: type=1400 audit(1460671451.019:77): apparmor="STATUS" operation="profile_replace" profile="unconfined" name="/usr/lib/cups/backend/cups-pdf" pid=2604 comm="apparmor_parser"
+Apr 14 18:04:11 chrosan kernel: [   43.207905] audit: type=1400 audit(1460671451.019:78): apparmor="STATUS" operation="profile_replace" profile="unconfined" name="/usr/sbin/cupsd" pid=2604 comm="apparmor_parser"
+Apr 14 18:04:11 chrosan kernel: [   43.208818] audit: type=1400 audit(1460671451.019:79): apparmor="STATUS" operation="profile_replace" profile="unconfined" name="/usr/sbin/cupsd" pid=2604 comm="apparmor_parser"
+Apr 14 18:04:11 chrosan kernel: [   44.070909] audit: type=1400 audit(1460671451.883:80): apparmor="DENIED" operation="open" profile="/usr/sbin/cups-browsed" name="/etc/cups/lpoptions" pid=1633 comm="cups-browsed" requested_mask="r" denied_mask="r" fsuid=0 ouid=0
+Apr 14 18:04:46 chrosan kernel: [   78.257828] usb 2-1.4: new high-speed USB device number 3 using ehci-pci
+Apr 14 18:04:46 chrosan kernel: [   78.351842] usb 2-1.4: New USB device found, idVendor=0984, idProduct=0040
+Apr 14 18:04:46 chrosan kernel: [   78.351852] usb 2-1.4: New USB device strings: Mfr=1, Product=2, SerialNumber=3
+Apr 14 18:04:46 chrosan kernel: [   78.351858] usb 2-1.4: Product: SATAWire        
+Apr 14 18:04:46 chrosan kernel: [   78.351862] usb 2-1.4: Manufacturer: Apricorn
+Apr 14 18:04:46 chrosan kernel: [   78.351866] usb 2-1.4: SerialNumber: 343243394351564254202020
+Apr 14 18:04:46 chrosan kernel: [   78.909529] usb-storage 2-1.4:1.0: USB Mass Storage device detected
+Apr 14 18:04:46 chrosan kernel: [   78.909668] scsi host4: usb-storage 2-1.4:1.0
+Apr 14 18:04:46 chrosan kernel: [   78.910401] usbcore: registered new interface driver usb-storage
+Apr 14 18:04:46 chrosan kernel: [   78.915149] usbcore: registered new interface driver uas
+Apr 14 18:04:47 chrosan kernel: [   79.910346] scsi 4:0:0:0: Direct-Access     Apricorn SATAWire         1.08 PQ: 0 ANSI: 4
+Apr 14 18:04:47 chrosan kernel: [   79.914890] sd 4:0:0:0: Attached scsi generic sg1 type 0
+Apr 14 18:04:47 chrosan kernel: [   79.915455] sd 4:0:0:0: [sdb] 312581808 512-byte logical blocks: (160 GB/149 GiB)
+Apr 14 18:04:47 chrosan kernel: [   79.916208] sd 4:0:0:0: [sdb] Write Protect is off
+Apr 14 18:04:47 chrosan kernel: [   79.916216] sd 4:0:0:0: [sdb] Mode Sense: 23 00 00 00
+Apr 14 18:04:47 chrosan kernel: [   79.916957] sd 4:0:0:0: [sdb] No Caching mode page found
+Apr 14 18:04:47 chrosan kernel: [   79.917022] sd 4:0:0:0: [sdb] Assuming drive cache: write through
+Apr 14 18:04:47 chrosan kernel: [   79.986036]  sdb: sdb1 sdb6 sdb7 sdb12
+Apr 14 18:04:47 chrosan kernel: [   80.002086] sd 4:0:0:0: [sdb] Attached SCSI disk

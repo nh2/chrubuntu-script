@@ -1,0 +1,16 @@
+       start        size    part  contents
+           0           1          PMBR (Boot GUID: DB8CF4BD-DE66-0149-8726-1B35681CE47A)
+           1           1          Pri GPT header
+           2          32          Pri GPT table
+    16826368   295753392       1  Label: "DATA-A"
+                                  Type: Linux data
+                                  UUID: E85C24D4-739A-1D48-97D4-2ADB90F60BB7
+        2048       32768       6  Label: "KERN-A"
+                                  Type: ChromeOS kernel
+                                  UUID: 9FE99C12-5C2B-674E-96FD-FF6A047DE07C
+                                  Attr: priority=5 tries=0 successful=1
+       49152    16777216       7  Label: "ROOT-A"
+                                  Type: ChromeOS rootfs
+                                  UUID: 65D7117F-02C8-0442-8A19-C0EDEDC4A047
+   312581775          32          Sec GPT table
+   312581807           1          Sec GPT header
