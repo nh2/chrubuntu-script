@@ -70,7 +70,7 @@ sudo parted ${target_disk} set ${lbp_part} legacy_boot on
 
 # Chrome Kernel (16M)
 kern=16
-kern_start=$((esp_start + esp_size))
+kern_start=$((lbp_start + lbp_size))
 kern_size=$((kern * 1024 * 1024 / 512))
 sudo cgpt add -i ${kernel_part} -b ${kern_start} -s ${kern_size} -S 1 -P 5 -l KERN-A -t "kernel" ${target_disk}
 
