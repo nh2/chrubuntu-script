@@ -90,7 +90,19 @@ void Logs::Title()
 
     SetCursor (0, height);
     TextColor(RESET, WHITE, BLACK);
-    printf ("%lu entries | Tab: Switch view.", log->size());
+    printf ("%lu entries | ", log->size());
+    
+    TextColor(BRIGHT, WHITE, BLACK);
+    printf ("Tab");
+    
+    TextColor(RESET, WHITE, BLACK);
+    printf (" Switch view | ");
+    
+    TextColor(BRIGHT, WHITE, BLACK);
+    printf ("[Q]");
+    
+    TextColor(RESET, WHITE, BLACK);
+    printf (" Leave log view");
 
     TextColor(BRIGHT, WHITE, BLACK);
     SetCursor (0, 0);

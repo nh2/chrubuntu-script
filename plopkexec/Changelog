@@ -1,15 +1,71 @@
-2016-05-02 Version 1.4 released by Eugene Sanivsky (eugenesan)
+2016-09-03 Version 1.4.1-eugenesan released by Eugene Sanivsky (eugenesan)
+
+    * Merge changes from 1.4.1.
+
+    * Linux kernel update to 4.7.1.
+
+    * Kexec update to 2.0.13.
+
+    * Add support for busybox in build system.
+
+    * Refresh build system and configs for updated Linux and Kexec.
+
+2016-08-14 Version 1.4.1 released by Elmar Hanlhofer
+
+    * Added leave info on Log View.
+
+
+2016-08-11 Version 1.4 released by Elmar Hanlhofer
+
+    * Added iso9660 to hard disk file system mount to support
+      hybrid ISOs.
+  
+    * Hotkey 's' for shutdown changed to 'p' power off.
+
+    * Added BusyBox.
+
+    * Hotkey 's' for BusyBox shell.
+
+    * Linux kernel update to 4.7.
+
+    * Kexec update to 2.0.12.
+
+    * Minor Kexec build script update.
+
+    * plopkexec.iso is now a hybrid ISO.
+
+    * Syslinux syntax: fix 'timeout' and 'default' command detection.
+
+    * Force timeout to 5 seconds instead of 10 seconds.
+
+    * Scan internal SD Card Readers.
+
+    * TODO: Automatic use of supported file systems compiled
+            into the kernel, like Eugene https://github.com/eugenesan/chrubuntu-script/tree/master/plopkexec
+
+
+2016-05-02 Version 1.3-eugenesan released by Eugene Sanivsky (eugenesan)
 
     * Rework build system
+
     * Drop packaged Linux and Kexec sources, fetch them during build
+
     * Move to latest LTS kernel (4.4.8)
+
     * Fix kexec build, it was not fully static
+
     * General cleanup (more left to do)
+
     * Add support for dry run build for debug purposes
+
     * Grub2 support for configs with variables by ignoring them
+
     * Support BTRFS root subvolume in Grub2 (only Grub2 seems to support it)
+
     * Support all filesystems provided by kernel as result hybrid iso/usb/live medias are now supported
+
     * Drop x86 support
+
     * Add support for kexec via syscall without kexec-tools (disabled due to "invalid argument" :-()
 
 

@@ -2,7 +2,7 @@
 
 # Generic settings
 arch="`uname -m`"
-release="stock-4.4.8-plopkexec"
+release="stock-4.7.1-plopkexec"
 kernel_image="$(dirname ${0})/images/${release}"
 working_dir="."
 

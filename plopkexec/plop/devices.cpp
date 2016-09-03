@@ -51,7 +51,7 @@ extern Menu menu;
 extern std::vector<string> Filesystems;
 
 /*
-#define NUM_SUPPORTED_FS 32
+#define NUM_SUPPORTED_FS 10
 const char supportedFS[NUM_SUPPORTED_FS][10] = {
     "ext2",
     "ext3",
@@ -310,10 +310,12 @@ bool Devices::Scan()
     DIR *p_dir;
     dirent *dirent;
     bool update = false;
-    
-    char device_types[][4] = { 
+
+#define NUM_DEVICE_TYPES 5
+    char device_types[][NUM_DEVICE_TYPES] = { 
 		"3:", 	// IDE HARD DISK
 		"8:", 	// USB, SATA, SCSI HARD DISK
+		"179:",	// CARD READER
 		"11:", 	// USB, SATA, SCSI CDROM
 		"22:",	// IDE CDROM	    
 	    };
@@ -328,7 +330,7 @@ bool Devices::Scan()
     
     while (dirent = readdir (p_dir))
     {
-	for (int i = 0; i < 4; i++)
+	for (int i = 0; i < NUM_DEVICE_TYPES; i++)
 	{
 	    if (strncmp (dirent->d_name, device_types[i], strlen (device_types[i])) == 0)
 	    {
@@ -343,8 +345,8 @@ bool Devices::Scan()
     int num_devices = devices.size();
     for (int i = num_devices - 1; i >= 0; i--)
     {
-	// cdroms need additonal special handling because of the inserted or not inserted  disc
-	// the device exists, but it can be without disc
+	// Cdroms need additonal special handling because of the inserted or
+	// not inserted disc. The device exists, but it can be without disc.
 	if (devices[i].is_cdrom && devices[i].valid)
 	{
 	    if (!devices[i].IsDiscOK())

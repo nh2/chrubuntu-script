@@ -22,9 +22,6 @@
  */
 
 
-#define PROGRAM_VERSION 	"1.4"
-#define PROGRAM_RELEASE_DATE	"2016/05/02"
-
 #include <iostream>
 #include <fstream>
 
@@ -268,6 +265,24 @@ void StartKernel (MenuEntry entry)
 }
 #endif
 
+void StartShell()
+{
+    SetCursor (0, 0);
+    TextColor(RESET, WHITE, BLACK);
+    ClearScreen();
+    SetCursor (0, 0);
+    ShowCursor();
+
+    printf ("BusyBox Shell started. Close it with 'exit'.\n");
+
+    if (RunCmd ("/bin/ash"))
+    {
+	Log ("Unable to start busybox shell");    
+    }
+
+    HideCursor();
+}
+
 static void *Timer (void *args)
 {
     while (true)
@@ -421,8 +436,12 @@ int main(int argc, char *argv[])
     		case 'q': // quit key for development
     		    quit = true;
     		    break;
-#endif		
-		
+#endif
+    		case 'p':
+    		case 'P':
+    		    reboot (RB_POWER_OFF);
+    		    break;
+
 		case 'r':
 		case 'R':
 		    reboot (RB_AUTOBOOT);
@@ -430,7 +449,8 @@ int main(int argc, char *argv[])
 
     		case 's':
     		case 'S':
-    		    reboot (RB_POWER_OFF);
+    		    StartShell();
+		    menu.Print (true);
     		    break;
 
     		case 'e':

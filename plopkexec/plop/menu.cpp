@@ -113,10 +113,10 @@ void Menu::SetTimeout (int seconds)
     {
         timeout = seconds + 1; // + 1 because timeout 0 means timeout disabled
 
-        if (timeout < 11)
+        if (timeout < 6)
         {
-    	    timeout = 11;
-    	    Log ("Timeout forced to 10 seconds");
+    	    timeout = 6;
+    	    Log ("Timeout forced to 5 seconds");
         }
     }
     Log ("Timeout %d (%d)", timeout, seconds);
@@ -770,13 +770,17 @@ void Menu::Footer()
     TextColor(RESET, WHITE, BLACK);
     printf ("ogs   ");
     TextColor(BRIGHT, WHITE, BLACK);
+    printf ("[P]");
+    TextColor(RESET, WHITE, BLACK);
+    printf ("ower off   ");
+    TextColor(BRIGHT, WHITE, BLACK);
     printf ("[R]");
     TextColor(RESET, WHITE, BLACK);
     printf ("eboot   ");
     TextColor(BRIGHT, WHITE, BLACK);
     printf ("[S]");
     TextColor(RESET, WHITE, BLACK);
-    printf ("hutdown   ");
+    printf ("hell   ");
 #ifdef QUIT_KEY
     printf ("[Q]");
     TextColor(RESET, WHITE, BLACK);

@@ -1,13 +1,25 @@
 #!/bin/sh -ex
 
-KERNEL="linux-4.4.8"
-KEXEC="kexec-tools-2.0.11"
-PLOP="plop"
+KERNEL="linux-4.7.1"
+BUSYBOX="busybox-1.25.0"
+KEXEC="kexec-tools-2.0.13"
+PLOP="plop-1.4.1-eugenesan"
 BASE=$(pwd)
 BUILD=".build"
 
 mkdir -p $BASE/$BUILD
 touch $BASE/$BUILD/.fdb
+
+# Fetching and unpacking
+#
+
+if [ ! -d $BASE/$BUILD/$BUSYBOX ]; then
+	echo "Fetching and unpacking busybox"
+	[ -r $BASE/$BUILD/$BUSYBOX.tar.bz2 ] || wget https://busybox.net/downloads/$BUSYBOX.tar.bz2 -O $BASE/$BUILD/$BUSYBOX.tar.bz2
+
+	echo "Extracting and patching busybox source code"
+	tar -C $BASE/$BUILD -xaf $BASE/$BUILD/$BUSYBOX.tar.bz2
+fi
 
 if [ ! -d $BASE/$BUILD/$KERNEL ]; then
 	echo "Fetching and unpacking kernel"
@@ -19,45 +31,59 @@ fi
 
 if [ ! -d $BASE/$BUILD/$KEXEC ]; then
 	echo "Fetching and unpacking kexec"
-	[ -r $BASE/kexec/$KEXEC.tar.xz ] || wget http://horms.net/projects/kexec/kexec-tools/$KEXEC.tar.gz -O $BASE/$BUILD/$KEXEC.tar.xz
+	[ -r $BASE/$BUILD/$KEXEC.tar.xz ] || wget http://horms.net/projects/kexec/kexec-tools/$KEXEC.tar.gz -O $BASE/$BUILD/$KEXEC.tar.xz
 
 	echo "Extracting and patching kexec source code"
 	tar -C $BASE/$BUILD -xaf $BASE/$BUILD/$KEXEC.tar.xz
-	patch -d $BASE/$BUILD/$KEXEC -p1 < $BASE/kexec/$KEXEC.patch
+	patch -d $BASE/$BUILD/$KEXEC -p1 < $BASE/kexec/compile-static.patch
 fi
 
 if [ ! -d $BASE/$BUILD/$PLOP ]; then
 	echo "Clonning plop"
-	make -C $BASE/$PLOP clean 
-	rsync -a $BASE/$PLOP/ $BASE/$BUILD/$PLOP/
+	rsync -av $BASE/plop/ $BASE/$BUILD/$PLOP/
 fi
 
-if [ ! -r $BASE/$BUILD/kexec ]; then
+# Building
+#
+
+if [ ! -r $BASE/$BUILD/busybox ]; then
+	echo "Building busybox"
+
+	cp -afv $BASE/busybox/.config  $BASE/$BUILD/$BUSYBOX/
+	make -C $BASE/$BUILD/$BUSYBOX CC="ccache gcc" -j16
+fi
+
+if [ ! -r $BASE/$BUILD/$KEXEC/build/sbin/kexec ]; then
 	echo "Building kexec"
 	cd $BASE/$BUILD/$KEXEC
 	./configure
 	make
+	strip -s build/sbin/kexec
 	cd -
-
-	cp -v $BASE/$BUILD/$KEXEC/build/sbin/kexec $BASE/$BUILD/
-	strip -s $BASE/$BUILD/kexec
 fi
 
-if [ ! -r $BASE/$BUILD/init ]; then
+if [ ! -r $BASE/$BUILD/$PLOP/init ]; then
 	echo "Building plop"
 	make -C $BASE/$BUILD/$PLOP
-	cp -afv $BASE/$BUILD/$PLOP/init $BASE/$BUILD/
+	strip $BASE/$BUILD/$PLOP/init
 fi
 
+# Installing
+#
 echo "Installing initramfs"
-fakeroot -i $BASE/$BUILD/.fdb -s $BASE/$BUILD/.fdb tar -C $BASE/$BUILD/$KERNEL -xaf $BASE/kernel/initramfs.tar.xz
+fakeroot -i $BASE/$BUILD/.fdb -s $BASE/$BUILD/.fdb -- tar -C $BASE/$BUILD/$KERNEL -xaf $BASE/kernel/initramfs.tar.xz
+
+echo "Installing busybox"
+fakeroot -i $BASE/$BUILD/.fdb -s $BASE/$BUILD/.fdb -- make -C $BASE/$BUILD/$BUSYBOX CC="ccache gcc" -j16 CONFIG_PREFIX="$BASE/$BUILD/$KERNEL/initramfs" install
 
 echo "Installing kexec"
-cp -afv $BASE/$BUILD/kexec $BASE/$BUILD/$KERNEL/initramfs/
+cp -afv $BASE/$BUILD/$KEXEC/build/sbin/kexec $BASE/$BUILD/$KERNEL/initramfs/
 
 echo "Installing plop"
 cp -afv $BASE/$BUILD/$PLOP/init $BASE/$BUILD/$KERNEL/initramfs/
 
+# Building and packing final kernel image
+#
 echo "Building kernel"
 if [ ! -r $BASE/$BUILD/bzImage ]; then
 	cp -afvr $BASE/kernel/.config $BASE/$BUILD/$KERNEL/
@@ -65,6 +91,8 @@ if [ ! -r $BASE/$BUILD/bzImage ]; then
 	cp -afv $BASE/$BUILD/$KERNEL/arch/x86/boot/bzImage $BASE/$BUILD/
 fi
 
+# Packing CD image
+#
 if [ ! -r $BASE/$BUILD/plopkexec.iso ]; then
 	echo "Building ISO"
 	mkdir -p $BASE/$BUILD/iso

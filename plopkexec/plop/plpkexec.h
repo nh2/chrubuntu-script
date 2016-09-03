@@ -21,6 +21,9 @@
  *
  */
 
+#define PROGRAM_VERSION		"1.4.1-eugenesan"
+#define PROGRAM_RELEASE_DATE	"2016/09/03"
+
 #include <vector>
 #include <string>
 

@@ -149,15 +149,15 @@ void ScanSyslinux::ScanConfigFile (char *dir, char *file_name)
 		scan_kernel_setup = true;
 	}
 	
-	if (strncasecmp (cfg_line, "timeout ", 9) == 0)
+	if (strncasecmp (cfg_line, "timeout ", 8) == 0)
 	{
-	    int value = atoi (cfg_line + 9);
+	    int value = atoi (cfg_line + 8);
 	    menu->SetTimeout (value / 10);
 	}
 	
-	if (strncasecmp (cfg_line, "default ", 9) == 0)
+	if (strncasecmp (cfg_line, "default ", 8) == 0)
 	{	    
-	    menu->SetDefaultBootLabel (cfg_line + 9);
+	    menu->SetDefaultBootLabel (cfg_line + 8);
 	}
 	
 	if (strncasecmp (cfg_line, "include ", 8) == 0)
