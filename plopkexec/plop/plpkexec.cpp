@@ -70,14 +70,17 @@ int quit;
 int info_display_wait = 0;
 bool dummy_scan = false;
 
+#define NUM_MOUNTFS 3
+
 void MountDefaults()
 {
-    char mountfs[2][3][10] = { 
+    char mountfs[NUM_MOUNTFS][3][10] = {
 	"none", "/proc", "proc",
 	"none", "/sys", "sysfs",
+	"devtmpfs", "/dev", "devtmpfs",
 	};
 
-    for (int i = 0; i < 2; i++)
+    for (int i = 0; i < NUM_MOUNTFS; i++)
     {
 	if (mount (mountfs[i][0], mountfs[i][1], mountfs[i][2], MS_MGC_VAL, "")) 
 	{
