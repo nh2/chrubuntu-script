@@ -170,9 +170,15 @@ void StartKernel (MenuEntry entry)
 	cmd += " --initrd=" +  entry.initrd;
     }
 
-    if (entry.append.length() > 0)
+    string append =
+        entry.append +
+        // If the kernel command line args do not already contain `root=`,
+        // append it explicitly, based on the device the user chose.
+        ((FindStr(entry.append.c_str(), "root=") == -1) ? (" root=" + entry.device) : "");
+
+    if (append.length() > 0)
     {
-	cmd += " --append=\"" + entry.append + "\"";
+	cmd += " --append=\"" + append + "\"";
     }
     
     if (RunCmd (cmd.c_str()))
@@ -238,12 +244,18 @@ void StartKernel (MenuEntry entry)
 	flags = KEXEC_FILE_NO_INITRAMFS;
     }
 
+    string append =
+        entry.append +
+        // If the kernel command line args do not already contain `root=`,
+        // append it explicitly, based on the device the user chose.
+        ((FindStr(entry.append.c_str(), "root=") == -1) ? (" root=" + entry.device) : "");
+
     //TODO: " --real-mode"
 
-    //loaded = kexec_file_load(kernel_fd, initrd_fd, entry.append.length(), entry.append.c_str(), flags);
-    loaded = syscall(SYS_kexec_file_load, kernel_fd, initrd_fd, entry.append.length(), entry.append.c_str(), flags);
+    //loaded = kexec_file_load(kernel_fd, initrd_fd, append.length(), append.c_str(), flags);
+    loaded = syscall(SYS_kexec_file_load, kernel_fd, initrd_fd, append.length(), append.c_str(), flags);
     if (!progress || loaded) {
-	Log ("(New) Kexec load error: (%d:%s) %s[%d]/ %s[%d] / %s", errno, strerror(errno), entry.kernel.c_str(), kernel_fd, entry.initrd.c_str(), initrd_fd, entry.append.c_str());
+	Log ("(New) Kexec load error: (%d:%s) %s[%d]/ %s[%d] / %s", errno, strerror(errno), entry.kernel.c_str(), kernel_fd, entry.initrd.c_str(), initrd_fd, append.c_str());
 
 	umount ("/mnt");
 	Log ("unmount /mnt");
@@ -260,7 +272,7 @@ void StartKernel (MenuEntry entry)
 
     printf ("(New)Starting kernel...\n");
     reboot(LINUX_REBOOT_CMD_KEXEC);
-    Log ("(New) Kexec start error: (%d:%s) %s[%d]/ %s[%d] / %s", errno, strerror(errno), entry.kernel.c_str(), kernel_fd, entry.initrd.c_str(), initrd_fd, entry.append.c_str());
+    Log ("(New) Kexec start error: (%d:%s) %s[%d]/ %s[%d] / %s", errno, strerror(errno), entry.kernel.c_str(), kernel_fd, entry.initrd.c_str(), initrd_fd, append.c_str());
 
     umount ("/mnt");
     Log ("unmount /mnt");

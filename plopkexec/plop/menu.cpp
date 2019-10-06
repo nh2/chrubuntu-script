@@ -79,7 +79,7 @@ void Menu::AddEntry(MenuEntry entry)
     }
     
     entries.push_back (entry);
-    Log ("ADD ENTRY (%d|%d) %s", entry.id_parent, entry.id, entry.menu_label.c_str());
+    Log ("ADD ENTRY (%d|%d) %s from device %s", entry.id_parent, entry.id, entry.menu_label.c_str(), entry.device.c_str());
     clear_screen = true;
 }
 
