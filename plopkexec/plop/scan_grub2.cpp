@@ -66,12 +66,12 @@ void ScanGrub2::ScanConfigFile (char *dir, char *file_name)
 	RemoveUnneededChars (cfg_line, '#');
 	TabToSpace (cfg_line);
 	StripChar (cfg_line, '{'); // dirty hack, use menuentry as start
-        if (!variables && FindChar (cfg_line, '$')) {
+        if (!variables && FindChar (cfg_line, '$') > -1) {
 		variables = true;
 	}
 
 	/*
-	if ((strncasecmp (cfg_line, "set default", 11) == 0) && !FindChar (cfg_line, '$')) {
+	if ((strncasecmp (cfg_line, "set default", 11) == 0) && FindChar (cfg_line, '$') == -1) {
 		GetValue(cfg_line);
 		default_boot_number = atoi (cfg_line);
 		continue;
@@ -101,7 +101,7 @@ void ScanGrub2::ScanConfigFile (char *dir, char *file_name)
 
 
 	if (scan_kernel_setup) {
-            //if (FindChar (cfg_line, '$'))
+            //if (FindChar (cfg_line, '$') > -1)
 	    //    Log ("Grub2: Adding initrd/kernel args with variable '%s'", cfg_line);
 
     	    if (strncasecmp (cfg_line, "linux ", 6) == 0) {
